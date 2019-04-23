@@ -1,4 +1,4 @@
-import java.util.Date;
+import java.time.*;
 
 public class Actividades {
 	private String descripcion;
@@ -6,15 +6,17 @@ public class Actividades {
 	private String medio_transporte;
 	private String localizacion;
 	private String codigo;
-	private Date hora;
-	private Date fecha;
+	private LocalDate hora;
+	private LocalDate fecha;
 	private int aforo;
 	private int duracion;
+
 	/**
 	 * 
 	 */
 	protected Actividades() {
 	}
+
 	/**
 	 * @param descripcion
 	 * @param tipo
@@ -27,7 +29,7 @@ public class Actividades {
 	 * @param duracion
 	 */
 	protected Actividades(String descripcion, String tipo, String medio_transporte, String localizacion, String codigo,
-			Date hora, Date fecha, int aforo, int duracion) {
+			LocalDate hora, LocalDate fecha, int aforo, int duracion) {
 		this.descripcion = descripcion;
 		this.tipo = tipo;
 		this.medio_transporte = medio_transporte;
@@ -38,115 +40,136 @@ public class Actividades {
 		this.aforo = aforo;
 		this.duracion = duracion;
 	}
+
 	/**
 	 * @return the descripcion
 	 */
 	protected String getDescripcion() {
 		return descripcion;
 	}
+
 	/**
 	 * @param descripcion the descripcion to set
 	 */
 	protected void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
 	/**
 	 * @return the tipo
 	 */
 	protected String getTipo() {
 		return tipo;
 	}
+
 	/**
 	 * @param tipo the tipo to set
 	 */
 	protected void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
 	/**
 	 * @return the medio_transporte
 	 */
 	protected String getMedio_transporte() {
 		return medio_transporte;
 	}
+
 	/**
 	 * @param medio_transporte the medio_transporte to set
 	 */
 	protected void setMedio_transporte(String medio_transporte) {
 		this.medio_transporte = medio_transporte;
 	}
+
 	/**
 	 * @return the localizacion
 	 */
 	protected String getLocalizacion() {
 		return localizacion;
 	}
+
 	/**
 	 * @param localizacion the localizacion to set
 	 */
 	protected void setLocalizacion(String localizacion) {
 		this.localizacion = localizacion;
 	}
+
 	/**
 	 * @return the codigo
 	 */
 	protected String getCodigo() {
 		return codigo;
 	}
+
 	/**
 	 * @param codigo the codigo to set
 	 */
 	protected void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
+
 	/**
 	 * @return the hora
 	 */
-	protected Date getHora() {
+	protected LocalDate getHora() {
 		return hora;
 	}
+
 	/**
 	 * @param hora the hora to set
 	 */
-	protected void setHora(Date hora) {
+	protected void setHora(LocalDate hora) {
 		this.hora = hora;
 	}
+
 	/**
 	 * @return the fecha
 	 */
-	protected Date getFecha() {
+	protected LocalDate getFecha() {
 		return fecha;
 	}
+
 	/**
 	 * @param fecha the fecha to set
 	 */
-	protected void setFecha(Date fecha) {
+	protected void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
+
 	/**
 	 * @return the aforo
 	 */
 	protected int getAforo() {
 		return aforo;
 	}
+
 	/**
 	 * @param aforo the aforo to set
 	 */
 	protected void setAforo(int aforo) {
 		this.aforo = aforo;
 	}
+
 	/**
 	 * @return the duracion
 	 */
 	protected int getDuracion() {
 		return duracion;
 	}
+
 	/**
 	 * @param duracion the duracion to set
 	 */
 	protected void setDuracion(int duracion) {
 		this.duracion = duracion;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -166,5 +189,5 @@ public class Actividades {
 		mensaje += "\n\tAforo máximo: " + aforo;
 		return mensaje;
 	}
-	
+
 }

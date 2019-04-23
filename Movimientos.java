@@ -1,8 +1,8 @@
-import java.util.Date;
+import java.time.*;
 
 public class Movimientos {
 	private double cantidad;
-	private Date fecha;
+	private LocalDate fecha;
 
 	/**
 	 * 
@@ -14,7 +14,7 @@ public class Movimientos {
 	 * @param cantidad
 	 * @param fecha
 	 */
-	protected Movimientos(double cantidad, Date fecha) {
+	protected Movimientos(double cantidad, LocalDate fecha) {
 		this.cantidad = cantidad;
 		this.fecha = fecha;
 	}
@@ -36,14 +36,14 @@ public class Movimientos {
 	/**
 	 * @return the fecha
 	 */
-	protected Date getFecha() {
+	protected LocalDate getFecha() {
 		return fecha;
 	}
 
 	/**
 	 * @param fecha the fecha to set
 	 */
-	protected void setFecha(Date fecha) {
+	protected void setFechaLocal(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
