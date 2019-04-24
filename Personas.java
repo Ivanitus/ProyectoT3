@@ -1,5 +1,5 @@
-
 public abstract class Personas {
+
 	protected String nombre;
 	protected String apellidos;
 	protected String dni;
