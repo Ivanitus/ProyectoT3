@@ -175,7 +175,7 @@ public class GestionBBDD {
 		String sql = "select count(*) id_clientes from apunta where=" + id;
 
 		try {
-
+//ivan un dia se muere de un infarto
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
 
