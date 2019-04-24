@@ -11,7 +11,7 @@ public class GestionBBDD {
 	/*
 	 * Metodo para insertar habitaciones en la base de datos
 	 */
-	protected void insertarHabitaciones(Habitaciones habitacionAnadir) {
+	protected void insertarHabitaciones(Habitaciones habitacionAnadir, String dni) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -26,10 +26,11 @@ public class GestionBBDD {
 		boolean jacuzzi = habitacionAnadir.isJacuzzi();
 		boolean matrimonio = habitacionAnadir.isMatrimonio();
 		boolean terraza = habitacionAnadir.isTerraza();
+		int idEmpleado = buscarEmpleado(dni);
 		// Sentencia SQL
-		String sql = "insert into habitaciones (numero_baños,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion) values ("
+		String sql = "insert into habitaciones (numero_baños,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion,id_empleados_aux) values ("
 				+ numero_banos + "," + jacuzzi + "," + matrimonio + ",'" + tipo + "'," + terraza + "," + camas + ","
-				+ precio_habitaciones + ",'" + superficie + "'," + numero_habitacion + ")";
+				+ precio_habitaciones + ",'" + superficie + "'," + numero_habitacion + "," + idEmpleado + ")";
 		try {
 			st = con.createStatement();
 			st.executeUpdate(sql);
@@ -46,7 +47,7 @@ public class GestionBBDD {
 	 * de datos y devuelve un boolean. En caso de encontrar la habitacion, el
 	 * boolean será true
 	 */
-	protected boolean buscarHabitacion(int numHabitacion) {
+	protected boolean habitacionExiste(int numHabitacion) {
 		boolean habitacionEncontrada = false;
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
@@ -70,6 +71,30 @@ public class GestionBBDD {
 			System.out.println("Fallo en la sentencia SQL");
 		}
 		return habitacionEncontrada;
+	}
+
+	protected int buscarHabitacion(int numHabitacion) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idHabitacion = 0;
+		String sql = "select id_habitaciones from habitaciones where numero_habitacion=" + numHabitacion;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idHabitacion = rs.getInt("id_habitaciones");
+			} else {
+				System.out.println("Habitacion no encontrada");
+			}
+			// Cierro el statement y la conexion
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la sentencia SQL");
+		}
+		return idHabitacion;
 	}
 
 	/*
@@ -100,79 +125,203 @@ public class GestionBBDD {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
+		ResultSet rs;
 		int datoNuevoInt = 0;
 		double datoNuevoDouble = 0;
 		boolean datoNuevoBoolean = false;
 		boolean ejecutarSentenciaSQL = true;
-		// Sentencia SQL
-		String sql = "update habitaciones set ";
-		if (datoModificar.equalsIgnoreCase("superficie")) {
-			sql += datoModificar + "='" + datoNuevo + "' ";
-		} else if (datoModificar.equalsIgnoreCase("tipo")) {
-			if (datoNuevo.trim().equalsIgnoreCase("individual")) {
-				sql += datoModificar + "='individual'";
-			} else if (datoNuevo.trim().equalsIgnoreCase("matrimonio")) {
-				sql += datoModificar + "='matrimonio'";
-			} else if (datoNuevo.trim().equalsIgnoreCase("suite")) {
-				sql += datoModificar + "='suite'";
-			}
-		} else if (datoModificar.equalsIgnoreCase("numero de baños")) {
-			datoNuevoInt = Integer.parseInt(datoNuevo);
-			sql += "numero_baños=" + datoNuevoInt;
-		} else if (datoModificar.equalsIgnoreCase("numero de camas")) {
-			datoNuevoInt = Integer.parseInt(datoNuevo);
-			sql += "camas=" + datoNuevoInt;
-		} else if (datoModificar.equalsIgnoreCase("numero de la habitacion")) {
-			datoNuevoInt = Integer.parseInt(datoNuevo);
-			sql += "numero_habitacion=" + datoNuevoInt;
-		} else if (datoModificar.equalsIgnoreCase("precio de la habitacion")) {
-			datoNuevoDouble = Double.parseDouble(datoNuevo);
-			sql += "precio_habitaciones=" + datoNuevoDouble;
-		} else if (datoModificar.equalsIgnoreCase("jacuzzi")) {
-			if (datoNuevo.equalsIgnoreCase("si")) {
-				datoNuevoBoolean = true;
-				sql += "jacuzzi=" + datoNuevoBoolean;
-			} else if (datoNuevo.equalsIgnoreCase("no")) {
-				sql += "jacuzzi=" + datoNuevoBoolean;
-			}
-		} else if (datoModificar.equalsIgnoreCase("matrimonio")) {
-			if (datoNuevo.equalsIgnoreCase("si")) {
-				datoNuevoBoolean = true;
-				sql += "matrimonio=" + datoNuevoBoolean;
-			} else if (datoNuevo.equalsIgnoreCase("no")) {
-				sql += "matrimonio=" + datoNuevoBoolean;
-			}
-		} else if (datoModificar.equalsIgnoreCase("terraza")) {
-			if (datoNuevo.equalsIgnoreCase("si")) {
-				datoNuevoBoolean = true;
-				sql += "terraza=" + datoNuevoBoolean;
-			} else if (datoNuevo.equalsIgnoreCase("no")) {
-				sql += "terraza=" + datoNuevoBoolean;
-			}
-		} else {
-			System.out.println("El atributo que has introducido para modificar no es válido");
-			ejecutarSentenciaSQL = false;
-		}
-		sql += "where numero_habitacion=" + numHabitacion;
+		int idHabitacion = buscarHabitacion(numHabitacion);
+		// Variables habitaciones
+		String superficie, tipo;
+		int numero_banos;
+		int camas;
+		int numero_habitacion;
+		double precio_habitaciones;
+		boolean jacuzzi;
+		boolean matrimonio;
+		boolean terraza;
+		// Sentencia SQL 1
+		String sql1 = "select * from habitaciones where id_habitaciones=" + idHabitacion;
 		try {
-			if (ejecutarSentenciaSQL) {
-				st = con.createStatement();
-				st.executeUpdate(sql);
-				// Cierro el statement
-				st.close();
+			st = con.createStatement();
+			rs = st.executeQuery(sql1);
+			if (rs.next()) {
+				superficie = rs.getString(2);
+				tipo = rs.getString(3);
+				numero_banos = rs.getInt(4);
+				camas = rs.getInt(5);
+				numero_habitacion = rs.getInt(6);
+				precio_habitaciones = rs.getDouble(7);
+				jacuzzi = rs.getBoolean(8);
+				matrimonio = rs.getBoolean(9);
+				terraza = rs.getBoolean(10);
+				Habitaciones habitacion = new Habitaciones(superficie, tipo, numero_banos, camas, numero_habitacion,
+						precio_habitaciones, jacuzzi, matrimonio, terraza);
+				// Sentencia SQL 2
+				String sql = "update habitaciones set ";
+				if (datoModificar.equalsIgnoreCase("superficie")) {
+					habitacion.setSuperficie(datoNuevo);
+					sql += "superficie='" + habitacion.getSuperficie() + "' ";
+				} else if (datoModificar.equalsIgnoreCase("tipo")) {
+					if (datoNuevo.trim().equalsIgnoreCase("individual")) {
+						habitacion.setTipo("individual");
+						sql += "tipo='" + habitacion.getTipo() + "'";
+					} else if (datoNuevo.trim().equalsIgnoreCase("matrimonio")) {
+						habitacion.setTipo("matrimonio");
+						sql += "tipo='" + habitacion.getTipo() + "'";
+					} else if (datoNuevo.trim().equalsIgnoreCase("suite")) {
+						habitacion.setTipo("suite");
+						sql += "tipo='" + habitacion.getTipo() + "'";
+					}
+				} else if (datoModificar.equalsIgnoreCase("numero de baños")) {
+					datoNuevoInt = Integer.parseInt(datoNuevo);
+					habitacion.setNumero_banos(datoNuevoInt);
+					sql += "numero_baños=" + habitacion.getNumero_banos();
+				} else if (datoModificar.equalsIgnoreCase("numero de camas")) {
+					datoNuevoInt = Integer.parseInt(datoNuevo);
+					habitacion.setCamas(datoNuevoInt);
+					sql += "camas=" + habitacion.getCamas();
+				} else if (datoModificar.equalsIgnoreCase("numero de la habitacion")) {
+					datoNuevoInt = Integer.parseInt(datoNuevo);
+					habitacion.setNumero_habitacion(datoNuevoInt);
+					sql += "numero_habitacion=" + habitacion.getNumero_habitacion();
+				} else if (datoModificar.equalsIgnoreCase("precio de la habitacion")) {
+					datoNuevoDouble = Double.parseDouble(datoNuevo);
+					habitacion.setPrecio_habitaciones(datoNuevoDouble);
+					sql += "precio_habitaciones=" + habitacion.getPrecio_habitaciones();
+				} else if (datoModificar.equalsIgnoreCase("jacuzzi")) {
+					if (datoNuevo.equalsIgnoreCase("si")) {
+						datoNuevoBoolean = true;
+						habitacion.setJacuzzi(datoNuevoBoolean);
+						sql += "jacuzzi=" + habitacion.isJacuzzi();
+					} else if (datoNuevo.equalsIgnoreCase("no")) {
+						datoNuevoBoolean = false;
+						habitacion.setJacuzzi(datoNuevoBoolean);
+						sql += "jacuzzi=" + habitacion.isJacuzzi();
+					}
+				} else if (datoModificar.equalsIgnoreCase("matrimonio")) {
+					if (datoNuevo.equalsIgnoreCase("si")) {
+						datoNuevoBoolean = true;
+						habitacion.setMatrimonio(datoNuevoBoolean);
+						sql += "matrimonio=" + habitacion.isMatrimonio();
+					} else if (datoNuevo.equalsIgnoreCase("no")) {
+						datoNuevoBoolean = false;
+						habitacion.setMatrimonio(datoNuevoBoolean);
+						sql += "matrimonio=" + habitacion.isMatrimonio();
+					}
+				} else if (datoModificar.equalsIgnoreCase("terraza")) {
+					if (datoNuevo.equalsIgnoreCase("si")) {
+						datoNuevoBoolean = true;
+						habitacion.setTerraza(datoNuevoBoolean);
+						sql += "terraza=" + habitacion.isTerraza();
+					} else if (datoNuevo.equalsIgnoreCase("no")) {
+						datoNuevoBoolean = false;
+						habitacion.setTerraza(datoNuevoBoolean);
+						sql += "terraza=" + habitacion.isTerraza();
+					}
+				} else {
+					System.out.println("El atributo que has introducido para modificar no es válido");
+					ejecutarSentenciaSQL = false;
+				}
+				sql += "where id_habitaciones=" + idHabitacion;
+				try {
+					st = con.createStatement();
+					if (ejecutarSentenciaSQL) {
+						st.executeUpdate(sql);
+					}
+					// Cierro el statement y la conexion
+					st.close();
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Fallo en la sentencia SQL");
+				}
 			}
-			// Cierro la conexion
+		} catch (SQLException e) {
+			System.out.println("Error en la sentencia SQL");
+		}
+	}
+
+	/*
+	 * Metodo que comprueba la disponibilidad de una habitacion entre fechas
+	 * Devuelve un booleano, y se usará a la hora de realizar una reserva
+	 */
+	protected boolean comprobarDisponibilidadHabitaciones(int numHabitacion, Reserva reservaNueva) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		boolean disponible = false;
+		int idHabitacion = buscarHabitacion(numHabitacion);
+		LocalDate fechaEntradaReservaNueva = reservaNueva.getFecha_entrada();
+		LocalDate fechaSalidaReservaNueva = reservaNueva.getFecha_salida();
+		Date fechaEntradaSQL;
+		Date fechaSalidaSQL;
+		LocalDate fechaEntradaConsulta;
+		LocalDate fechaSalidaConsulta;
+		String sql1 = "select fecha_entrada,fecha_salida from reserva where id_habitaciones_aux=" + idHabitacion;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql1);
+			while (rs.next()) {
+				fechaEntradaSQL = rs.getDate("fecha_entrada");
+				fechaSalidaSQL = rs.getDate("fecha_salida");
+				fechaEntradaConsulta = fechaEntradaSQL.toLocalDate(); // paso a localdate
+				fechaSalidaConsulta = fechaSalidaSQL.toLocalDate(); // paso a localdate
+				if (fechaEntradaReservaNueva.isEqual(fechaEntradaConsulta)) {
+					disponible = false;
+				} else if (fechaEntradaReservaNueva.isAfter(fechaEntradaConsulta)) {
+					if (fechaEntradaReservaNueva.isBefore(fechaSalidaConsulta)) {
+						disponible = false;
+					} else if (fechaEntradaReservaNueva.isAfter(fechaSalidaConsulta)
+							|| fechaEntradaReservaNueva.isEqual(fechaSalidaConsulta)) {
+						disponible = true;
+					}
+				} else if (fechaEntradaReservaNueva.isBefore(fechaEntradaConsulta)) {
+					if (fechaSalidaReservaNueva.isAfter(fechaEntradaConsulta)) {
+						disponible = false;
+					} else if (fechaSalidaReservaNueva.isBefore(fechaEntradaConsulta)
+							|| fechaSalidaReservaNueva.isEqual(fechaEntradaConsulta)) {
+						disponible = true;
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+			e.printStackTrace();
+		}
+		return disponible;
+	}
+
+	/*
+	 * Metodo que permite al usuario reservar una habitacion de hotel
+	 */
+	protected void reservarHabitaciones(int numHabitacion, String dniCliente, Reserva reservaNueva) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		LocalDate fecha_entrada = reservaNueva.getFecha_entrada();
+		LocalDate fecha_salida = reservaNueva.getFecha_salida();
+		String fechaEntradaSQL = fecha_entrada.toString();
+		String fechaSalidaSQL = fecha_salida.toString();
+		int idCliente = buscarCliente(dniCliente);
+		int idHabitacion = buscarHabitacion(numHabitacion);
+		// Sentencia SQL
+		String sql = "insert into reserva (id_clientes_aux,id_habitaciones_aux,fecha_entrada,fecha_salida) values ("
+				+ idCliente + "," + idHabitacion + ",STR_TO_DATE('" + fechaEntradaSQL + "','%Y-%m-%d'),STR_TO_DATE('"
+				+ fechaSalidaSQL + "','%Y-%m-%d') )";
+		try {
+			st = con.createStatement();
+			st.executeUpdate(sql);
+			System.out.println("Reserva de la habitacion realizada correctamente");
+			// Cierro el statement y la conexion
+			st.close();
 			con.close();
 		} catch (SQLException e) {
 			System.out.println("Fallo en la sentencia SQL");
 		}
 	}
 
-	protected void reservarHabitaciones() { // pendiente de implementacion
-
-	}
-
-	protected void mostrarHabitacionesDisponibles() { // pendiente de implementacion
+	protected void calcularPrecioReserva() { // pendiente de implementacion
 
 	}
 
@@ -385,5 +534,61 @@ public class GestionBBDD {
 		} catch (SQLException e) {
 			System.out.println("Fallo en la consulta SQL");
 		}
+	}
+
+	/*
+	 * Metodo que mediante el dni del empleado busca en la base de datos el id de la
+	 * persona, y mosteriormente el id del empleado, devolviendo como int
+	 */
+	protected int buscarEmpleado(String dni) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idPersonaAux = buscarPersona(dni);
+		int idEmpleado = 0;
+		// Sentencia SQL
+		String sql = "select id_empleados from empleados where id_personas_aux=" + idPersonaAux;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idEmpleado = rs.getInt("id_empleados");
+				// Cierro el statement y la conexion
+				st.close();
+				con.close();
+			}
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		return idEmpleado;
+	}
+
+	/*
+	 * Metodo que mediante el dni del cliente busca en la base de datos el id de la
+	 * persona, y mosteriormente el id del cliente, devolviendo como int
+	 */
+	protected int buscarCliente(String dni) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idPersonaAux = buscarPersona(dni);
+		int idCliente = 0;
+		// Sentencia SQL
+		String sql = "select id_clientes from clientes where id_personas_aux=" + idPersonaAux;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idCliente = rs.getInt("id_clientes");
+			}
+			// Cierro el statement y la conexion
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		return idCliente;
 	}
 }
