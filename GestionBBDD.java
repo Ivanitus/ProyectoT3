@@ -7,7 +7,6 @@ import java.time.*;
 
 public class GestionBBDD {
 
-
 	/*
 	 * Metodo para insertar habitaciones en la base de datos
 	 */
@@ -246,12 +245,12 @@ public class GestionBBDD {
 	 * Devuelve un booleano, y se usar� a la hora de realizar una reserva
 	 */
 	protected boolean comprobarDisponibilidadHabitaciones(int numHabitacion, Reserva reservaNueva) {
-    
-  	Conexion conexion = new Conexion();
+
+		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-    boolean disponible = false;
+		boolean disponible = false;
 		int idHabitacion = buscarHabitacion(numHabitacion);
 		LocalDate fechaEntradaReservaNueva = reservaNueva.getFecha_entrada();
 		LocalDate fechaSalidaReservaNueva = reservaNueva.getFecha_salida();
@@ -293,7 +292,6 @@ public class GestionBBDD {
 		return disponible;
 	}
 
-    
 	protected void insertarActividades(Actividades act) {
 
 		Conexion conexion = new Conexion();
@@ -471,7 +469,11 @@ public class GestionBBDD {
 	}
 
 	protected void mostrarActividadesDisponibles(String codigo) {
-   int id = buscarActividad(codigo);
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int id = buscarActividad(codigo);
 		int id_clientes = 0;
 		int aforo = 0;
 		int disponibilidad = 0;
@@ -554,7 +556,7 @@ public class GestionBBDD {
 	}
 
 	protected void mostrarHabitaciones() { // Metodo para mostrar todos los datos de todas las habitaciones
-    Conexion conexion = new Conexion();
+		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
@@ -599,7 +601,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-    int id = 0;
+		int id = 0;
 
 		String sql = "select id_actividades from actividades where=" + codigo + "";
 
@@ -636,7 +638,7 @@ public class GestionBBDD {
 		ResultSet rs;
 		int id = 0;
 		// Sentencia SQL
-		String sql = "select id_personas from personas where dni='" + dni + "'";
+		String sql = "select id_personas from personas where dni='" + DNI + "'";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
@@ -681,7 +683,7 @@ public class GestionBBDD {
 		} catch (SQLException e) {
 			System.out.println("Fallo en la sentencia SQL");
 		}
-		id_personas_aux = buscarPersona(dni);
+		id_personas_aux = buscarPersonas(dni);
 		/*
 		 * Sentencia SQL para completar la informacion de la persona dependiendo si es
 		 * cliente o empleado en la base de datos
@@ -715,7 +717,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		int id = 0;
-		id = buscarPersona(dni);
+		id = buscarPersonas(dni);
 		// Sentencia SQL
 		String sql = "delete from empleados where id_personas_aux=" + id;
 		try {
@@ -734,7 +736,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		int id = 0;
-		id = buscarPersona(dni);
+		id = buscarPersonas(dni);
 		// Sentencia SQL
 		String sql = "delete from clientes where id_personas_aux=" + id;
 		try {
@@ -1028,7 +1030,13 @@ public class GestionBBDD {
 	}
 
 	protected void mostrarPersonas() {// Necesario ???? Personas clase abstracta no se pueden crear objetos persona
-    String sql = "select * from personas";
+
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+
+		String sql = "select * from personas";
 
 		try {
 
