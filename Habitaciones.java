@@ -1,5 +1,5 @@
-
 public class Habitaciones {
+
 	private String superficie;
 	private String tipo;
 	private int numero_banos;
@@ -66,7 +66,7 @@ public class Habitaciones {
 	protected void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
+  
 	/**
 	 * @return the numero_banos
 	 */
@@ -177,9 +177,9 @@ public class Habitaciones {
 		mensaje += "\n\tNumero de la habitacion: " + numero_habitacion;
 		mensaje += "\n\tSuperficie: " + superficie;
 		mensaje += "\n\tTipo: " + tipo;
-		mensaje += "\n\tNumero de baños: " + numero_banos;
+		mensaje += "\n\tNumero de baÃ±os: " + numero_banos;
 		mensaje += "\n\tNumero de camas: " + camas;
-		mensaje += "\n\tPrecio de la habitación por día: " + precio_habitaciones;
+		mensaje += "\n\tPrecio de la habitaciÃ³n por dÃ­a: " + precio_habitaciones;
 		if (jacuzzi) {
 			mensaje += "\n\tJacuzzi: SI";
 		} else {
