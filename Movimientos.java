@@ -43,7 +43,7 @@ public class Movimientos {
 	/**
 	 * @param fecha the fecha to set
 	 */
-	protected void setFechaLocal(LocalDate fecha) {
+	protected void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

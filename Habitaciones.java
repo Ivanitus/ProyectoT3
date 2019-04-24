@@ -1,6 +1,7 @@
 public class Habitaciones {
 
 	private String superficie;
+	private String tipo;
 	private int numero_banos;
 	private int camas;
 	private int numero_habitacion;
@@ -25,9 +26,10 @@ public class Habitaciones {
 	 * @param matrimonio
 	 * @param terraza
 	 */
-	protected Habitaciones(String superficie, int numero_banos, int camas, int numero_habitacion,
+	protected Habitaciones(String superficie, String tipo, int numero_banos, int camas, int numero_habitacion,
 			double precio_habitaciones, boolean jacuzzi, boolean matrimonio, boolean terraza) {
 		this.superficie = superficie;
+		this.tipo = tipo;
 		this.numero_banos = numero_banos;
 		this.camas = camas;
 		this.numero_habitacion = numero_habitacion;
@@ -51,6 +53,20 @@ public class Habitaciones {
 		this.superficie = superficie;
 	}
 
+	/**
+	 * @return the tipo
+	 */
+	protected String getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	protected void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+  
 	/**
 	 * @return the numero_banos
 	 */
@@ -160,9 +176,10 @@ public class Habitaciones {
 		mensaje = "Datos de la habitacion: ";
 		mensaje += "\n\tNumero de la habitacion: " + numero_habitacion;
 		mensaje += "\n\tSuperficie: " + superficie;
-		mensaje += "\n\tNumero de baños: " + numero_banos;
+		mensaje += "\n\tTipo: " + tipo;
+		mensaje += "\n\tNumero de baÃ±os: " + numero_banos;
 		mensaje += "\n\tNumero de camas: " + camas;
-		mensaje += "\n\tPrecio de la habitación por día: " + precio_habitaciones;
+		mensaje += "\n\tPrecio de la habitaciÃ³n por dÃ­a: " + precio_habitaciones;
 		if (jacuzzi) {
 			mensaje += "\n\tJacuzzi: SI";
 		} else {
