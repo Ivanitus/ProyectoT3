@@ -14,7 +14,7 @@ public class GestionBBDD {
 		Statement st;
 
 		String descripcion = act.getDescripcion();
-		String tipo = act.getTipo();// controlar que introduzca externa/interna
+		String tipo = act.getTipo(); // controlar que introduzca externa/interna
 		String mediotransporte = act.getMedio_transporte();
 		String localizacion = act.getLocalizacion();
 		String codigo = act.getCodigo();
@@ -156,7 +156,30 @@ public class GestionBBDD {
 		}
 	}
 
-	protected void reservarActividades() {// Reservar actividades
+	protected void reservarActividades(String DNI, String codigo) {// Reservar actividades
+
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+
+		int id_clientes_aux = buscarCliente(DNI);
+		int id_actividades_aux = buscarActividad(codigo);
+
+		String sql = "insert into apunta (id_clientes_aux,id_actividades_aux) values ('" + id_clientes_aux + "','"
+				+ id_actividades_aux + "')";
+
+		try {
+
+			st = con.createStatement();
+			st.executeQuery(sql);
+			st.close();
+			con.close();
+
+		} catch (SQLException e) {
+
+			System.out.println("Fallo en la conexion");
+
+		}
 
 	}
 
@@ -174,8 +197,8 @@ public class GestionBBDD {
 
 		String sql = "select count(*) id_clientes from apunta where=" + id;
 
-		try {
-//ivan un dia se muere de un infarto
+		try {// ivan un dia se muere de un infarto
+
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
 
@@ -347,82 +370,56 @@ public class GestionBBDD {
 		return id;
 	}
 
-	protected void modificarPersonas(String DNI, String opcion, String datonuevo) {
-
+	protected void modificarPersonas(String DNI, String opcion, String datonuevo, String tipo) {
+		// tipo es una constante que definimos en el logueo dependiendo de que tipo de
+		// persona sea
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 
 		int datonuevoInt = 0;
 		double datonuevoDouble = 0;
-
 		boolean ejecutarSentenciaSql = true;
-
-		String sql = "update personas set ";
-
-		if (opcion.equalsIgnoreCase("nombre")) {
-
-			sql += opcion + "=" + datonuevo + "";
-
-		} else if (opcion.equalsIgnoreCase("apellidos")) {
-
-			sql += opcion + "=" + datonuevo + "";
-
-		} else if (opcion.equalsIgnoreCase("dni")) {
-
-			sql += opcion + "=" + datonuevo + "";
-
-		} else if (opcion.equalsIgnoreCase("telefono")) {
-
-			datonuevoInt = Integer.parseInt(datonuevo);
-
-			sql += opcion + "=" + datonuevoInt + "";
-
-		} else if (opcion.equalsIgnoreCase("clave")) {
-
-			sql += opcion + "=" + datonuevo + "";
-
-		} else if (opcion.equalsIgnoreCase("edad")) {
-
-			datonuevoInt = Integer.parseInt(datonuevo);
-
-			sql += opcion + "=" + datonuevoInt + "";
-
-		} else if (opcion.equalsIgnoreCase("email")) {
-
-			sql += opcion + "=" + datonuevo + "";
-
-		} else {
-
-			System.out.println("El dato a modificar no es valido");
-			ejecutarSentenciaSql = false;
-		}
-
-		sql += "where DNI=" + DNI;
-
-		try {
-
-			if (ejecutarSentenciaSql) {
-
-				st = con.createStatement();
-				st.executeUpdate(sql);
-				st.close();
-			}
-
-			con.close();
-
-		} catch (SQLException e) {
-
-			System.out.println("Fallo en la conexion");
-		}
-
 		int id_personas_aux = buscarPersonas(DNI);
 
-		String sql2 = "update empleados set ";
+		if (tipo.equalsIgnoreCase("Empleado")) {
 
-		if (DNI.equalsIgnoreCase("dniEmpleado")) {// Como compararia para saber si es empleado??
+			String sql = "update personas set ";
+			String sql2 = "update empleados set ";
 
-			if (opcion.equalsIgnoreCase("salario")) {
+			if (opcion.equalsIgnoreCase("nombre")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("apellidos")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("dni")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("telefono")) {
+
+				datonuevoInt = Integer.parseInt(datonuevo);
+
+				sql += opcion + "=" + datonuevoInt + "";
+
+			} else if (opcion.equalsIgnoreCase("clave")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("edad")) {
+
+				datonuevoInt = Integer.parseInt(datonuevo);
+
+				sql += opcion + "=" + datonuevoInt + "";
+
+			} else if (opcion.equalsIgnoreCase("email")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("salario")) {
 
 				datonuevoDouble = Double.parseDouble(datonuevo);
 
@@ -444,6 +441,7 @@ public class GestionBBDD {
 				ejecutarSentenciaSql = false;
 			}
 
+			sql += "where DNI=" + DNI;
 			sql2 += "where id_personas_aux=" + id_personas_aux + "";
 
 			try {
@@ -462,11 +460,46 @@ public class GestionBBDD {
 				System.out.println("Fallo en la conexion");
 			}
 
+		} else if (tipo.equalsIgnoreCase("Cliente")) {
+
+			String sql = "update personas set ";
 			String sql3 = "update clientes set ";
 
-			if (opcion.equalsIgnoreCase("interes")) {
+			if (opcion.equalsIgnoreCase("nombre")) {
 
-				sql3 += opcion + "=" + datonuevo + "";
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("apellidos")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("dni")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("telefono")) {
+
+				datonuevoInt = Integer.parseInt(datonuevo);
+
+				sql += opcion + "=" + datonuevoInt + "";
+
+			} else if (opcion.equalsIgnoreCase("clave")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("edad")) {
+
+				datonuevoInt = Integer.parseInt(datonuevo);
+
+				sql += opcion + "=" + datonuevoInt + "";
+
+			} else if (opcion.equalsIgnoreCase("email")) {
+
+				sql += opcion + "=" + datonuevo + "";
+
+			} else if (opcion.equalsIgnoreCase("interes")) {
+
+				sql3 += opcion + "=" + datonuevoDouble + "";
 
 			} else {
 
@@ -474,6 +507,7 @@ public class GestionBBDD {
 				ejecutarSentenciaSql = false;
 			}
 
+			sql += "where DNI=" + DNI;
 			sql3 += "where id_personas_aux=" + id_personas_aux + "";
 
 			try {
@@ -493,9 +527,9 @@ public class GestionBBDD {
 			}
 
 		} else {
-
-			System.out.println("No se ha podido encontrar a la persona que busca");
+			System.out.println("Tienes que elegir entre Empleados y Clientes");
 		}
+
 	}
 
 	protected void mostrarPersonas() {// Necesario ???? Personas clase abstracta no se pueden crear objetos persona
@@ -529,7 +563,50 @@ public class GestionBBDD {
 		}
 	}
 
-	protected void calcularPrecioReserva() {
+	protected void mostrarHabitaciones() {
+
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+
+		int numero_banos = 0;
+		int camas = 0;
+		int numero_habitacion = 0;
+		double precio_habitaciones = 0;
+		boolean jacuzzi;
+		boolean matrimonio;
+		boolean terraza;
+		String superficie = "";
+
+		String sql = "select * from habitaciones";
+
+		try {
+
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+
+			if (rs.next()) {
+
+				numero_banos = rs.getInt(2);
+				camas = rs.getInt(3);
+				numero_habitacion = rs.getInt(4);
+				precio_habitaciones = rs.getDouble(5);
+				jacuzzi = rs.getBoolean(6);
+				matrimonio = rs.getBoolean(7);
+				terraza = rs.getBoolean(8);
+				superficie = rs.getString(9);
+
+				Habitaciones hab = new Habitaciones(superficie, numero_banos, camas, numero_habitacion,
+						precio_habitaciones, jacuzzi, matrimonio, terraza);
+
+				System.out.println(hab.toString());
+			}
+		} catch (SQLException e) {
+
+			System.out.println("Fallo en la conexion");
+
+		}
 
 	}
 }

@@ -1,6 +1,7 @@
 import java.time.*;
 
 public class Actividades {
+
 	private String descripcion;
 	private String tipo;
 	private String medio_transporte;
