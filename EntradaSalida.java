@@ -73,7 +73,7 @@ public class EntradaSalida {
 		String fechaSalida = sc.nextLine();
 		LocalDate fechaEntradaLocalDate = LocalDate.parse(fechaEntrada, formatter);
 		LocalDate fechaSalidaLocalDate = LocalDate.parse(fechaSalida, formatter);
-		Reserva reservaNueva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate);
+		Reserva reservaNueva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate,650.51,2);
 		System.out.println("Introduce el numero de la habitacion: ");
 		numero_habitacion = sc.nextInt();
 		sc.nextLine();

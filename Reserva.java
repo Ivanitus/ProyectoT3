@@ -3,6 +3,8 @@ import java.time.*;
 public class Reserva {
 	private LocalDate fecha_entrada;
 	private LocalDate fecha_salida;
+	private double precioReserva;
+	private int numPersonas;
 	/**
 	 * 
 	 */
@@ -12,9 +14,11 @@ public class Reserva {
 	 * @param fecha_entrada
 	 * @param fecha_salida
 	 */
-	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida) {
+	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida, double precioReserva, int numPersonas) {
 		this.fecha_entrada = fecha_entrada;
 		this.fecha_salida = fecha_salida;
+		this.precioReserva=precioReserva;
+		this.numPersonas=numPersonas;
 	}
 	/**
 	 * @return the fecha_entrada
@@ -40,6 +44,31 @@ public class Reserva {
 	protected void setFecha_salida(LocalDate fecha_salida) {
 		this.fecha_salida = fecha_salida;
 	}
+	
+	/**
+	 * @return the precioReserva
+	 */
+	protected double getPrecioReserva() {
+		return precioReserva;
+	}
+	/**
+	 * @param precioReserva the precioReserva to set
+	 */
+	protected void setPrecioReserva(double precioReserva) {
+		this.precioReserva = precioReserva;
+	}
+	/**
+	 * @return the numPersonas
+	 */
+	protected int getNumPersonas() {
+		return numPersonas;
+	}
+	/**
+	 * @param numPersonas the numPersonas to set
+	 */
+	protected void setNumPersonas(int numPersonas) {
+		this.numPersonas = numPersonas;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -49,6 +78,8 @@ public class Reserva {
 		mensaje = "Datos de la reserva: ";
 		mensaje += "\t\nFecha de entrada: " + fecha_entrada;
 		mensaje += "\t\nFecha de salida: " + fecha_salida;
+		mensaje += "\t\nPrecio de la reserva: " + precioReserva;
+		mensaje += "\t\nNumero de las personas: " + numPersonas;
 		return mensaje;
 	}
 	
