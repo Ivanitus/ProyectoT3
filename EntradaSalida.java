@@ -1,5 +1,6 @@
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -73,7 +74,9 @@ public class EntradaSalida {
 		String fechaSalida = sc.nextLine();
 		LocalDate fechaEntradaLocalDate = LocalDate.parse(fechaEntrada, formatter);
 		LocalDate fechaSalidaLocalDate = LocalDate.parse(fechaSalida, formatter);
-		Reserva reservaNueva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate,650.51,2);
+		int diasRestantes=Period.between(fechaEntradaLocalDate, fechaSalidaLocalDate).getDays();
+		System.out.println(diasRestantes);
+		Reserva reservaNueva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate,2);
 		System.out.println("Introduce el numero de la habitacion: ");
 		numero_habitacion = sc.nextInt();
 		sc.nextLine();
