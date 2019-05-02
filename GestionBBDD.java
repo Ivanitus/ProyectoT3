@@ -441,7 +441,7 @@ public class GestionBBDD {
 		}
 	}
 
-	protected void reservarActividades(String DNI, String codigo) {// Reservar actividades
+	protected void reservarActividades(String DNI, String codigo, Apunta apun) {// Reservar actividades
 
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
@@ -449,9 +449,10 @@ public class GestionBBDD {
 
 		int id_clientes_aux = buscarCliente(DNI);
 		int id_actividades_aux = buscarActividad(codigo);
+		int numeroPersonas = apun.getNumPersonas();
 
-		String sql = "insert into apunta (id_clientes_aux,id_actividades_aux) values ('" + id_clientes_aux + "','"
-				+ id_actividades_aux + "')";
+		String sql = "insert into apunta (id_clientes_aux,id_actividades_aux,numeroPersonas) values (" + id_clientes_aux
+				+ "," + id_actividades_aux + ", " + numeroPersonas + ")";
 
 		try {
 
