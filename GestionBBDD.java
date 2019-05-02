@@ -10,7 +10,7 @@ public class GestionBBDD {
 	/*
 	 * Metodo para insertar habitaciones en la base de datos
 	 */
-	protected void insertarHabitaciones(Habitaciones habitacionAnadir, String dni) {
+	protected boolean insertarHabitaciones(Habitaciones habitacionAnadir, String dni) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -25,20 +25,24 @@ public class GestionBBDD {
 		boolean jacuzzi = habitacionAnadir.isJacuzzi();
 		boolean matrimonio = habitacionAnadir.isMatrimonio();
 		boolean terraza = habitacionAnadir.isTerraza();
+		boolean insertar = false;
 		int idEmpleado = buscarEmpleado(dni);
 		// Sentencia SQL
-		String sql = "insert into habitaciones (numero_baï¿½os,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion,id_empleados_aux) values ("
+		String sql = "insert into habitaciones (numero_baños,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion,id_empleados_aux) values ("
 				+ numero_banos + "," + jacuzzi + "," + matrimonio + ",'" + tipo + "'," + terraza + "," + camas + ","
 				+ precio_habitaciones + ",'" + superficie + "'," + numero_habitacion + "," + idEmpleado + ")";
 		try {
 			st = con.createStatement();
 			st.executeUpdate(sql);
+			insertar = true;
 			// Cierro el statement y la conexion
 			st.close();
 			con.close();
 		} catch (SQLException e) {
 			System.out.println("Fallo en la sentencia SQL");
+			e.printStackTrace();
 		}
+		return insertar;
 	}
 
 	/*
@@ -250,7 +254,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-		boolean disponible = false;
+		boolean disponible = true;
 		int idHabitacion = buscarHabitacion(numHabitacion);
 		LocalDate fechaEntradaReservaNueva = reservaNueva.getFecha_entrada();
 		LocalDate fechaSalidaReservaNueva = reservaNueva.getFecha_salida();
@@ -524,36 +528,118 @@ public class GestionBBDD {
 	}
 
 	/*
-	 * Metodo que permite al usuario reservar una habitacion de hotel
+	 * Metodo para calcular el precio total de la reserva
+	 */
+	private Reserva calcularPrecioReserva(int numHabitacion, Reserva reservaNueva) { 
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idHabitacion = buscarHabitacion(numHabitacion);
+		double precioHabitacion = 0;
+		LocalDate fechaEntrada = reservaNueva.getFecha_entrada();
+		LocalDate fechaSalida = reservaNueva.getFecha_salida();
+		double diasReserva = (double) Period.between(fechaEntrada, fechaSalida).getDays();
+		double resultadoPrecioReserva;
+		String sql = "select precio_habitaciones from habitaciones where id_habitaciones=" + idHabitacion;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				precioHabitacion = rs.getDouble("precio_habitaciones");
+			} else {
+				System.out.println("Habitación no disponible");
+			}
+			// Cierro el resultset, el statement y la conexion
+			rs.close();
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		resultadoPrecioReserva = precioHabitacion * diasReserva;
+		reservaNueva.setPrecioReserva(resultadoPrecioReserva);
+		return reservaNueva;
+	}
+
+	/*
+	 * Metodo que permite al usuario reservar una habitacion de hotel, y que el pago
+	 * se guarde en movimientos
 	 */
 	protected void reservarHabitaciones(int numHabitacion, String dniCliente, Reserva reservaNueva) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
+		reservaNueva = calcularPrecioReserva(numHabitacion, reservaNueva);
 		LocalDate fecha_entrada = reservaNueva.getFecha_entrada();
 		LocalDate fecha_salida = reservaNueva.getFecha_salida();
+		double precioReserva = reservaNueva.getPrecioReserva();
+		int numPersonas = reservaNueva.getNumPersonas();
 		String fechaEntradaSQL = fecha_entrada.toString();
 		String fechaSalidaSQL = fecha_salida.toString();
+		LocalDate fechaMovimiento = LocalDate.now();
+		Movimientos mov = new Movimientos(precioReserva, fechaMovimiento);
+		Double precioMovimiento = mov.getCantidad();
+		LocalDate fechaMovimientoSQL = mov.getFecha();
+		String fechaMovimientoSQLString = fechaMovimientoSQL.toString();
+		final int idEmpleadoResponsableMovimientos = 1;
 		int idCliente = buscarCliente(dniCliente);
 		int idHabitacion = buscarHabitacion(numHabitacion);
-		// Sentencia SQL
-		String sql = "insert into reserva (id_clientes_aux,id_habitaciones_aux,fecha_entrada,fecha_salida) values ("
-				+ idCliente + "," + idHabitacion + ",STR_TO_DATE('" + fechaEntradaSQL + "','%Y-%m-%d'),STR_TO_DATE('"
-				+ fechaSalidaSQL + "','%Y-%m-%d') )";
+		// Sentencia SQL 1
+		String sql1 = "insert into movimientos (cantidad,fecha,id_empleados_aux) values (" + precioMovimiento
+				+ ",STR_TO_DATE('" + fechaMovimientoSQLString + "','%Y-%m-%d')," + idEmpleadoResponsableMovimientos
+				+ ")";
 		try {
 			st = con.createStatement();
-			st.executeUpdate(sql);
+			st.executeUpdate(sql1);
+		} catch (SQLException e) {
+			System.out.println("Fallo en la sentencia SQL");
+		}
+		int idMovimientos = buscarMovimiento(mov);
+		// Sentencia SQL 2
+		String sql2 = "insert into reserva (id_clientes_aux,id_habitaciones_aux,id_movimientos_aux,fecha_entrada,fecha_salida,numPersonas,precioReserva) values ("
+				+ idCliente + "," + idHabitacion + "," + idMovimientos + ",STR_TO_DATE('" + fechaEntradaSQL
+				+ "','%Y-%m-%d'),STR_TO_DATE('" + fechaSalidaSQL + "','%Y-%m-%d')," + numPersonas + "," + precioReserva
+				+ ")";
+		try {
+			st = con.createStatement();
+			st.executeUpdate(sql2);
 			System.out.println("Reserva de la habitacion realizada correctamente");
 			// Cierro el statement y la conexion
 			st.close();
 			con.close();
 		} catch (SQLException e) {
 			System.out.println("Fallo en la sentencia SQL");
+			e.printStackTrace();
 		}
 	}
 
-	protected void calcularPrecioReserva() { // pendiente de implementacion
-
+	protected int buscarMovimiento(Movimientos mov) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idMovimientos = 0;
+		LocalDate fechaMovimiento = mov.getFecha();
+		double dineroMovimiento = mov.getCantidad();
+		String sql = "select id_movimientos from movimientos where fecha=STR_TO_DATE('" + fechaMovimiento
+				+ "','%Y-%m-%d') and cantidad=" + dineroMovimiento;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idMovimientos = rs.getInt("id_movimientos");
+			} else {
+				System.out.println("Movimiento no encontrado");
+			}
+			// Cierro el resultset, el statement y la conexion
+			rs.close();
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		return idMovimientos;
 	}
 
 	protected void mostrarHabitaciones() { // Metodo para mostrar todos los datos de todas las habitaciones
@@ -809,9 +895,10 @@ public class GestionBBDD {
 		Statement st;
 		ResultSet rs;
 
-		int id = 0;
+		int idEmpleado = 0;
+		int idPersona = buscarPersonas(DNI);
 
-		String sql = "select id_empleado from empleados where=" + DNI + "";
+		String sql = "select id_empleados from empleados where id_personas_aux=" + idPersona;
 
 		try {
 
@@ -820,7 +907,7 @@ public class GestionBBDD {
 
 			if (rs.next()) {
 
-				id = rs.getInt("id_empleados");
+				idEmpleado = rs.getInt("id_empleados");
 
 			} else {
 
@@ -832,7 +919,7 @@ public class GestionBBDD {
 			System.out.println("Fallo en la conexion");
 		}
 
-		return id;
+		return idEmpleado;
 
 	}
 
@@ -842,30 +929,23 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-
-		int id = 0;
-
-		String sql = "select id_clientes from clientes where=" + DNI + "";
-
+		int idPersonaAux = buscarPersonas(DNI);
+		int idCliente = 0;
+		// Sentencia SQL
+		String sql = "select id_clientes from clientes where id_personas_aux=" + idPersonaAux;
 		try {
-
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
-
 			if (rs.next()) {
-
-				id = rs.getInt("id_clientes");
-
-			} else {
-
-				System.out.println("El cliente que busca no existe");
+				idCliente = rs.getInt("id_clientes");
 			}
-
+			// Cierro el statement y la conexion
+			st.close();
+			con.close();
 		} catch (SQLException e) {
-
-			System.out.println("Fallo en la conexion");
+			System.out.println("Fallo en la consulta SQL");
 		}
-		return id;
+		return idCliente;
 	}
 
 	protected void modificarPersonas(String DNI, String opcion, String datonuevo, String tipo) {

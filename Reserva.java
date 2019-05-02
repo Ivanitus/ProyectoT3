@@ -15,6 +15,19 @@ public class Reserva {
 	/**
 	 * @param fecha_entrada
 	 * @param fecha_salida
+	 * @param numPersonas
+	 */
+	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida, int numPersonas) {
+		this.fecha_entrada=fecha_entrada;
+		this.fecha_salida=fecha_salida;
+		this.numPersonas=numPersonas;
+	}
+  
+	/**
+	 * @param fecha_entrada
+	 * @param fecha_salida
+	 * @param precioReserva
+	 * @param numPersonas
 	 */
 	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida, double precioReserva, int numPersonas) {
 		this.fecha_entrada = fecha_entrada;

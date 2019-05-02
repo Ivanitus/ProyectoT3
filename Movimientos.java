@@ -1,7 +1,7 @@
 import java.time.*;
 
 public class Movimientos {
-	private double cantidad;
+	private double cantidad; //dinero
 	private LocalDate fecha;
 
 	/**
