@@ -31,9 +31,9 @@ public class EntradaSalida {
 		 * tipo.trim().equalsIgnoreCase("matrimonio") ||
 		 * tipo.trim().equalsIgnoreCase("suite")) { tipoIncorrecto = false; } else {
 		 * System.out.
-		 * println("El tipo introducido no es válido. Debe ser individual, matriomonio o suite"
+		 * println("El tipo introducido no es vÃ¡lido. Debe ser individual, matriomonio o suite"
 		 * ); tipoIncorrecto = true; } } while (tipoIncorrecto); do { try {
-		 * System.out.println("Introduce el numero de baños de la habitacion: ");
+		 * System.out.println("Introduce el numero de baÃ±os de la habitacion: ");
 		 * numero_banos = sc.nextInt(); sc.nextLine(); tipoDatoIncorrecto = false; }
 		 * catch (InputMismatchException e) {
 		 * System.out.println("El dato introducido debe ser un numero entero");
@@ -45,9 +45,9 @@ public class EntradaSalida {
 		 * numero_habitacion = sc.nextInt(); sc.nextLine();
 		 * System.out.println("Introduce el precio de la habitacion: ");
 		 * precio_habitaciones = sc.nextDouble(); sc.nextLine();
-		 * System.out.println("¿Tiene jacuzzi? (si/no)"); jacuzziCadena = sc.nextLine();
-		 * System.out.println("¿Tiene cama de matrimonio? (si/no)"); matrimonioCadena =
-		 * sc.nextLine(); System.out.println("¿Tiene terraza? (si/no)"); terrazaCadena =
+		 * System.out.println("Â¿Tiene jacuzzi? (si/no)"); jacuzziCadena = sc.nextLine();
+		 * System.out.println("Â¿Tiene cama de matrimonio? (si/no)"); matrimonioCadena =
+		 * sc.nextLine(); System.out.println("Â¿Tiene terraza? (si/no)"); terrazaCadena =
 		 * sc.nextLine(); if (jacuzziCadena.trim().equalsIgnoreCase("si")) { jacuzzi =
 		 * true; } else if (jacuzziCadena.trim().equalsIgnoreCase("no")) { jacuzzi =
 		 * false; } if (matrimonioCadena.trim().equalsIgnoreCase("si")) { matrimonio =
@@ -65,12 +65,12 @@ public class EntradaSalida {
 		 * habitacionEncontrada=gesBBDD.habitacionExiste(numero_habitacion); if
 		 * (habitacionEncontrada) { gesBBDD.eliminarHabitaciones(numero_habitacion); }
 		 * else {
-		 * System.out.println("No se puede eliminar una habitación que no existe"); }
+		 * System.out.println("No se puede eliminar una habitaciÃ³n que no existe"); }
 		 */
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-		System.out.println("Introduce la fecha de entrada: (dia/mes/año)");
+		System.out.println("Introduce la fecha de entrada: (dia/mes/aÃ±o)");
 		String fechaEntrada = sc.nextLine();
-		System.out.println("Introduce la fecha de salida: (dia/mes/año)");
+		System.out.println("Introduce la fecha de salida: (dia/mes/aÃ±o)");
 		String fechaSalida = sc.nextLine();
 		LocalDate fechaEntradaLocalDate = LocalDate.parse(fechaEntrada, formatter);
 		LocalDate fechaSalidaLocalDate = LocalDate.parse(fechaSalida, formatter);
@@ -80,11 +80,11 @@ public class EntradaSalida {
 		System.out.println("Introduce el numero de la habitacion: ");
 		numero_habitacion = sc.nextInt();
 		sc.nextLine();
-		disponible=gesBBDD.comprobarDisponibilidadHabitaciones(numero_habitacion, reservaNueva);
+		disponible = gesBBDD.comprobarDisponibilidadHabitaciones(numero_habitacion, reservaNueva);
 		if (disponible) {
 			gesBBDD.reservarHabitaciones(numero_habitacion, "97647185H", reservaNueva);
 		} else {
 			System.out.println("No es posible hacer la reserva");
-		}	
+		}
 	}
 }

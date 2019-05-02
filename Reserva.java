@@ -22,7 +22,7 @@ public class Reserva {
 		this.fecha_salida=fecha_salida;
 		this.numPersonas=numPersonas;
 	}
-
+  
 	/**
 	 * @param fecha_entrada
 	 * @param fecha_salida
