@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class GestionBBDD {
 
 	/*
@@ -1140,4 +1143,165 @@ public class GestionBBDD {
 
 		}
 	}
+	
+	protected boolean inicioSesion(String correo, String clave, JFrame frame) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		boolean empleado = false;
+		int idPersonas = 0;
+		int idEmpleados = 0;
+		int idClientes = 0;
+		String sql = "select id_personas from personas where email='" + correo + "' and clave='" + clave + "'";
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idPersonas = rs.getInt("id_personas");
+			}
+			rs.close();
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		idEmpleados = esEmpleadoInicioSesion(idPersonas);
+		idClientes = esClienteInicioSesion(idPersonas);
+		if (idEmpleados > 0) {
+			empleado = true;
+		} else if (idClientes > 0) {
+			empleado = false;
+		} else {
+			JOptionPane.showMessageDialog(frame, "Usuario no registrado");
+		}
+		return empleado;
+	}
+
+	private int esEmpleadoInicioSesion(int idPersonas) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idEmpleado = 0;
+		String sql = "select id_empleados from empleados where id_personas_aux=" + idPersonas;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idEmpleado = rs.getInt("id_empleados");
+			}
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		return idEmpleado;
+	}
+
+	private int esClienteInicioSesion(int idPersonas) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int idCliente = 0;
+		String sql = "select id_clientes from clientes where id_personas_aux=" + idPersonas;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				idCliente = rs.getInt("id_clientes");
+			}
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		return idCliente;
+	}
+
+	private String buscarDni(String correo, String clave) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		String dni = "";
+		String sql = "select dni from personas where email='" + correo + "' and clave='" + clave + "'";
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				dni = rs.getString("dni");
+			}
+			rs.close();
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la sentencia SQL");
+		}
+		return dni;
+	}
+
+	protected int inicioSesionCliente(String correo, String clave) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		String dni = "";
+		dni = buscarDni(correo, clave);
+		int idPersona = 0;
+		idPersona = buscarCliente(dni);
+		return idPersona;
+	}
+
+	protected Empleados buscarUnEmpleado(String correo, String clave) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int id_personas = 0;
+		String nombre = "";
+		String apellidos = "";
+		String dni = "";
+		int telefono = 0;
+		String claveSQL = "";
+		int edad = 0;
+		String emailSQL = "";
+		int antiguedad = 0;
+		double salario = 0;
+		String tipo = "";
+		String sql1 = "select * from personas where email='" + correo + "' and clave='" + clave + "'";
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql1);
+			if (rs.next()) {
+				id_personas = rs.getInt(1);
+				nombre = rs.getString(2);
+				apellidos = rs.getString(3);
+				dni = rs.getString(4);
+				telefono = rs.getInt(5);
+				clave = rs.getString(6);
+				edad = rs.getInt(7);
+				emailSQL = rs.getString(8);
+			}
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		String sql2 = "select * from empleados where id_personas_aux=" + id_personas;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql2);
+			if (rs.next()) {
+				antiguedad = rs.getInt(2);
+				salario = rs.getDouble(3);
+				tipo = rs.getString(4);
+			}
+			// Cierro el resultset, el statement y la conexion
+			rs.close();
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Fallo en la consulta SQL");
+		}
+		Empleados empleado = new Empleados(nombre, apellidos, dni, telefono, claveSQL, edad, emailSQL, salario,
+				antiguedad, tipo);
+		return empleado;
+	}
+	
 }
