@@ -66,7 +66,7 @@ public class Habitaciones {
 	protected void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-  
+
 	/**
 	 * @return the numero_banos
 	 */

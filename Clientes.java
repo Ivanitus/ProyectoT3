@@ -32,14 +32,16 @@ public class Clientes extends Personas {
 		this.interes = interes;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see Personas#toString()
 	 */
 	@Override
 	public String toString() {
 		String mensaje;
-		mensaje="\n\tInteres: " + interes;
+		mensaje = "\n\tInteres: " + interes;
 		return super.toString() + mensaje;
 	}
-	
+
 }
