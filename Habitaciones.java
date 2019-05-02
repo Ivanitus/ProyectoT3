@@ -1,4 +1,6 @@
-public class Habitaciones {
+import d_tablas.*;
+
+public class Habitaciones implements Tableable {
 
 	private String superficie;
 	private String tipo;
@@ -163,6 +165,20 @@ public class Habitaciones {
 	 */
 	protected void setTerraza(boolean terraza) {
 		this.terraza = terraza;
+	}
+
+	@Override
+	public Object[] getData() {
+		Object[] data = { numero_habitacion, superficie, tipo, numero_banos, camas, precio_habitaciones, jacuzzi,
+				matrimonio, terraza };
+		return data;
+	}
+
+	@Override
+	public String[] getHeader() {
+		String[] header = { "Nº HABITACIÓN", "SUPERFICIE", "TIPO", "Nº BAÑOS", "Nº CAMAS", "PRECIO", "JACUZZI",
+				"CAMA DE MATRIMONIO", "TERRAZA" };
+		return header;
 	}
 
 	/*
