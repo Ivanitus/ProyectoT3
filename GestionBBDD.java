@@ -10,7 +10,7 @@ public class GestionBBDD {
 	/*
 	 * Metodo para insertar habitaciones en la base de datos
 	 */
-	protected void insertarHabitaciones(Habitaciones habitacionAnadir, String dni) {
+	protected boolean insertarHabitaciones(Habitaciones habitacionAnadir, String dni) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -25,20 +25,24 @@ public class GestionBBDD {
 		boolean jacuzzi = habitacionAnadir.isJacuzzi();
 		boolean matrimonio = habitacionAnadir.isMatrimonio();
 		boolean terraza = habitacionAnadir.isTerraza();
+		boolean insertar = false;
 		int idEmpleado = buscarEmpleado(dni);
 		// Sentencia SQL
-		String sql = "insert into habitaciones (numero_baï¿½os,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion,id_empleados_aux) values ("
+		String sql = "insert into habitaciones (numero_baños,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion,id_empleados_aux) values ("
 				+ numero_banos + "," + jacuzzi + "," + matrimonio + ",'" + tipo + "'," + terraza + "," + camas + ","
 				+ precio_habitaciones + ",'" + superficie + "'," + numero_habitacion + "," + idEmpleado + ")";
 		try {
 			st = con.createStatement();
 			st.executeUpdate(sql);
+			insertar = true;
 			// Cierro el statement y la conexion
 			st.close();
 			con.close();
 		} catch (SQLException e) {
 			System.out.println("Fallo en la sentencia SQL");
+			e.printStackTrace();
 		}
+		return insertar;
 	}
 
 	/*
@@ -525,7 +529,7 @@ public class GestionBBDD {
 	/*
 	 * Metodo para calcular el precio total de la reserva
 	 */
-	private Reserva calcularPrecioReserva(int numHabitacion, Reserva reservaNueva) { // pendiente de implementacion
+	private Reserva calcularPrecioReserva(int numHabitacion, Reserva reservaNueva) { 
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -580,7 +584,6 @@ public class GestionBBDD {
 		final int idEmpleadoResponsableMovimientos = 1;
 		int idCliente = buscarCliente(dniCliente);
 		int idHabitacion = buscarHabitacion(numHabitacion);
-		reservaNueva = calcularPrecioReserva(numHabitacion, reservaNueva);
 		// Sentencia SQL 1
 		String sql1 = "insert into movimientos (cantidad,fecha,id_empleados_aux) values (" + precioMovimiento
 				+ ",STR_TO_DATE('" + fechaMovimientoSQLString + "','%Y-%m-%d')," + idEmpleadoResponsableMovimientos
@@ -891,9 +894,10 @@ public class GestionBBDD {
 		Statement st;
 		ResultSet rs;
 
-		int id = 0;
+		int idEmpleado = 0;
+		int idPersona = buscarPersonas(DNI);
 
-		String sql = "select id_empleados from empleados where=" + DNI + "";
+		String sql = "select id_empleados from empleados where id_personas_aux=" + idPersona;
 
 		try {
 
@@ -902,7 +906,7 @@ public class GestionBBDD {
 
 			if (rs.next()) {
 
-				id = rs.getInt("id_empleados");
+				idEmpleado = rs.getInt("id_empleados");
 
 			} else {
 
@@ -914,7 +918,7 @@ public class GestionBBDD {
 			System.out.println("Fallo en la conexion");
 		}
 
-		return id;
+		return idEmpleado;
 
 	}
 
