@@ -1,8 +1,28 @@
+import d_tablas.Tableable;
 
-public class Empleados extends Personas implements Trabajadores {
+public class Empleados extends Personas implements Trabajadores, Tableable {
 	private double salario;
 	private int antiguedad;
 	private String tipo;
+	
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
+	 * @param telefono
+	 * @param edad
+	 * @param email
+	 * @param salario
+	 * @param antiguedad
+	 * @param tipo
+	 */
+	protected Empleados(String nombre, String apellidos, String dni, int telefono, int edad, String email,
+			double salario, int antiguedad, String tipo) {
+		super(nombre, apellidos, dni, telefono, edad, email);
+		this.salario = salario;
+		this.antiguedad = antiguedad;
+		this.tipo = tipo;
+	}
 
 	/**
 	 * @param nombre
@@ -66,6 +86,18 @@ public class Empleados extends Personas implements Trabajadores {
 		this.tipo = tipo;
 	}
 
+	@Override
+	public Object[] getData() {
+		Object[] data = { nombre, apellidos, dni, telefono, edad, email, salario, antiguedad, tipo };
+		return data;
+	}
+
+	@Override
+	public String[] getHeader() {
+		String[] header = { "NOMBRE", "APELLIDOS", "DNI", "TELEFONO", "EDAD", "E-MAIL", "SALARIO", "ANTIGÜEDAD", "TIPO" };
+		return header;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
