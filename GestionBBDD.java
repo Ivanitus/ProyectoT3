@@ -1035,171 +1035,98 @@ public class GestionBBDD {
 		return idCliente;
 	}
 
-	protected boolean modificarPersonas(String DNI, String opcion, String datonuevo, String tipo) {
+	protected boolean modificarPersonas(String DNI, String opcion, String datoNuevo, String tipo, JPanel panel) {
 		// tipo es una constante que definimos en el logueo dependiendo de que tipo de
 		// persona sea
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 
-		int datonuevoInt = 0;
-		double datonuevoDouble = 0;
+		int datoNuevoInt = 0;
+		double datoNuevoDouble = 0;
 		boolean ejecutarSentenciaSql = true;
 		int id_personas_aux = buscarPersonas(DNI);
 		boolean modificar = false;
-		if (tipo.equalsIgnoreCase("Empleado")) {
-
-			String sql = "update personas set ";
-			String sql2 = "update empleados set ";
-
+		String sqlPersonas = "update personas set ";
+		String sqlClientes = "update clientes set ";
+		String sqlEmpleados = "update empleados set ";
+		if (tipo.equalsIgnoreCase("persona")) {
 			if (opcion.equalsIgnoreCase("nombre")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
+				sqlPersonas += "nombre='" + datoNuevo + "'";
 			} else if (opcion.equalsIgnoreCase("apellidos")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
-			} else if (opcion.equalsIgnoreCase("dni")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
+				sqlPersonas += "apellidos='" + datoNuevo + "'";
 			} else if (opcion.equalsIgnoreCase("telefono")) {
-
-				datonuevoInt = Integer.parseInt(datonuevo);
-
-				sql += opcion + "=" + datonuevoInt + "";
-
+				datoNuevoInt = Integer.parseInt(datoNuevo);
+				sqlPersonas += "telefono=" + datoNuevoInt;
 			} else if (opcion.equalsIgnoreCase("clave")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
+				sqlPersonas += "clave='" + datoNuevo + "'";
 			} else if (opcion.equalsIgnoreCase("edad")) {
-
-				datonuevoInt = Integer.parseInt(datonuevo);
-
-				sql += opcion + "=" + datonuevoInt + "";
-
+				datoNuevoInt = Integer.parseInt(datoNuevo);
+				sqlPersonas += "edad=" + datoNuevoInt;
 			} else if (opcion.equalsIgnoreCase("email")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
+				sqlPersonas += "email='" + datoNuevo + "'";
+			} else {
+				ejecutarSentenciaSql = false;
+			}
+			sqlPersonas += " where dni='" + DNI + "'";
+			try {
+				st = con.createStatement();
+				if (ejecutarSentenciaSql) {
+					st.executeUpdate(sqlPersonas);
+					modificar = true;
+					st.close();
+				}
+				con.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
+			}
+		} else if (tipo.equalsIgnoreCase("cliente")) {
+			if (opcion.equalsIgnoreCase("interes")) {
+				sqlClientes += "interes='" + datoNuevo + "'";
+			} else {
+				ejecutarSentenciaSql = false;
+			}
+			sqlClientes += " where id_personas_aux=" + id_personas_aux;
+			try {
+				st = con.createStatement();
+				if (ejecutarSentenciaSql) {
+					st.executeUpdate(sqlClientes);
+					modificar = true;
+					st.close();
+				}
+				con.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
+			}
+		} else if (tipo.equalsIgnoreCase("empleado")) {
+			if (opcion.equalsIgnoreCase("antiguedad")) {
+				datoNuevoInt = Integer.parseInt(datoNuevo);
+				sqlEmpleados += "antiguedad=" + datoNuevoInt;
 			} else if (opcion.equalsIgnoreCase("salario")) {
-
-				datonuevoDouble = Double.parseDouble(datonuevo);
-
-				sql2 += opcion + "=" + datonuevoDouble + "";
-
-			} else if (opcion.equalsIgnoreCase("antiguedad")) {
-
-				datonuevoInt = Integer.parseInt(datonuevo);
-
-				sql2 += opcion + "=" + datonuevoInt + "";
-
+				datoNuevoDouble = Double.parseDouble(datoNuevo);
+				sqlEmpleados += "salario=" + datoNuevoDouble;
 			} else if (opcion.equalsIgnoreCase("tipo")) {
-
-				sql2 += opcion + "=" + datonuevo + "";
-
+				sqlEmpleados += "tipo='" + datoNuevo + "'";
 			} else {
-
-				System.out.println("El dato a modificar no es valido");
 				ejecutarSentenciaSql = false;
 			}
-
-			sql += "where DNI='" + DNI + "'";
-			sql2 += "where id_personas_aux=" + id_personas_aux + "";
-
+			sqlEmpleados += " where id_personas_aux=" + id_personas_aux;
 			try {
-
+				st = con.createStatement();
 				if (ejecutarSentenciaSql) {
-
-					st = con.createStatement();
-					st.executeUpdate(sql);
+					st.executeUpdate(sqlEmpleados);
 					modificar = true;
 					st.close();
 				}
-
 				con.close();
-
 			} catch (SQLException e) {
-
-				System.out.println("Fallo en la conexion");
+				JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 			}
-
-		} else if (tipo.equalsIgnoreCase("Cliente")) {
-
-			String sql = "update personas set ";
-			String sql3 = "update clientes set ";
-
-			if (opcion.equalsIgnoreCase("nombre")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
-			} else if (opcion.equalsIgnoreCase("apellidos")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
-			} else if (opcion.equalsIgnoreCase("dni")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
-			} else if (opcion.equalsIgnoreCase("telefono")) {
-
-				datonuevoInt = Integer.parseInt(datonuevo);
-
-				sql += opcion + "=" + datonuevoInt + "";
-
-			} else if (opcion.equalsIgnoreCase("clave")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
-			} else if (opcion.equalsIgnoreCase("edad")) {
-
-				datonuevoInt = Integer.parseInt(datonuevo);
-
-				sql += opcion + "=" + datonuevoInt + "";
-
-			} else if (opcion.equalsIgnoreCase("email")) {
-
-				sql += opcion + "=" + datonuevo + "";
-
-			} else if (opcion.equalsIgnoreCase("interes")) {
-
-				sql3 += opcion + "=" + datonuevoDouble + "";
-
-			} else {
-
-				System.out.println("El dato a modificar no es valido");
-				ejecutarSentenciaSql = false;
-			}
-
-			sql += "where DNI=" + DNI;
-			sql3 += "where id_personas_aux=" + id_personas_aux + "";
-
-			try {
-
-				if (ejecutarSentenciaSql) {
-
-					st = con.createStatement();
-					st.executeUpdate(sql);
-					modificar = true;
-					st.close();
-				}
-
-				con.close();
-
-			} catch (SQLException e) {
-
-				System.out.println("Fallo en la conexion");
-			}
-
-		} else {
-			System.out.println("Tienes que elegir entre Empleados y Clientes");
 		}
 		return modificar;
 	}
 
-	protected boolean inicioSesion(String correo, String clave, JFrame frame) {
+	protected boolean inicioSesion(String correo, String clave, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1228,8 +1155,8 @@ public class GestionBBDD {
 			empleado = true;
 		} else if (idClientes > 0) {
 			empleado = false;
-		} else {
-			JOptionPane.showMessageDialog(frame, "Usuario no registrado");
+		} else if (idEmpleados == 0 && idClientes == 0) {
+			JOptionPane.showMessageDialog(panel, "Usuario no registrado");
 		}
 		return empleado;
 	}

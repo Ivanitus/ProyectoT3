@@ -43,6 +43,7 @@ import javax.swing.event.ChangeEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JRadioButton;
+import java.awt.Font;
 
 public class Ventana {
 
@@ -87,7 +88,6 @@ public class Ventana {
 	private JTextField codigoActividadAModificar;
 	private JTextField nombreEmpleadoModificar;
 	private JTextField apellidosEmpleadoModificar;
-	private JTextField dniEmpleadoModificar;
 	private JTextField telefonoEmpleadoModificar;
 	private JPasswordField passwordFieldEmpleadoModificar;
 	private JTextField textFieldEmailModificarEmpleado;
@@ -130,24 +130,25 @@ public class Ventana {
 		TableableModel modelo = new TableableModel();
 
 		frmHotel = new JFrame();
+		frmHotel.setResizable(false);
 		frmHotel.setTitle("Hotel");
 		frmHotel.setBounds(100, 100, 848, 619);
 		frmHotel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmHotel.getContentPane().setLayout(null);
 
 		JPanel empleados = new JPanel();
-		empleados.setBounds(0, 0, 832, 580);
+		empleados.setBounds(0, 0, 842, 580);
 		frmHotel.getContentPane().add(empleados);
 		empleados.setLayout(null);
 		empleados.setVisible(false);
 
-		JScrollPane scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane scrollPaneTablasEmpleados = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setBounds(234, 0, 598, 290);
-		empleados.add(scrollPane);
+		scrollPaneTablasEmpleados.setBounds(234, 0, 609, 290);
+		empleados.add(scrollPaneTablasEmpleados);
 
 		table = new JTable();
-		scrollPane.setViewportView(table);
+		scrollPaneTablasEmpleados.setViewportView(table);
 		table.setModel(modelo);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -157,7 +158,7 @@ public class Ventana {
 		empleados.add(separator);
 
 		JPanel inicio = new JPanel();
-		inicio.setBounds(0, 0, 832, 580);
+		inicio.setBounds(0, 0, 842, 580);
 		frmHotel.getContentPane().add(inicio);
 		inicio.setLayout(null);
 
@@ -187,20 +188,19 @@ public class Ventana {
 		lblBienvenido.setBounds(10, 5, 214, 14);
 		empleados.add(lblBienvenido);
 
-		JLabel lblTipo = new JLabel("Tipo: ");
-		lblTipo.setBounds(10, 18, 214, 14);
-		empleados.add(lblTipo);
-
 		TimePickerSettings timeSettings = new TimePickerSettings();
 		timeSettings.setDisplaySpinnerButtons(false);
 		timeSettings.setInitialTimeToNow();
 
 		TimePickerSettings timeSettingsDuracion = new TimePickerSettings();
 		timeSettingsDuracion.setDisplaySpinnerButtons(false);
-		timeSettingsDuracion.setInitialTimeToNow();
+
+		JLabel lblTipo = new JLabel("Tipo: ");
+		lblTipo.setBounds(10, 18, 214, 14);
+		empleados.add(lblTipo);
 
 		JPanel modificarDatosPersonalesEmpleados = new JPanel();
-		modificarDatosPersonalesEmpleados.setBounds(234, 289, 598, 290);
+		modificarDatosPersonalesEmpleados.setBounds(234, 289, 609, 290);
 		empleados.add(modificarDatosPersonalesEmpleados);
 		modificarDatosPersonalesEmpleados.setLayout(null);
 
@@ -221,28 +221,14 @@ public class Ventana {
 		apellidosEmpleadoModificar.setColumns(10);
 		apellidosEmpleadoModificar.setEnabled(false);
 
-		dniEmpleadoModificar = new JTextField();
-		dniEmpleadoModificar.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (dniEmpleadoModificar.getText().length() == 9) {
-					e.consume();
-				}
-			}
-		});
-		dniEmpleadoModificar.setBounds(125, 79, 86, 20);
-		modificarDatosPersonalesEmpleados.add(dniEmpleadoModificar);
-		dniEmpleadoModificar.setColumns(10);
-		dniEmpleadoModificar.setEnabled(false);
-
 		telefonoEmpleadoModificar = new JTextField();
-		telefonoEmpleadoModificar.setBounds(125, 105, 86, 20);
+		telefonoEmpleadoModificar.setBounds(125, 83, 86, 20);
 		modificarDatosPersonalesEmpleados.add(telefonoEmpleadoModificar);
 		telefonoEmpleadoModificar.setColumns(10);
 		telefonoEmpleadoModificar.setEnabled(false);
 
 		passwordFieldEmpleadoModificar = new JPasswordField();
-		passwordFieldEmpleadoModificar.setBounds(125, 131, 86, 20);
+		passwordFieldEmpleadoModificar.setBounds(125, 109, 86, 20);
 		modificarDatosPersonalesEmpleados.add(passwordFieldEmpleadoModificar);
 		passwordFieldEmpleadoModificar.setEnabled(false);
 
@@ -282,7 +268,7 @@ public class Ventana {
 		textFieldAntiguedadEmpleadoModificar.setEnabled(false);
 
 		JComboBox comboBoxTipoEmpleadoModificar = new JComboBox();
-		comboBoxTipoEmpleadoModificar.setBounds(422, 131, 166, 20);
+		comboBoxTipoEmpleadoModificar.setBounds(250, 130, 166, 20);
 		modificarDatosPersonalesEmpleados.add(comboBoxTipoEmpleadoModificar);
 		comboBoxTipoEmpleadoModificar.addItem("Administrativo de recepción");
 		comboBoxTipoEmpleadoModificar.addItem("Conserje");
@@ -317,20 +303,6 @@ public class Ventana {
 		rdbtnApellidos.setBounds(10, 52, 109, 23);
 		modificarDatosPersonalesEmpleados.add(rdbtnApellidos);
 
-		JRadioButton rdbtnDni = new JRadioButton("DNI:");
-		rdbtnDni.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (rdbtnDni.isSelected()) {
-					dniEmpleadoModificar.setEnabled(true);
-				} else {
-					dniEmpleadoModificar.setEnabled(false);
-					dniEmpleadoModificar.setText(null);
-				}
-			}
-		});
-		rdbtnDni.setBounds(10, 78, 109, 23);
-		modificarDatosPersonalesEmpleados.add(rdbtnDni);
-
 		JRadioButton rdbtnTelefono = new JRadioButton("Tel\u00E9fono:");
 		rdbtnTelefono.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -342,7 +314,7 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnTelefono.setBounds(10, 104, 109, 23);
+		rdbtnTelefono.setBounds(10, 82, 109, 23);
 		modificarDatosPersonalesEmpleados.add(rdbtnTelefono);
 
 		JRadioButton rdbtnClave = new JRadioButton("Clave");
@@ -356,7 +328,7 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnClave.setBounds(10, 130, 109, 23);
+		rdbtnClave.setBounds(10, 108, 109, 23);
 		modificarDatosPersonalesEmpleados.add(rdbtnClave);
 
 		JRadioButton rdbtnEdadEmpleadoModificar = new JRadioButton("Edad:");
@@ -425,14 +397,13 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnTipoEmpleadoModificar.setBounds(307, 130, 109, 23);
+		rdbtnTipoEmpleadoModificar.setBounds(135, 130, 109, 23);
 		modificarDatosPersonalesEmpleados.add(rdbtnTipoEmpleadoModificar);
 		modificarDatosPersonalesEmpleados.setVisible(false);
 
 		ButtonGroup grupoRadioButtonsModificarEmpleado = new ButtonGroup();
 		grupoRadioButtonsModificarEmpleado.add(rdbtnNombre);
 		grupoRadioButtonsModificarEmpleado.add(rdbtnApellidos);
-		grupoRadioButtonsModificarEmpleado.add(rdbtnDni);
 		grupoRadioButtonsModificarEmpleado.add(rdbtnTelefono);
 		grupoRadioButtonsModificarEmpleado.add(rdbtnClave);
 		grupoRadioButtonsModificarEmpleado.add(rdbtnEdadEmpleadoModificar);
@@ -444,7 +415,87 @@ public class Ventana {
 		JButton btnModificarEmpleado = new JButton("Modificar");
 		btnModificarEmpleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final String tipo = "empleado";
+				String tipoPersona = "";
+				boolean dniValido = false;
+				String opcion = "";
+				String datoNuevo = "";
+				boolean modificarValido = true;
+				boolean modificar = false;
+				if (rdbtnNombre.isSelected()) {
+					tipoPersona="persona";
+				} else if (rdbtnApellidos.isSelected()) {
+					tipoPersona="persona";
+				} else if (rdbtnTelefono.isSelected()) {
+					tipoPersona="persona";
+				} else if (rdbtnClave.isSelected()) {
+					tipoPersona="persona";
+				} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
+					tipoPersona="persona";
+				} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
+					tipoPersona="persona";
+				} else if (rdbtnSalario.isSelected()) {
+					tipoPersona="empleado";
+				} else if (rdbtnAntigedad.isSelected()) {
+					tipoPersona="empleado";
+				} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
+					tipoPersona="empleado";
+				}
+				String emailEmpleado = email.getText();
+				String passwdEmpleado = passwd.getText();
+				boolean empleado = gesBBDD.inicioSesion(emailEmpleado, passwdEmpleado, empleados);
+				if (empleado) {
+					Empleados empleadoModificar = gesBBDD.buscarUnEmpleado(emailEmpleado, passwdEmpleado);
+					String dniEmpleado = empleadoModificar.getDni();
+					String dniModificar = textFielddniEmpleadoModificar.getText();
+					dniValido = val.comprobarDNI(dniModificar);
+					if (dniValido) {
+						if (dniModificar.trim().equalsIgnoreCase(dniEmpleado)) {
+							if (rdbtnNombre.isSelected()) {
+								opcion = "nombre";
+								datoNuevo = nombreEmpleadoModificar.getText();
+							} else if (rdbtnApellidos.isSelected()) {
+								opcion = "apellidos";
+								datoNuevo = apellidosEmpleadoModificar.getText();
+							} else if (rdbtnTelefono.isSelected()) {
+								opcion = "telefono";
+								datoNuevo = telefonoEmpleadoModificar.getText();
+							} else if (rdbtnClave.isSelected()) {
+								opcion = "clave";
+								datoNuevo = passwordFieldEmpleadoModificar.getText();
+							} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
+								opcion = "edad";
+								datoNuevo = (String) spinnerEdad.getValue();
+							} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
+								opcion = "email";
+								datoNuevo = textFieldEmailModificarEmpleado.getText();
+							} else if (rdbtnSalario.isSelected()) {
+								opcion = "salario";
+								datoNuevo = textFieldSalarioEmpleadoModificar.getText();
+							} else if (rdbtnAntigedad.isSelected()) {
+								opcion = "antiguedad";
+								datoNuevo = textFieldAntiguedadEmpleadoModificar.getText();
+							} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
+								opcion = "tipo";
+								datoNuevo = (String) comboBoxTipoEmpleadoModificar.getSelectedItem();
+							} else {
+								modificarValido = false;
+							}
+							if (modificarValido) {
+								modificar = gesBBDD.modificarPersonas(dniModificar, opcion, datoNuevo, tipoPersona,
+										empleados);
+								if (modificar) {
+									JOptionPane.showMessageDialog(empleados, "Dato modificado con exito");
+								}
+							} else {
+								JOptionPane.showMessageDialog(empleados, "Selecciona un dato para modificar");
+							}
+						} else {
+							JOptionPane.showMessageDialog(empleados, "El DNI introducido no es tu DNI");
+						}
+					} else {
+						JOptionPane.showMessageDialog(empleados, "El DNI introducido no es válido");
+					}
+				}
 			}
 		});
 		btnModificarEmpleado.setBounds(499, 256, 89, 23);
@@ -477,7 +528,7 @@ public class Ventana {
 		modificarDatosPersonalesEmpleados.add(lblDniEmpleadoA);
 
 		JPanel modificarActividades = new JPanel();
-		modificarActividades.setBounds(234, 289, 598, 290);
+		modificarActividades.setBounds(234, 289, 609, 290);
 		empleados.add(modificarActividades);
 		modificarActividades.setLayout(null);
 		modificarActividades.setVisible(false);
@@ -797,7 +848,7 @@ public class Ventana {
 		modificarActividades.add(btnOcultar_5);
 
 		JPanel modificarHabitaciones = new JPanel();
-		modificarHabitaciones.setBounds(234, 289, 598, 290);
+		modificarHabitaciones.setBounds(234, 289, 608, 290);
 		empleados.add(modificarHabitaciones);
 		modificarHabitaciones.setLayout(null);
 		modificarHabitaciones.setVisible(false);
@@ -1112,7 +1163,7 @@ public class Ventana {
 		modificarHabitaciones.add(btnOcultar_4);
 
 		JPanel borrarEmpleado = new JPanel();
-		borrarEmpleado.setBounds(234, 289, 598, 290);
+		borrarEmpleado.setBounds(234, 289, 609, 290);
 		empleados.add(borrarEmpleado);
 		borrarEmpleado.setLayout(null);
 		borrarEmpleado.setVisible(false);
@@ -1153,7 +1204,7 @@ public class Ventana {
 		borrarEmpleado.add(btnOcultar_3);
 
 		JPanel anadirEmpleado = new JPanel();
-		anadirEmpleado.setBounds(234, 289, 598, 290);
+		anadirEmpleado.setBounds(234, 289, 609, 290);
 		empleados.add(anadirEmpleado);
 		anadirEmpleado.setLayout(null);
 		anadirEmpleado.setVisible(false);
@@ -1273,7 +1324,7 @@ public class Ventana {
 							if (dniValido) {
 								String telefonoCadena = telefono.getText();
 								if (telefonoCadena.trim().length() == 9) {
-									int telefonoInt = Integer.parseInt(telefonoCadena);
+									int telefonoInt = Integer.parseInt(telefonoCadena.trim());
 									LocalDate fechaNacimiento = calendarioAnadirEmpleado.getDate();
 									int edad = (int) Period.between(fechaNacimiento, LocalDate.now()).getYears();
 									if (edad >= 16 && edad <= 67) {
@@ -1349,7 +1400,7 @@ public class Ventana {
 		anadirEmpleado.add(btnOcultar_2);
 
 		JPanel borrarActividades = new JPanel();
-		borrarActividades.setBounds(234, 289, 598, 290);
+		borrarActividades.setBounds(234, 289, 609, 290);
 		empleados.add(borrarActividades);
 		borrarActividades.setLayout(null);
 
@@ -1393,7 +1444,7 @@ public class Ventana {
 		borrarActividades.setVisible(false);
 
 		JPanel anadirActividades = new JPanel();
-		anadirActividades.setBounds(234, 289, 598, 290);
+		anadirActividades.setBounds(234, 289, 609, 290);
 		empleados.add(anadirActividades);
 		anadirActividades.setLayout(null);
 		anadirActividades.setVisible(false);
@@ -1444,6 +1495,7 @@ public class Ventana {
 		TimePicker timePicker = new TimePicker(timeSettings);
 		timePicker.setBounds(140, 83, 86, 26);
 		anadirActividades.add(timePicker);
+
 		JLabel lblFecha = new JLabel("Fecha: ");
 		lblFecha.setBounds(10, 121, 120, 14);
 		anadirActividades.add(lblFecha);
@@ -1653,7 +1705,7 @@ public class Ventana {
 		anadirActividades.add(btnOcultar);
 
 		JPanel eliminarHabitaciones = new JPanel();
-		eliminarHabitaciones.setBounds(234, 289, 598, 290);
+		eliminarHabitaciones.setBounds(234, 289, 609, 290);
 		empleados.add(eliminarHabitaciones);
 		eliminarHabitaciones.setLayout(null);
 		eliminarHabitaciones.setVisible(false);
@@ -1709,7 +1761,7 @@ public class Ventana {
 		eliminarHabitaciones.add(btnOcultarEliminar);
 
 		JPanel anadirHabitaciones = new JPanel();
-		anadirHabitaciones.setBounds(234, 289, 598, 290);
+		anadirHabitaciones.setBounds(234, 289, 609, 290);
 		empleados.add(anadirHabitaciones);
 		anadirHabitaciones.setLayout(null);
 		anadirHabitaciones.setVisible(false);
@@ -2105,7 +2157,8 @@ public class Ventana {
 		btnMostrarMovimientos.setBounds(10, 410, 214, 23);
 		empleados.add(btnMostrarMovimientos);
 
-		JButton btnModificarDatosPersonales = new JButton("Modificar datos personales (WIP)");
+		JButton btnModificarDatosPersonales = new JButton("Modificar datos personales");
+		btnModificarDatosPersonales.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnModificarDatosPersonales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				anadirHabitaciones.setVisible(false);
@@ -2159,10 +2212,8 @@ public class Ventana {
 				String nombreEmpleado = "";
 				boolean empleadoBoolean;
 				try {
-					empleadoBoolean = gesBBDD.inicioSesion(emailString, contrasena, frmHotel);
+					empleadoBoolean = gesBBDD.inicioSesion(emailString, contrasena, inicio);
 					if (empleadoBoolean) {
-						email.setText(null);
-						passwd.setText(null);
 						Empleados empleado = gesBBDD.buscarUnEmpleado(emailString, contrasena);
 						empleados.setVisible(true);
 						inicio.setVisible(false);
@@ -2177,8 +2228,6 @@ public class Ventana {
 						idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena);
 						if (idClientePersona > 0) {
 							JOptionPane.showMessageDialog(frmHotel, "Cliente");
-							email.setText(null);
-							passwd.setText(null);
 						} else {
 							JOptionPane.showMessageDialog(frmHotel, "Usuario y/o contraseña incorrectos");
 						}
@@ -2199,6 +2248,8 @@ public class Ventana {
 				lblBienvenido.setText("Bienvenido");
 				lblTipo.setText("Tipo:");
 				frmHotel.setTitle("Hotel");
+				email.setText(null);
+				passwd.setText(null);
 				JOptionPane.showMessageDialog(frmHotel, "Has cerrado sesión correctamente");
 				inicio.setVisible(true);
 			}
