@@ -3,6 +3,16 @@ import d_tablas.Tableable;
 public class Clientes extends Personas implements Tableable {
 	private String interes;
 	
+	
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
+	 */
+	protected Clientes(String nombre, String apellidos, String dni) {
+		super(nombre, apellidos, dni);
+	}
+
 	/**
 	 * @param nombre
 	 * @param apellidos

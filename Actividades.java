@@ -13,12 +13,27 @@ public class Actividades implements Tableable {
 	private LocalDate fecha;
 	private int aforo;
 	private String duracion;
-	private double precio;
-
+	private int aforoRestante;
+	
 	/**
 	 * 
 	 */
 	protected Actividades() {
+	}
+	
+	/**
+	 * @param tipo
+	 * @param localizacion
+	 * @param codigo
+	 * @param aforo
+	 * @param aforoRestante
+	 */
+	protected Actividades(String tipo, String localizacion, String codigo, int aforo, int aforoRestante) {
+		this.tipo = tipo;
+		this.localizacion = localizacion;
+		this.codigo = codigo;
+		this.aforo = aforo;
+		this.aforoRestante = aforoRestante;
 	}
 
 	/**
@@ -33,7 +48,7 @@ public class Actividades implements Tableable {
 	 * @param duracion
 	 */
 	protected Actividades(String descripcion, String tipo, String medio_transporte, String localizacion, String codigo,
-			LocalTime hora, LocalDate fecha, int aforo, String duracion, double precio) {
+			LocalTime hora, LocalDate fecha, int aforo, String duracion) {
 		this.descripcion = descripcion;
 		this.tipo = tipo;
 		this.medio_transporte = medio_transporte;
@@ -43,7 +58,6 @@ public class Actividades implements Tableable {
 		this.fecha = fecha;
 		this.aforo = aforo;
 		this.duracion = duracion;
-		this.precio = precio;
 	}
 
 	/**
@@ -171,32 +185,31 @@ public class Actividades implements Tableable {
 	protected void setDuracion(String duracion) {
 		this.duracion = duracion;
 	}
-
+	
 	/**
-	 * @return the precio
+	 * @return the aforoRestante
 	 */
-	protected double getPrecio() {
-		return precio;
+	protected int getAforoRestante() {
+		return aforoRestante;
 	}
 
 	/**
-	 * @param precio the precio to set
+	 * @param aforoRestante the aforoRestante to set
 	 */
-	protected void setPrecio(double precio) {
-		this.precio = precio;
+	protected void setAforoRestante(int aforoRestante) {
+		this.aforoRestante = aforoRestante;
 	}
 
 	@Override
 	public Object[] getData() {
-		Object[] data = { codigo, tipo, localizacion, hora, fecha, duracion, descripcion, medio_transporte, aforo,
-				precio };
+		Object[] data = { codigo, tipo, localizacion, hora, fecha, duracion, descripcion, medio_transporte, aforo };
 		return data;
 	}
 
 	@Override
 	public String[] getHeader() {
 		String[] header = { "CODIGO", "TIPO", "LOCALIZACION", "HORA", "FECHA", "DURACION", "DESCRIPCION",
-				"MEDIO TRANSPORTE", "AFORO", "PRECIO" };
+				"MEDIO TRANSPORTE", "AFORO" };
 		return header;
 	}
 
@@ -220,7 +233,6 @@ public class Actividades implements Tableable {
 			mensaje += "\n\tMedio de transporte: " + medio_transporte;
 		}
 		mensaje += "\n\tAforo máximo: " + aforo;
-		mensaje += "\n\tPrecio: " + precio;
 		return mensaje;
 	}
 

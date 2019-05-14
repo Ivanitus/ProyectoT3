@@ -324,14 +324,13 @@ public class GestionBBDD {
 		LocalDate fecha = act.getFecha();
 		int aforo = act.getAforo();
 		String duracion = act.getDuracion();
-		double precio = act.getPrecio();
 		int idEmpleado = buscarEmpleado(dni);
 		boolean insertar = false;
 		// Sentencia SQL
 		String sql = "insert into actividades (descripcion, tipo_actividad, medio_transporte, localizacion, codigo, hora, fecha,"
-				+ " aforo, duracion, precio, id_empleados_aux) values ('" + descripcion + "','" + tipo + "','"
-				+ mediotransporte + "','" + localizacion + "','" + codigo + "','" + hora + "','" + fecha + "','" + aforo
-				+ "','" + duracion + "'," + precio + "," + idEmpleado + ")";
+				+ " aforo, duracion, id_empleados_aux) values ('" + descripcion + "','" + tipo + "','" + mediotransporte
+				+ "','" + localizacion + "','" + codigo + "','" + hora + "','" + fecha + "','" + aforo + "','"
+				+ duracion + "'," + idEmpleado + ")";
 
 		try {
 
@@ -365,7 +364,6 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return existe;
@@ -447,9 +445,6 @@ public class GestionBBDD {
 
 			sql += "duracion='" + datonuevo + "'";
 
-		} else if (opcion.equalsIgnoreCase("precio")) {
-			datoNuevoDouble = Double.parseDouble(datonuevo);
-			sql += "precio=" + datoNuevoDouble;
 		} else {
 
 			System.out.println("El dato a modificar no es valido");
@@ -522,7 +517,7 @@ public class GestionBBDD {
 		LocalDate fecha;
 		int aforo = 0;
 		String duracion = "";
-		double precio = 0;
+		;
 		// Sentencia SQL
 		String sql = "select * from actividades";
 		try {
@@ -537,10 +532,9 @@ public class GestionBBDD {
 				fecha = rs.getDate(7).toLocalDate();
 				aforo = rs.getInt(8);
 				codigo = rs.getString(9);
-				precio = rs.getDouble(10);
-				duracion = rs.getString(11);
+				duracion = rs.getString(10);
 				Actividades a = new Actividades(descripcion, tipo, medio_transporte, localizacion, codigo, hora, fecha,
-						aforo, duracion, precio);
+						aforo, duracion);
 				listaActividades.add(a);
 			}
 		} catch (SQLException e) {
@@ -939,8 +933,9 @@ public class GestionBBDD {
 		}
 	}
 
-	protected ArrayList<Movimientos> consultarMovimientos() { // Metodo para mostrar los registros de la tabla
-																// movimientos de la BBDD
+	protected ArrayList<MovimientosHabitacionesClientes> consultarMovimientos() { // Metodo para mostrar los registros
+																					// de la tabla
+		// movimientos de la BBDD
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -948,18 +943,36 @@ public class GestionBBDD {
 		double cantidad = 0;
 		Date fechaSQL;
 		LocalDate fechaJava;
-		ArrayList<Movimientos> listaMovimientos = new ArrayList<>();
+		String nombre = "";
+		String apellidos = "";
+		String dni = "";
+		int numHabitacion = 0;
+		String tipo = "";
+		ArrayList<MovimientosHabitacionesClientes> listaMovimientos = new ArrayList<>();
 		// Sentencia SQL
-		String sql = "select * from movimientos";
+		String sql = "select movimientos.fecha,movimientos.cantidad,personas.nombre,personas.apellidos,personas.dni,habitaciones.numero_habitacion,habitaciones.tipo from "
+				+ "((((movimientos inner join reserva on(movimientos.id_movimientos=reserva.id_movimientos_aux)) "
+				+ "inner join habitaciones on(reserva.id_habitaciones_aux=habitaciones.id_habitaciones)) "
+				+ "inner join clientes on(reserva.id_clientes_aux=clientes.id_clientes)) "
+				+ "inner join personas on(clientes.id_personas_aux=personas.id_personas))";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
-				cantidad = rs.getDouble(2);
-				fechaSQL = rs.getDate(3);
+				cantidad = rs.getDouble("cantidad");
+				fechaSQL = rs.getDate("fecha");
+				nombre = rs.getString("nombre");
+				apellidos = rs.getString("apellidos");
+				dni = rs.getString("dni");
+				numHabitacion = rs.getInt("numero_habitacion");
+				tipo = rs.getString("tipo");
 				// Transformo la fecha del registro de la base de datos a LocalDate
 				fechaJava = fechaSQL.toLocalDate();
-				Movimientos m = new Movimientos(cantidad, fechaJava);
+				Movimientos movimiento = new Movimientos(cantidad, fechaJava);
+				Clientes cliente = new Clientes(nombre, apellidos, dni);
+				Habitaciones habitacion = new Habitaciones(tipo, numHabitacion);
+				MovimientosHabitacionesClientes m = new MovimientosHabitacionesClientes(movimiento, cliente,
+						habitacion);
 				listaMovimientos.add(m);
 			}
 			rs.close();
@@ -1077,8 +1090,14 @@ public class GestionBBDD {
 					st.close();
 				}
 				con.close();
+			} catch (NumberFormatException excepcion) {
+				JOptionPane.showMessageDialog(panel, "El dato introducido no es valido");
+			} catch (NullPointerException exception) {
+				JOptionPane.showMessageDialog(panel, "El dato introducido no es valido");
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
+			} catch (Exception excepcionGenerica) {
+				JOptionPane.showMessageDialog(panel, "El dato introducido no es valido");
 			}
 		} else if (tipo.equalsIgnoreCase("cliente")) {
 			if (opcion.equalsIgnoreCase("interes")) {
@@ -1287,7 +1306,7 @@ public class GestionBBDD {
 		return empleado;
 	}
 
-	protected ArrayList<Reserva> mostrarReservas() {
+	protected ArrayList<ReservaHabitacionesClientes> mostrarReservasHabitaciones() {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1296,19 +1315,34 @@ public class GestionBBDD {
 		LocalDate fecha_salida;
 		double precioReserva;
 		int numPersonas;
-		ArrayList<Reserva> listaReservas = new ArrayList<>();
+		String nombre;
+		String apellidos;
+		String dni;
+		int numHabitacion;
+		String tipo;
+		ArrayList<ReservaHabitacionesClientes> listaReservasHabitaciones = new ArrayList<>();
 		// Sentencia SQL
-		String sql = "select * from reserva";
+		String sql = "select habitaciones.numero_habitacion,habitaciones.tipo,reserva.fecha_entrada,reserva.fecha_salida,reserva.precioReserva,reserva.numPersonas,personas.nombre,personas.apellidos,personas.dni from "
+				+ "(((habitaciones inner join reserva on(habitaciones.id_habitaciones=reserva.id_habitaciones_aux)) inner join clientes "
+				+ "on(reserva.id_clientes_aux=clientes.id_clientes)) inner join personas on(clientes.id_personas_aux=personas.id_personas));";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
-				fecha_entrada = rs.getDate(3).toLocalDate();
-				fecha_salida = rs.getDate(4).toLocalDate();
-				numPersonas = rs.getInt(5);
-				precioReserva = rs.getDouble(6);
-				Reserva r = new Reserva(fecha_entrada, fecha_salida, precioReserva, numPersonas);
-				listaReservas.add(r);
+				numHabitacion = rs.getInt("numero_habitacion");
+				tipo = rs.getString("tipo");
+				fecha_entrada = rs.getDate("fecha_entrada").toLocalDate();
+				fecha_salida = rs.getDate("fecha_salida").toLocalDate();
+				precioReserva = rs.getDouble("precioReserva");
+				numPersonas = rs.getInt("numPersonas");
+				nombre = rs.getString("nombre");
+				apellidos = rs.getString("apellidos");
+				dni = rs.getString("dni");
+				Habitaciones habitacion = new Habitaciones(tipo, numHabitacion);
+				Reserva reservaCliente = new Reserva(fecha_entrada, fecha_salida, precioReserva, numPersonas);
+				Clientes cliente = new Clientes(nombre, apellidos, dni);
+				ReservaHabitacionesClientes r = new ReservaHabitacionesClientes(cliente, reservaCliente, habitacion);
+				listaReservasHabitaciones.add(r);
 			}
 			rs.close();
 			st.close();
@@ -1316,7 +1350,55 @@ public class GestionBBDD {
 		} catch (SQLException e) {
 			System.out.println("Fallo en la sentencia SQL");
 		}
-		return listaReservas;
+		return listaReservasHabitaciones;
+	}
+
+	protected ArrayList<ReservaActividadesClientes> mostrarReservasActividades(JPanel panel) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		ArrayList<ReservaActividadesClientes> listaReservaActividades = new ArrayList<>();
+		String codigo = "";
+		String tipo = "";
+		String localizacion = "";
+		int aforo = 0;
+		int aforoRestante = 0;
+		String nombre = "";
+		String apellidos = "";
+		String dni = "";
+		int numPersonas = 0;
+		String sql = "select actividades.codigo,actividades.tipo_actividad, actividades.localizacion,actividades.aforo,personas.nombre,personas.apellidos,personas.dni,apunta.numeroPersonas from "
+				+ "(((actividades inner join apunta on(actividades.id_actividades=apunta.id_actividades_aux)) "
+				+ "inner join clientes on(apunta.id_clientes_aux=clientes.id_clientes)) inner join "
+				+ "personas on(clientes.id_personas_aux=personas.id_personas))";
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				codigo = rs.getString("codigo");
+				tipo = rs.getString("tipo_actividad");
+				localizacion = rs.getString("localizacion");
+				aforo = rs.getInt("aforo");
+				aforoRestante = aforo;
+				nombre = rs.getString("nombre");
+				apellidos = rs.getString("apellidos");
+				dni = rs.getString("dni");
+				numPersonas = rs.getInt("numeroPersonas");
+				aforoRestante -= numPersonas;
+				Actividades actividad = new Actividades(tipo, localizacion, codigo, aforo, aforoRestante);
+				Clientes cliente = new Clientes(nombre, apellidos, dni);
+				Apunta apuntaActividades = new Apunta(numPersonas);
+				ReservaActividadesClientes r = new ReservaActividadesClientes(actividad, cliente, apuntaActividades);
+				listaReservaActividades.add(r);
+			}
+			rs.close();
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
+		}
+		return listaReservaActividades;
 	}
 
 	protected ArrayList<Personas> mostrarPersonas(String tipo, JPanel panel) {

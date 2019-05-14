@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JRadioButton;
 import java.awt.Font;
+import javax.swing.BoxLayout;
 
 public class Ventana {
 
@@ -62,7 +63,6 @@ public class Ventana {
 	private JTextField localizacion;
 	private JTextField medioTransporte;
 	private JTextField dniEmpleadoActividades;
-	private JTextField precioActividad;
 	private JTextField codActividadEliminar;
 	private ArrayList<Actividades> listaActividades = new ArrayList<>();
 	private JTextField nombreEmpleadoNuevo;
@@ -74,17 +74,15 @@ public class Ventana {
 	private JTextField salarioEmpleadoNuevo;
 	private JTextField antiguedadEmpleadoNuevo;
 	private JTextField dniEmpleadoEliminar;
-	private ArrayList<Movimientos> listaMovimientos = new ArrayList<>();
-	private ArrayList<Reserva> listaReservas = new ArrayList<>();
+	private ArrayList<MovimientosHabitacionesClientes> listaMovimientos = new ArrayList<>();
+	private ArrayList<ReservaHabitacionesClientes> listaReservas = new ArrayList<>();
 	private JTextField superficieModificar;
 	private JTextField numHabitacionModificar;
 	private JTextField precioHabitacionesModificar;
 	private JTextField numHabitacionAModificar;
-	private JTextField descripcionModificar;
 	private JTextField medioTransporteActividadModificar;
 	private JTextField localizacionActividadModificar;
 	private JTextField codigoActividadModificar;
-	private JTextField precioModificarActividades;
 	private JTextField codigoActividadAModificar;
 	private JTextField nombreEmpleadoModificar;
 	private JTextField apellidosEmpleadoModificar;
@@ -95,6 +93,7 @@ public class Ventana {
 	private JTextField textFieldAntiguedadEmpleadoModificar;
 	private JTextField textFielddniEmpleadoModificar;
 	private ArrayList<Personas> listaPersonas = new ArrayList<>();
+	private ArrayList<ReservaActividadesClientes> listaReservaActividades = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -106,7 +105,7 @@ public class Ventana {
 					Ventana window = new Ventana();
 					window.frmHotel.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Fallo en la ejecución de la aplicación");
 				}
 			}
 		});
@@ -172,6 +171,14 @@ public class Ventana {
 		inicio.add(label_1);
 
 		email = new JTextField();
+		email.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (email.getText().length()==50) {
+					e.consume();
+				}
+			}
+		});
 		email.setColumns(10);
 		email.setBounds(391, 34, 116, 22);
 		inicio.add(email);
@@ -181,6 +188,14 @@ public class Ventana {
 		inicio.add(label_2);
 
 		passwd = new JPasswordField();
+		passwd.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (passwd.getText().length()==20) {
+					e.consume();
+				}
+			}
+		});
 		passwd.setBounds(391, 62, 116, 22);
 		inicio.add(passwd);
 
@@ -199,10 +214,48 @@ public class Ventana {
 		lblTipo.setBounds(10, 18, 214, 14);
 		empleados.add(lblTipo);
 
+		JPanel mostrarReservas = new JPanel();
+		mostrarReservas.setBounds(234, 289, 609, 290);
+		empleados.add(mostrarReservas);
+		mostrarReservas.setLayout(null);
+		mostrarReservas.setVisible(false);
+
+		JButton btnMostrarReservasHabitaciones = new JButton("Mostrar reservas habitaciones");
+		btnMostrarReservasHabitaciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				listaReservas = gesBBDD.mostrarReservasHabitaciones();
+				modelo.rellenarTabla(listaReservas, true);
+				listaReservas.clear();
+			}
+		});
+		btnMostrarReservasHabitaciones.setBounds(12, 133, 211, 25);
+		mostrarReservas.add(btnMostrarReservasHabitaciones);
+
+		JButton btnMostrarReservasActividades = new JButton("Mostrar reservas actividades");
+		btnMostrarReservasActividades.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listaReservaActividades = gesBBDD.mostrarReservasActividades(empleados);
+				modelo.rellenarTabla(listaReservaActividades, true);
+				listaReservaActividades.clear();
+			}
+		});
+		btnMostrarReservasActividades.setBounds(386, 133, 211, 25);
+		mostrarReservas.add(btnMostrarReservasActividades);
+
+		JButton button_2 = new JButton("Ocultar");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarReservas.setVisible(false);
+			}
+		});
+		button_2.setBounds(12, 254, 89, 23);
+		mostrarReservas.add(button_2);
+
 		JPanel modificarDatosPersonalesEmpleados = new JPanel();
 		modificarDatosPersonalesEmpleados.setBounds(234, 289, 609, 290);
 		empleados.add(modificarDatosPersonalesEmpleados);
 		modificarDatosPersonalesEmpleados.setLayout(null);
+		modificarDatosPersonalesEmpleados.setVisible(false);
 
 		JLabel label_11 = new JLabel("EL RADIOBUTTON DE LA IZQUIERDA SIRVE PARA MARCAR QUE VALOR VAS A MODIFICAR");
 		label_11.setHorizontalAlignment(SwingConstants.CENTER);
@@ -210,24 +263,59 @@ public class Ventana {
 		modificarDatosPersonalesEmpleados.add(label_11);
 
 		nombreEmpleadoModificar = new JTextField();
+		nombreEmpleadoModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (nombreEmpleadoModificar.getText().length()==20) {
+					e.consume();
+				}
+			}
+		});
 		nombreEmpleadoModificar.setBounds(125, 27, 86, 20);
 		modificarDatosPersonalesEmpleados.add(nombreEmpleadoModificar);
 		nombreEmpleadoModificar.setColumns(10);
 		nombreEmpleadoModificar.setEnabled(false);
 
 		apellidosEmpleadoModificar = new JTextField();
+		apellidosEmpleadoModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (apellidosEmpleadoModificar.getText().length()==40) {
+					e.consume();
+				}
+			}
+		});
 		apellidosEmpleadoModificar.setBounds(125, 53, 86, 20);
 		modificarDatosPersonalesEmpleados.add(apellidosEmpleadoModificar);
 		apellidosEmpleadoModificar.setColumns(10);
 		apellidosEmpleadoModificar.setEnabled(false);
 
 		telefonoEmpleadoModificar = new JTextField();
+		telefonoEmpleadoModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (telefonoEmpleadoModificar.getText().length()==9) {
+					e.consume();
+				}
+				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+					e.consume();
+				}
+			}
+		});
 		telefonoEmpleadoModificar.setBounds(125, 83, 86, 20);
 		modificarDatosPersonalesEmpleados.add(telefonoEmpleadoModificar);
 		telefonoEmpleadoModificar.setColumns(10);
 		telefonoEmpleadoModificar.setEnabled(false);
 
 		passwordFieldEmpleadoModificar = new JPasswordField();
+		passwordFieldEmpleadoModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (passwordFieldEmpleadoModificar.getText().length()==20) {
+					e.consume();
+				}
+			}
+		});
 		passwordFieldEmpleadoModificar.setBounds(125, 109, 86, 20);
 		modificarDatosPersonalesEmpleados.add(passwordFieldEmpleadoModificar);
 		passwordFieldEmpleadoModificar.setEnabled(false);
@@ -250,18 +338,46 @@ public class Ventana {
 		spinnerEdad.setEnabled(false);
 
 		textFieldEmailModificarEmpleado = new JTextField();
+		textFieldEmailModificarEmpleado.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (textFieldEmailModificarEmpleado.getText().length()==50) {
+					e.consume();
+				}
+			}
+		});
 		textFieldEmailModificarEmpleado.setBounds(422, 53, 166, 20);
 		modificarDatosPersonalesEmpleados.add(textFieldEmailModificarEmpleado);
 		textFieldEmailModificarEmpleado.setColumns(10);
 		textFieldEmailModificarEmpleado.setEnabled(false);
 
 		textFieldSalarioEmpleadoModificar = new JTextField();
+		textFieldSalarioEmpleadoModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-') {
+					e.consume();
+				} else if (e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		textFieldSalarioEmpleadoModificar.setBounds(422, 79, 166, 20);
 		modificarDatosPersonalesEmpleados.add(textFieldSalarioEmpleadoModificar);
 		textFieldSalarioEmpleadoModificar.setColumns(10);
 		textFieldSalarioEmpleadoModificar.setEnabled(false);
 
 		textFieldAntiguedadEmpleadoModificar = new JTextField();
+		textFieldAntiguedadEmpleadoModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-') {
+					e.consume();
+				} else if (e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		textFieldAntiguedadEmpleadoModificar.setBounds(422, 105, 166, 20);
 		modificarDatosPersonalesEmpleados.add(textFieldAntiguedadEmpleadoModificar);
 		textFieldAntiguedadEmpleadoModificar.setColumns(10);
@@ -419,26 +535,26 @@ public class Ventana {
 				boolean dniValido = false;
 				String opcion = "";
 				String datoNuevo = "";
-				boolean modificarValido = true;
+				boolean modificarValido = false;
 				boolean modificar = false;
 				if (rdbtnNombre.isSelected()) {
-					tipoPersona="persona";
+					tipoPersona = "persona";
 				} else if (rdbtnApellidos.isSelected()) {
-					tipoPersona="persona";
+					tipoPersona = "persona";
 				} else if (rdbtnTelefono.isSelected()) {
-					tipoPersona="persona";
+					tipoPersona = "persona";
 				} else if (rdbtnClave.isSelected()) {
-					tipoPersona="persona";
+					tipoPersona = "persona";
 				} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
-					tipoPersona="persona";
+					tipoPersona = "persona";
 				} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
-					tipoPersona="persona";
+					tipoPersona = "persona";
 				} else if (rdbtnSalario.isSelected()) {
-					tipoPersona="empleado";
+					tipoPersona = "empleado";
 				} else if (rdbtnAntigedad.isSelected()) {
-					tipoPersona="empleado";
+					tipoPersona = "empleado";
 				} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
-					tipoPersona="empleado";
+					tipoPersona = "empleado";
 				}
 				String emailEmpleado = email.getText();
 				String passwdEmpleado = passwd.getText();
@@ -449,66 +565,129 @@ public class Ventana {
 					String dniModificar = textFielddniEmpleadoModificar.getText();
 					dniValido = val.comprobarDNI(dniModificar);
 					if (dniValido) {
-						if (dniModificar.trim().equalsIgnoreCase(dniEmpleado)) {
-							if (rdbtnNombre.isSelected()) {
-								opcion = "nombre";
-								datoNuevo = nombreEmpleadoModificar.getText();
-							} else if (rdbtnApellidos.isSelected()) {
-								opcion = "apellidos";
-								datoNuevo = apellidosEmpleadoModificar.getText();
-							} else if (rdbtnTelefono.isSelected()) {
-								opcion = "telefono";
-								datoNuevo = telefonoEmpleadoModificar.getText();
-							} else if (rdbtnClave.isSelected()) {
-								opcion = "clave";
-								datoNuevo = passwordFieldEmpleadoModificar.getText();
-							} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
-								opcion = "edad";
-								datoNuevo = (String) spinnerEdad.getValue();
-							} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
-								opcion = "email";
-								datoNuevo = textFieldEmailModificarEmpleado.getText();
-							} else if (rdbtnSalario.isSelected()) {
-								opcion = "salario";
-								datoNuevo = textFieldSalarioEmpleadoModificar.getText();
-							} else if (rdbtnAntigedad.isSelected()) {
-								opcion = "antiguedad";
-								datoNuevo = textFieldAntiguedadEmpleadoModificar.getText();
-							} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
-								opcion = "tipo";
-								datoNuevo = (String) comboBoxTipoEmpleadoModificar.getSelectedItem();
-							} else {
-								modificarValido = false;
-							}
-							if (modificarValido) {
-								modificar = gesBBDD.modificarPersonas(dniModificar, opcion, datoNuevo, tipoPersona,
-										empleados);
-								if (modificar) {
-									JOptionPane.showMessageDialog(empleados, "Dato modificado con exito");
+						try {
+							if (dniModificar.trim().equalsIgnoreCase(dniEmpleado)) {
+								if (rdbtnNombre.isSelected()) {
+									opcion = "nombre";
+									datoNuevo = nombreEmpleadoModificar.getText();
+									if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+										modificarValido = true;
+									}
+								} else if (rdbtnApellidos.isSelected()) {
+									opcion = "apellidos";
+									datoNuevo = apellidosEmpleadoModificar.getText();
+									if (datoNuevo.length() > 0 && datoNuevo.length() <= 40) {
+										modificarValido = false;
+									}
+								} else if (rdbtnTelefono.isSelected()) {
+									opcion = "telefono";
+									datoNuevo = telefonoEmpleadoModificar.getText();
+									if (datoNuevo.length() == 9) {
+										modificarValido = true;
+									}
+								} else if (rdbtnClave.isSelected()) {
+									opcion = "clave";
+									datoNuevo = passwordFieldEmpleadoModificar.getText();
+									if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+										modificarValido = true;
+									}
+								} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
+									opcion = "edad";
+									datoNuevo = String.valueOf((int) spinnerEdad.getValue());
+									modificarValido = true;
+								} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
+									opcion = "email";
+									datoNuevo = textFieldEmailModificarEmpleado.getText();
+									Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+											+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+									Matcher matcher = pattern.matcher(datoNuevo);
+									if (matcher.find()) {
+										if (datoNuevo.length() > 0 && datoNuevo.length() <= 50) {
+											modificarValido = true;
+										} else {
+											modificarValido = false;
+											JOptionPane.showMessageDialog(empleados,
+													"El e-mail no puede tener más de 50 caractéres");
+										}
+									} else {
+										modificarValido = false;
+										JOptionPane.showMessageDialog(empleados, "El e-mail introducido no es válido");
+									}
+								} else if (rdbtnSalario.isSelected()) {
+									opcion = "salario";
+									datoNuevo = textFieldSalarioEmpleadoModificar.getText();
+									if (datoNuevo.length() > 0) {
+										modificarValido = true;
+									}
+								} else if (rdbtnAntigedad.isSelected()) {
+									opcion = "antiguedad";
+									datoNuevo = textFieldAntiguedadEmpleadoModificar.getText();
+									if (datoNuevo.length() > 0) {
+										modificarValido = true;
+									}
+								} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
+									opcion = "tipo";
+									datoNuevo = (String) comboBoxTipoEmpleadoModificar.getSelectedItem();
+									if (datoNuevo.length() > 0 && datoNuevo.length() <= 27) {
+										modificarValido = true;
+									}
+								} else {
+									modificarValido = false;
+								}
+								if (modificarValido) {
+									modificar = gesBBDD.modificarPersonas(dniModificar, opcion, datoNuevo, tipoPersona,
+											empleados);
+									if (modificar) {
+										nombreEmpleadoModificar.setBackground(Color.white);
+										apellidosEmpleadoModificar.setBackground(Color.white);
+										telefonoEmpleadoModificar.setBackground(Color.white);
+										passwordFieldEmpleadoModificar.setBackground(Color.white);
+										spinnerEdad.setBackground(Color.white);
+										textFieldEmailModificarEmpleado.setBackground(Color.white);
+										textFieldSalarioEmpleadoModificar.setBackground(Color.white);
+										textFieldAntiguedadEmpleadoModificar.setBackground(Color.white);
+										comboBoxTipoEmpleadoModificar.setBackground(Color.white);
+										JOptionPane.showMessageDialog(empleados, "Dato modificado con exito");
+									}
+								} else {
+									JOptionPane.showMessageDialog(empleados, "Selecciona un dato para modificar");
+									if (rdbtnNombre.isSelected()) {
+										nombreEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnApellidos.isSelected()) {
+										apellidosEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnTelefono.isSelected()) {
+										telefonoEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnClave.isSelected()) {
+										passwordFieldEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
+										spinnerEdad.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
+										textFieldEmailModificarEmpleado.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnSalario.isSelected()) {
+										textFieldSalarioEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnAntigedad.isSelected()) {
+										textFieldAntiguedadEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
+										comboBoxTipoEmpleadoModificar.setBackground(new Color(240, 128, 128));
+									}
 								}
 							} else {
-								JOptionPane.showMessageDialog(empleados, "Selecciona un dato para modificar");
+								JOptionPane.showMessageDialog(empleados, "El DNI introducido no es tu DNI");
 							}
-						} else {
-							JOptionPane.showMessageDialog(empleados, "El DNI introducido no es tu DNI");
+						} catch (NumberFormatException excepcion) {
+							JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
+						} catch (NullPointerException exception) {
+							JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
+						} catch (Exception excepcionGenerica) {
+							JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
 						}
+
 					} else {
 						JOptionPane.showMessageDialog(empleados, "El DNI introducido no es válido");
 					}
 				}
 			}
 		});
-		btnModificarEmpleado.setBounds(499, 256, 89, 23);
-		modificarDatosPersonalesEmpleados.add(btnModificarEmpleado);
-
-		JButton btnOcultar_6 = new JButton("Ocultar");
-		btnOcultar_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				modificarDatosPersonalesEmpleados.setVisible(false);
-			}
-		});
-		btnOcultar_6.setBounds(10, 256, 89, 23);
-		modificarDatosPersonalesEmpleados.add(btnOcultar_6);
 
 		textFielddniEmpleadoModificar = new JTextField();
 		textFielddniEmpleadoModificar.setBounds(499, 225, 89, 20);
@@ -526,6 +705,23 @@ public class Ventana {
 		JLabel lblDniEmpleadoA = new JLabel("Introduce tu DNI:");
 		lblDniEmpleadoA.setBounds(383, 228, 109, 14);
 		modificarDatosPersonalesEmpleados.add(lblDniEmpleadoA);
+		btnModificarEmpleado.setBounds(499, 256, 89, 23);
+		modificarDatosPersonalesEmpleados.add(btnModificarEmpleado);
+
+		JButton btnOcultar_6 = new JButton("Ocultar");
+		btnOcultar_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				modificarDatosPersonalesEmpleados.setVisible(false);
+			}
+		});
+		btnOcultar_6.setBounds(10, 256, 89, 23);
+		modificarDatosPersonalesEmpleados.add(btnOcultar_6);
+
+		DatePickerSettings dateSettingsModificarActividades = new DatePickerSettings();
+		dateSettingsModificarActividades.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		dateSettingsModificarActividades.setFormatForDatesCommonEra("yyyy/MM/dd");
+		dateSettingsModificarActividades.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
+		dateSettingsModificarActividades.setGapBeforeButtonPixels(0);
 
 		JPanel modificarActividades = new JPanel();
 		modificarActividades.setBounds(234, 289, 609, 290);
@@ -538,33 +734,74 @@ public class Ventana {
 		label_10.setHorizontalAlignment(SwingConstants.CENTER);
 		modificarActividades.add(label_10);
 
-		descripcionModificar = new JTextField();
-		descripcionModificar.setBounds(142, 27, 86, 20);
-		modificarActividades.add(descripcionModificar);
-		descripcionModificar.setColumns(10);
+		JScrollPane scrollPaneDescripcionModificar = new JScrollPane();
+		scrollPaneDescripcionModificar.setBounds(142, 27, 126, 61);
+		modificarActividades.add(scrollPaneDescripcionModificar);
+		scrollPaneDescripcionModificar.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneDescripcionModificar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneDescripcionModificar.setEnabled(false);
+
+		JTextArea descripcionModificar = new JTextArea();
+		descripcionModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (descripcionModificar.getText().length()==300) {
+					e.consume();
+				}
+			}
+		});
+		scrollPaneDescripcionModificar.setViewportView(descripcionModificar);
+		descripcionModificar.setLineWrap(true);
 		descripcionModificar.setEnabled(false);
 
 		JComboBox comboBoxTipoActividadesModificar = new JComboBox();
-		comboBoxTipoActividadesModificar.setBounds(142, 53, 86, 20);
+		comboBoxTipoActividadesModificar.setBounds(142, 97, 86, 20);
 		modificarActividades.add(comboBoxTipoActividadesModificar);
 		comboBoxTipoActividadesModificar.addItem("Interna");
 		comboBoxTipoActividadesModificar.addItem("Externa");
 		comboBoxTipoActividadesModificar.setEnabled(false);
 
 		medioTransporteActividadModificar = new JTextField();
-		medioTransporteActividadModificar.setBounds(142, 79, 86, 20);
+		medioTransporteActividadModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (medioTransporteActividadModificar.getText().length()==20) {
+					e.consume();
+				}
+			}
+		});
+		medioTransporteActividadModificar.setBounds(142, 123, 86, 20);
 		modificarActividades.add(medioTransporteActividadModificar);
 		medioTransporteActividadModificar.setColumns(10);
 		medioTransporteActividadModificar.setEnabled(false);
 
 		localizacionActividadModificar = new JTextField();
-		localizacionActividadModificar.setBounds(142, 105, 86, 20);
+		localizacionActividadModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (localizacionActividadModificar.getText().length()==80) {
+					e.consume();
+				}
+			}
+		});
+		localizacionActividadModificar.setBounds(142, 149, 86, 20);
 		modificarActividades.add(localizacionActividadModificar);
 		localizacionActividadModificar.setColumns(10);
 		localizacionActividadModificar.setEnabled(false);
 
 		codigoActividadModificar = new JTextField();
-		codigoActividadModificar.setBounds(142, 131, 86, 20);
+		codigoActividadModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (codigoActividadModificar.getText().length()==20) {
+					e.consume();
+				}
+				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+					e.consume();
+				}
+			}
+		});
+		codigoActividadModificar.setBounds(142, 179, 86, 20);
 		modificarActividades.add(codigoActividadModificar);
 		codigoActividadModificar.setColumns(10);
 		codigoActividadModificar.setEnabled(false);
@@ -573,18 +810,11 @@ public class Ventana {
 		timePickerHoraModificarActividades.setBounds(423, 26, 165, 26);
 		modificarActividades.add(timePickerHoraModificarActividades);
 		timePickerHoraModificarActividades.setEnabled(false);
-
-		DatePickerSettings dateSettingsModificarActividades = new DatePickerSettings();
-		dateSettingsModificarActividades.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		dateSettingsModificarActividades.setFormatForDatesCommonEra("yyyy/MM/dd");
-		dateSettingsModificarActividades.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
-		dateSettingsModificarActividades.setGapBeforeButtonPixels(0);
 		DatePicker calendarioModificarActividades = new DatePicker(dateSettingsModificarActividades);
 		dateSettingsModificarActividades.setDateRangeLimits(LocalDate.now(), null);
 		calendarioModificarActividades.setDateToToday();
 		calendarioModificarActividades.setBounds(422, 62, 166, 26);
 		modificarActividades.add(calendarioModificarActividades);
-		calendarioModificarActividades.setEnabled(false);
 
 		JSpinner aforoModificarActividades = new JSpinner();
 		aforoModificarActividades.addChangeListener(new ChangeListener() {
@@ -592,6 +822,9 @@ public class Ventana {
 				if ((int) aforoModificarActividades.getValue() < 0) {
 					aforoModificarActividades.setValue(0);
 					JOptionPane.showMessageDialog(empleados, "El aforo no puede ser inferior a 0");
+				} else if ((int) aforoModificarActividades.getValue()>30) {
+					aforoModificarActividades.setValue(30);
+					JOptionPane.showMessageDialog(empleados, "El aforo no puede ser superior a 30 personas");
 				}
 			}
 		});
@@ -604,13 +837,18 @@ public class Ventana {
 		modificarActividades.add(timePickerDuracionModificarActividades);
 		timePickerHoraModificarActividades.setEnabled(false);
 
-		precioModificarActividades = new JTextField();
-		precioModificarActividades.setBounds(142, 157, 86, 20);
-		modificarActividades.add(precioModificarActividades);
-		precioModificarActividades.setColumns(10);
-		precioModificarActividades.setEnabled(false);
-
 		codigoActividadAModificar = new JTextField();
+		codigoActividadAModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (codigoActividadAModificar.getText().length()==20) {
+					e.consume();
+				}
+				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+					e.consume();
+				}
+			}
+		});
 		codigoActividadAModificar.setBounds(423, 158, 165, 30);
 		modificarActividades.add(codigoActividadAModificar);
 		codigoActividadAModificar.setColumns(10);
@@ -646,7 +884,7 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnTipoModificarActividades.setBounds(6, 52, 130, 23);
+		rdbtnTipoModificarActividades.setBounds(6, 96, 130, 23);
 		modificarActividades.add(rdbtnTipoModificarActividades);
 
 		JRadioButton rdbtnMedioTransporte = new JRadioButton("Medio transporte:");
@@ -660,7 +898,7 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnMedioTransporte.setBounds(6, 78, 130, 23);
+		rdbtnMedioTransporte.setBounds(6, 122, 130, 23);
 		modificarActividades.add(rdbtnMedioTransporte);
 
 		JRadioButton rdbtnLocalizacion = new JRadioButton("Localizaci\u00F3n: ");
@@ -674,7 +912,7 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnLocalizacion.setBounds(6, 104, 130, 23);
+		rdbtnLocalizacion.setBounds(6, 148, 130, 23);
 		modificarActividades.add(rdbtnLocalizacion);
 
 		JRadioButton rdbtnCodigo = new JRadioButton("Codigo:");
@@ -688,7 +926,7 @@ public class Ventana {
 				}
 			}
 		});
-		rdbtnCodigo.setBounds(6, 130, 109, 23);
+		rdbtnCodigo.setBounds(6, 178, 109, 23);
 		modificarActividades.add(rdbtnCodigo);
 
 		JRadioButton rdbtnHora = new JRadioButton("Hora:");
@@ -744,20 +982,6 @@ public class Ventana {
 		rdbtnDuracion.setBounds(346, 123, 71, 23);
 		modificarActividades.add(rdbtnDuracion);
 
-		JRadioButton rdbtnPrecio = new JRadioButton("Precio:");
-		rdbtnPrecio.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (rdbtnPrecio.isSelected()) {
-					precioHabitacionesModificar.setEnabled(true);
-				} else {
-					precioHabitacionesModificar.setEnabled(false);
-					precioHabitacionesModificar.setText(null);
-				}
-			}
-		});
-		rdbtnPrecio.setBounds(6, 156, 126, 23);
-		modificarActividades.add(rdbtnPrecio);
-
 		ButtonGroup grupoRadioButtonsModificarActividades = new ButtonGroup();
 		grupoRadioButtonsModificarActividades.add(rdbtnDescripcion);
 		grupoRadioButtonsModificarActividades.add(rdbtnTipoModificarActividades);
@@ -768,7 +992,6 @@ public class Ventana {
 		grupoRadioButtonsModificarActividades.add(rdbtnFecha);
 		grupoRadioButtonsModificarActividades.add(rdbtnAforo);
 		grupoRadioButtonsModificarActividades.add(rdbtnDuracion);
-		grupoRadioButtonsModificarActividades.add(rdbtnPrecio);
 
 		JButton btnModificar_1 = new JButton("Modificar");
 		btnModificar_1.addActionListener(new ActionListener() {
@@ -777,49 +1000,97 @@ public class Ventana {
 				String datoNuevo = "";
 				boolean existe = false;
 				boolean modificar = false;
+				boolean datoValido = false;
 				try {
 					if (rdbtnDescripcion.isSelected()) {
 						datoModificar = "descripcion";
 						datoNuevo = descripcionModificar.getText();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 300) {
+							datoValido = true;
+						}
 					} else if (rdbtnTipoModificarActividades.isSelected()) {
 						datoModificar = "tipo";
 						datoNuevo = (String) comboBoxTipoActividadesModificar.getSelectedItem();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+							datoValido = true;
+						}
 					} else if (rdbtnMedioTransporte.isSelected()) {
 						datoModificar = "medio de transporte";
 						datoNuevo = medioTransporteActividadModificar.getText();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+							datoValido = true;
+						}
 					} else if (rdbtnLocalizacion.isSelected()) {
 						datoModificar = "localizacion";
 						datoNuevo = localizacionActividadModificar.getText();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 80) {
+							datoValido = true;
+						}
 					} else if (rdbtnCodigo.isSelected()) {
 						datoModificar = "codigo";
 						datoNuevo = codigoActividadModificar.getText();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+							datoValido = true;
+						}
 					} else if (rdbtnHora.isSelected()) {
 						datoModificar = "hora";
 						datoNuevo = timePickerHoraModificarActividades.toString();
+						datoValido = true;
 					} else if (rdbtnFecha.isSelected()) {
 						datoModificar = "fecha";
 						datoNuevo = calendarioModificarActividades.toString();
+						datoValido = true;
 					} else if (rdbtnAforo.isSelected()) {
 						datoModificar = "aforo";
 						datoNuevo = String.valueOf(aforoModificarActividades.getValue());
+						if (Integer.parseInt(datoNuevo) > 0) {
+							datoValido = true;
+						}
 					} else if (rdbtnDuracion.isSelected()) {
 						datoModificar = "duracion";
 						datoNuevo = timePickerDuracionModificarActividades.getTime().toString();
-					} else if (rdbtnPrecio.isSelected()) {
-						datoModificar = "precio";
-						datoNuevo = precioModificarActividades.getText();
+						datoValido = true;
 					}
 					String codigo = codigoActividadAModificar.getText();
-					if (codigo.length() > 0) {
+					if (codigo.length() > 0 && datoValido) {
 						existe = gesBBDD.actividadExiste(codigo, empleados);
 						if (existe) {
 							modificar = gesBBDD.modificarActividadesIndividual(codigo, datoModificar, datoNuevo);
 							if (modificar) {
+								descripcionModificar.setBackground(Color.white);
+								comboBoxTipoActividadesModificar.setBackground(Color.white);
+								medioTransporteActividadModificar.setBackground(Color.white);
+								localizacionActividadModificar.setBackground(Color.white);
+								codigoActividadModificar.setBackground(Color.white);
+								timePickerHoraModificarActividades.setBackground(Color.white);
+								calendarioModificarActividades.setBackground(Color.white);
+								aforoModificarActividades.setBackground(Color.white);
+								timePickerDuracionModificarActividades.setBackground(Color.white);
 								JOptionPane.showMessageDialog(empleados, "Actividad modificada correctamente");
 								listaActividades = gesBBDD.mostrarActividades(empleados);
 								modelo.rellenarTabla(listaActividades, true);
 								listaActividades.clear();
 								codigoActividadAModificar.setText(null);
+							} else {
+								if (rdbtnDescripcion.isSelected()) {
+									descripcionModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnTipoModificarActividades.isSelected()) {
+									comboBoxTipoActividadesModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnMedioTransporte.isSelected()) {
+									medioTransporteActividadModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnLocalizacion.isSelected()) {
+									localizacionActividadModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnCodigo.isSelected()) {
+									codigoActividadModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnHora.isSelected()) {
+									timePickerHoraModificarActividades.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnFecha.isSelected()) {
+									calendarioModificarActividades.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnAforo.isSelected()) {
+									aforoModificarActividades.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnDuracion.isSelected()) {
+									timePickerDuracionModificarActividades.setBackground(new Color(240, 128, 128));
+								}
 							}
 						}
 					}
@@ -872,6 +1143,20 @@ public class Ventana {
 		});
 
 		superficieModificar = new JTextField();
+		superficieModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (superficieModificar.getText().length() == 2) {
+					JOptionPane.showMessageDialog(empleados, "La superficie no puede ser mayor a 99 m\u00B2");
+					e.consume();
+				}
+				if (e.getKeyChar() == '-') {
+					e.consume();
+				} else if (e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		superficieModificar.setBounds(159, 32, 86, 20);
 		modificarHabitaciones.add(superficieModificar);
 		superficieModificar.setColumns(10);
@@ -912,12 +1197,28 @@ public class Ventana {
 		numCamasModificar.setEnabled(false);
 
 		numHabitacionModificar = new JTextField();
+		numHabitacionModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		numHabitacionModificar.setBounds(306, 137, 86, 20);
 		modificarHabitaciones.add(numHabitacionModificar);
 		numHabitacionModificar.setColumns(10);
 		numHabitacionModificar.setEnabled(false);
 
 		precioHabitacionesModificar = new JTextField();
+		precioHabitacionesModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		precioHabitacionesModificar.setBounds(502, 32, 86, 20);
 		modificarHabitaciones.add(precioHabitacionesModificar);
 		precioHabitacionesModificar.setColumns(10);
@@ -1070,6 +1371,14 @@ public class Ventana {
 		modificarHabitaciones.add(lblNHabitacin);
 
 		numHabitacionAModificar = new JTextField();
+		numHabitacionAModificar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		numHabitacionAModificar.setBounds(306, 163, 86, 20);
 		modificarHabitaciones.add(numHabitacionAModificar);
 		numHabitacionAModificar.setColumns(10);
@@ -1081,72 +1390,124 @@ public class Ventana {
 				String datoNuevo = "";
 				boolean existe = false;
 				boolean modificar = false;
+				boolean datoValido = false;
 				try {
 					if (rdbtnSuperficie.isSelected()) {
 						datoModificar = "superficie";
 						datoNuevo = superficieModificar.getText();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+							datoValido = true;
+						}
 					} else if (rdbtnTipo.isSelected()) {
 						datoModificar = "tipo";
 						datoNuevo = (String) comboBoxTipoHabitacionesModificar.getSelectedItem();
+						if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+							datoValido = true;
+						}
 					} else if (rdbtnNumeroDeBanos.isSelected()) {
 						datoModificar = "numero de baños";
 						datoNuevo = String.valueOf(numBanosModificar.getValue());
+						if (Integer.parseInt(datoNuevo) > 0) {
+							datoValido = true;
+						}
 					} else if (rdbtnNumeroDeCamas.isSelected()) {
 						datoModificar = "numero de camas";
 						datoNuevo = String.valueOf(numCamasModificar.getValue());
+						if (Integer.parseInt(datoNuevo) > 0) {
+							datoValido = true;
+						}
 					} else if (rdbtnNumeroHabitacionModificar.isSelected()) {
 						datoModificar = "numero de la habitacion";
 						datoNuevo = numHabitacionModificar.getText();
+						if (Integer.parseInt(datoNuevo) > 0) {
+							datoValido = true;
+						}
 					} else if (rdbtnPrecioHabitacion.isSelected()) {
 						datoModificar = "precio de la habitacion";
 						datoNuevo = precioHabitacionesModificar.getText();
+						if (Double.parseDouble(datoNuevo) > 0) {
+							datoValido = true;
+						}
 					} else if (rdbtnJacuzzi.isSelected()) {
 						datoModificar = "jacuzzi";
 						if (chckbxJacuzziModificar.isSelected()) {
 							datoNuevo = "si";
+							datoValido = true;
 						} else {
 							datoNuevo = "no";
+							datoValido = true;
 						}
 					} else if (rdbtnMatrimonio.isSelected()) {
 						datoModificar = "matrimonio";
 						if (checkBoxMatrimonioModificar.isSelected()) {
 							datoNuevo = "si";
+							datoValido = true;
 						} else {
 							datoNuevo = "no";
+							datoValido = true;
 						}
 					} else if (rdbtnTerraza.isSelected()) {
 						datoModificar = "terraza";
 						if (checkBoxTerraza.isSelected()) {
 							datoNuevo = "si";
+							datoValido = true;
 						} else {
 							datoNuevo = "no";
+							datoValido = true;
 						}
 					}
 					int numHabitacion = Integer.parseInt(numHabitacionAModificar.getText());
-					if (numHabitacion > 0) {
+					if (numHabitacion > 0 && datoValido) {
 						existe = gesBBDD.habitacionExiste(numHabitacion, empleados);
 						if (existe) {
 							modificar = gesBBDD.modificarHabitaciones(numHabitacion, datoNuevo, datoModificar);
 							if (modificar) {
+								superficieModificar.setBackground(Color.white);
+								comboBoxTipoHabitacionesModificar.setBackground(Color.white);
+								numBanosModificar.setBackground(Color.white);
+								numCamasModificar.setBackground(Color.white);
+								numHabitacionModificar.setBackground(Color.white);
+								precioHabitacionesModificar.setBackground(Color.white);
+								chckbxJacuzziModificar.setBackground(Color.white);
+								checkBoxMatrimonioModificar.setBackground(Color.white);
+								checkBoxTerraza.setBackground(Color.white);
 								JOptionPane.showMessageDialog(empleados, "Habitación modificada correctamente");
 								listaHabitaciones = gesBBDD.mostrarHabitaciones();
 								modelo.rellenarTabla(listaHabitaciones, true);
 								listaHabitaciones.clear();
 								numHabitacionAModificar.setText(null);
 							} else {
+								if (rdbtnSuperficie.isSelected()) {
+									superficieModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnTipo.isSelected()) {
+									comboBoxTipoHabitacionesModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnNumeroDeBanos.isSelected()) {
+									numBanosModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnNumeroDeCamas.isSelected()) {
+									numCamasModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnNumeroHabitacionModificar.isSelected()) {
+									numHabitacionModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnPrecioHabitacion.isSelected()) {
+									precioHabitacionesModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnJacuzzi.isSelected()) {
+									chckbxJacuzziModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnMatrimonio.isSelected()) {
+									checkBoxMatrimonioModificar.setBackground(new Color(240, 128, 128));
+								} else if (rdbtnTerraza.isSelected()) {
+									checkBoxTerraza.setBackground(new Color(240, 128, 128));
+								}
 								JOptionPane.showMessageDialog(empleados, "No ha sido posible modificar la habitación");
 							}
 						}
+					} else {
+						JOptionPane.showMessageDialog(empleados, "El dato introducido no es válido");
 					}
 				} catch (NumberFormatException excepcion) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcion.printStackTrace();
 				} catch (NullPointerException exception) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					exception.printStackTrace();
 				} catch (Exception excepcionGenerica) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcionGenerica.printStackTrace();
 				}
 			}
 		});
@@ -1173,6 +1534,14 @@ public class Ventana {
 		borrarEmpleado.add(lblDniDelEmpleado);
 
 		dniEmpleadoEliminar = new JTextField();
+		dniEmpleadoEliminar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (dniEmpleadoEliminar.getText().length() == 9) {
+					e.consume();
+				}
+			}
+		});
 		dniEmpleadoEliminar.setBounds(120, 8, 86, 20);
 		borrarEmpleado.add(dniEmpleadoEliminar);
 		dniEmpleadoEliminar.setColumns(10);
@@ -1184,9 +1553,11 @@ public class Ventana {
 				String dni = dniEmpleadoEliminar.getText();
 				dniValido = val.comprobarDNI(dni);
 				if (dniValido) {
+					dniEmpleadoEliminar.setBackground(Color.white);
 					gesBBDD.eliminarEmpleados(dni, empleados);
 					gesBBDD.eliminarPersonas(dni, empleados);
 				} else {
+					dniEmpleadoEliminar.setBackground(new Color(240, 128, 128));
 					JOptionPane.showMessageDialog(empleados, "El DNI introducido no es válido");
 				}
 			}
@@ -1214,6 +1585,14 @@ public class Ventana {
 		anadirEmpleado.add(lblNombre);
 
 		nombreEmpleadoNuevo = new JTextField();
+		nombreEmpleadoNuevo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (nombreEmpleadoNuevo.getText().length() == 20) {
+					e.consume();
+				}
+			}
+		});
 		nombreEmpleadoNuevo.setBounds(121, 8, 86, 20);
 		anadirEmpleado.add(nombreEmpleadoNuevo);
 		nombreEmpleadoNuevo.setColumns(10);
@@ -1223,6 +1602,14 @@ public class Ventana {
 		anadirEmpleado.add(lblApellidos);
 
 		apellidosEmpleadoNuevo = new JTextField();
+		apellidosEmpleadoNuevo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (apellidosEmpleadoNuevo.getText().length() == 40) {
+					e.consume();
+				}
+			}
+		});
 		apellidosEmpleadoNuevo.setBounds(121, 33, 86, 20);
 		anadirEmpleado.add(apellidosEmpleadoNuevo);
 		apellidosEmpleadoNuevo.setColumns(10);
@@ -1232,6 +1619,14 @@ public class Ventana {
 		anadirEmpleado.add(lblDni);
 
 		dniEmpleadoNuevo = new JTextField();
+		dniEmpleadoNuevo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (dniEmpleadoNuevo.getText().length() == 9) {
+					e.consume();
+				}
+			}
+		});
 		dniEmpleadoNuevo.setBounds(121, 58, 86, 20);
 		anadirEmpleado.add(dniEmpleadoNuevo);
 		dniEmpleadoNuevo.setColumns(10);
@@ -1241,6 +1636,17 @@ public class Ventana {
 		anadirEmpleado.add(lblTelefono);
 
 		telefono = new JTextField();
+		telefono.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (telefono.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+					e.consume();
+				}
+			}
+		});
 		telefono.setBounds(121, 83, 86, 20);
 		anadirEmpleado.add(telefono);
 		telefono.setColumns(10);
@@ -1250,6 +1656,14 @@ public class Ventana {
 		anadirEmpleado.add(lblContrasena);
 
 		passwdEmpleado = new JPasswordField();
+		passwdEmpleado.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (passwdEmpleado.getText().length() == 20) {
+					e.consume();
+				}
+			}
+		});
 		passwdEmpleado.setBounds(502, 33, 86, 20);
 		anadirEmpleado.add(passwdEmpleado);
 
@@ -1270,6 +1684,14 @@ public class Ventana {
 		anadirEmpleado.add(lblFechaNacimiento);
 
 		emailEmpleadoNuevo = new JTextField();
+		emailEmpleadoNuevo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (emailEmpleadoNuevo.getText().length() == 50) {
+					e.consume();
+				}
+			}
+		});
 		emailEmpleadoNuevo.setBounds(502, 8, 86, 20);
 		anadirEmpleado.add(emailEmpleadoNuevo);
 		emailEmpleadoNuevo.setColumns(10);
@@ -1283,6 +1705,16 @@ public class Ventana {
 		anadirEmpleado.add(lblSalario);
 
 		salarioEmpleadoNuevo = new JTextField();
+		salarioEmpleadoNuevo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-') {
+					e.consume();
+				} else if (e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		salarioEmpleadoNuevo.setBounds(502, 58, 86, 20);
 		anadirEmpleado.add(salarioEmpleadoNuevo);
 		salarioEmpleadoNuevo.setColumns(10);
@@ -1292,6 +1724,16 @@ public class Ventana {
 		anadirEmpleado.add(lblAntigedad);
 
 		antiguedadEmpleadoNuevo = new JTextField();
+		antiguedadEmpleadoNuevo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-') {
+					e.consume();
+				} else if (e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		antiguedadEmpleadoNuevo.setBounds(502, 83, 86, 20);
 		anadirEmpleado.add(antiguedadEmpleadoNuevo);
 		antiguedadEmpleadoNuevo.setColumns(10);
@@ -1317,28 +1759,37 @@ public class Ventana {
 				try {
 					String nombre = nombreEmpleadoNuevo.getText();
 					if (nombre.length() > 0 && nombre.length() <= 20) {
+						nombreEmpleadoNuevo.setBackground(Color.white);
 						String apellidos = apellidosEmpleadoNuevo.getText();
-						if (apellidos.length() > 0 && apellidos.length() <= 20) {
+						if (apellidos.length() > 0 && apellidos.length() <= 40) {
+							apellidosEmpleadoNuevo.setBackground(Color.white);
 							String dni = dniEmpleadoNuevo.getText();
 							dniValido = val.comprobarDNI(dni);
 							if (dniValido) {
+								dniEmpleadoNuevo.setBackground(Color.white);
 								String telefonoCadena = telefono.getText();
 								if (telefonoCadena.trim().length() == 9) {
+									telefono.setBackground(Color.white);
 									int telefonoInt = Integer.parseInt(telefonoCadena.trim());
 									LocalDate fechaNacimiento = calendarioAnadirEmpleado.getDate();
 									int edad = (int) Period.between(fechaNacimiento, LocalDate.now()).getYears();
 									if (edad >= 16 && edad <= 67) {
+										calendarioAnadirEmpleado.setBackground(Color.white);
 										String emailString = emailEmpleadoNuevo.getText();
 										if (emailString.length() > 0 && emailString.length() <= 50) {
 											Matcher matcher = pattern.matcher(emailString);
 											if (matcher.find()) {
+												emailEmpleadoNuevo.setBackground(Color.white);
 												String contrasena = passwdEmpleado.getText();
-												if (contrasena.length() > 0 && contrasena.length() <= 20) {
+												if (contrasena.length() >= 6 && contrasena.length() <= 20) {
+													passwdEmpleado.setBackground(Color.white);
 													double salario = Double.parseDouble(salarioEmpleadoNuevo.getText());
 													if (salario >= 900) {
+														salarioEmpleadoNuevo.setBackground(Color.white);
 														int antiguedadInt = Integer
 																.parseInt(antiguedadEmpleadoNuevo.getText());
 														if (antiguedadInt >= 0) {
+															antiguedadEmpleadoNuevo.setBackground(Color.white);
 															String tipo = (String) comboBoxTipoEmpleadoNuevo
 																	.getSelectedItem();
 															Empleados empleado = new Empleados(nombre, apellidos, dni,
@@ -1363,17 +1814,53 @@ public class Ventana {
 																JOptionPane.showMessageDialog(empleados,
 																		"No se ha podido insertar el empleado");
 															}
+														} else {
+															antiguedadEmpleadoNuevo
+																	.setBackground(new Color(240, 128, 128));
+															JOptionPane.showMessageDialog(empleados,
+																	"La antiguedad no puede ser inferior a 0");
 														}
+													} else {
+														salarioEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+														JOptionPane.showMessageDialog(empleados,
+																"El salario no puede ser inferior a 900€");
 													}
+												} else {
+													passwdEmpleado.setBackground(new Color(240, 128, 128));
+													JOptionPane.showMessageDialog(empleados,
+															"La contraseña debe tener mínimo 6 caractéres y máximo 20");
 												}
 											} else {
+												emailEmpleadoNuevo.setBackground(new Color(240, 128, 128));
 												JOptionPane.showMessageDialog(empleados, "El correo no es válido");
 											}
+										} else {
+											emailEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+											JOptionPane.showMessageDialog(empleados,
+													"El e-mail no puede estar vacío y tiene una longitud máxima de 50 caractéres");
 										}
+									} else {
+										calendarioAnadirEmpleado.setBackground(new Color(240, 128, 128));
+										JOptionPane.showMessageDialog(empleados,
+												"El empleado debe tener entre 16 y 67 años");
 									}
+								} else {
+									telefono.setBackground(new Color(240, 128, 128));
+									JOptionPane.showMessageDialog(empleados, "El teléfono debe tener 9 números");
 								}
+							} else {
+								dniEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+								JOptionPane.showMessageDialog(empleados, "El DNI introducido no es válido");
 							}
+						} else {
+							apellidosEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+							JOptionPane.showMessageDialog(empleados,
+									"La longitud de los apellidos no puede superar los 40 carácteres (espacios incluidos), ni estar vacío");
 						}
+					} else {
+						nombreEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+						JOptionPane.showMessageDialog(empleados,
+								"La longitud del nombre no puede superar los 20 carácteres ni estar vacío");
 					}
 				} catch (NumberFormatException excepcion) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
@@ -1409,6 +1896,14 @@ public class Ventana {
 		borrarActividades.add(lblCodigoDeLa);
 
 		codActividadEliminar = new JTextField();
+		codActividadEliminar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (codActividadEliminar.getText().length() == 20) {
+					e.consume();
+				}
+			}
+		});
 		codActividadEliminar.setBounds(144, 8, 86, 20);
 		borrarActividades.add(codActividadEliminar);
 		codActividadEliminar.setColumns(10);
@@ -1420,12 +1915,14 @@ public class Ventana {
 				String codigo = codActividadEliminar.getText();
 				existe = gesBBDD.actividadExiste(codigo, empleados);
 				if (existe) {
+					codActividadEliminar.setBackground(Color.white);
 					gesBBDD.eliminarActividades(codigo, empleados);
 					JOptionPane.showMessageDialog(empleados, "Actividad eliminada correctamente");
 					listaActividades = gesBBDD.mostrarActividades(empleados);
 					modelo.rellenarTabla(listaActividades, true);
 					listaActividades.clear();
 				} else {
+					codActividadEliminar.setBackground(new Color(240, 128, 128));
 					JOptionPane.showMessageDialog(empleados, "No se puede eliminar una actividad que no existe");
 				}
 			}
@@ -1454,6 +1951,14 @@ public class Ventana {
 		anadirActividades.add(lblCodigoActividad);
 
 		codigoActividad = new JTextField();
+		codigoActividad.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (codigoActividad.getText().length() == 20) {
+					e.consume();
+				}
+			}
+		});
 		codigoActividad.setBounds(140, 8, 86, 20);
 		anadirActividades.add(codigoActividad);
 		codigoActividad.setColumns(10);
@@ -1484,6 +1989,14 @@ public class Ventana {
 		anadirActividades.add(lblLocalizacion);
 
 		localizacion = new JTextField();
+		localizacion.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (localizacion.getText().length() == 80) {
+					e.consume();
+				}
+			}
+		});
 		localizacion.setBounds(140, 58, 86, 20);
 		anadirActividades.add(localizacion);
 		localizacion.setColumns(10);
@@ -1555,6 +2068,14 @@ public class Ventana {
 		anadirActividades.add(lblMedioDeTransporte);
 
 		medioTransporte = new JTextField();
+		medioTransporte.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (medioTransporte.getText().length() == 20) {
+					e.consume();
+				}
+			}
+		});
 		medioTransporte.setBounds(485, 108, 86, 20);
 		anadirActividades.add(medioTransporte);
 		medioTransporte.setColumns(10);
@@ -1571,6 +2092,9 @@ public class Ventana {
 				if ((int) spinnerAforo.getValue() < 0) {
 					spinnerAforo.setValue(0);
 					JOptionPane.showMessageDialog(empleados, "El aforo no puede ser inferior a 0");
+				} else if ((int) spinnerAforo.getValue() > 30) {
+					spinnerAforo.setValue(30);
+					JOptionPane.showMessageDialog(empleados, "El aforo no puede ser superior a 30 personas");
 				}
 			}
 		});
@@ -1594,15 +2118,6 @@ public class Ventana {
 		anadirActividades.add(dniEmpleadoActividades);
 		dniEmpleadoActividades.setColumns(10);
 
-		JLabel lblPrecio = new JLabel("Precio:");
-		lblPrecio.setBounds(10, 183, 120, 14);
-		anadirActividades.add(lblPrecio);
-
-		precioActividad = new JTextField();
-		precioActividad.setBounds(140, 180, 86, 20);
-		anadirActividades.add(precioActividad);
-		precioActividad.setColumns(10);
-
 		JButton btnInsertar = new JButton("Insertar");
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1611,20 +2126,24 @@ public class Ventana {
 				try {
 					String codActividad = codigoActividad.getText();
 					if (codActividad.length() > 0 && codActividad.length() <= 20) {
+						codigoActividad.setBackground(Color.white);
 						String tipoActividad = (String) comboBoxTipoActividad.getSelectedItem();
 						if (tipoActividad.length() > 0 && tipoActividad.length() <= 20) {
 							String localizacionString = localizacion.getText();
 							if (localizacionString.length() > 0 && localizacionString.length() <= 80) {
+								localizacion.setBackground(Color.white);
 								LocalTime horaActividad = timePicker.getTime();
 								LocalDate fechaActividad = calendario.getDate();
 								String duracionString = timePickerDuracion.getTime().toString();
-								double precioDouble = Double.parseDouble(precioActividad.getText());
 								if (!duracionString.equals("00:00")) {
+									timePickerDuracion.setBackground(Color.white);
 									String descripcionString = descripcion.getText();
 									if (descripcionString.length() > 0 && descripcionString.length() <= 300) {
+										descripcion.setBackground(Color.white);
 										String medioTransporteString = medioTransporte.getText();
 										if (medioTransporteString.length() > 0
 												&& medioTransporteString.length() <= 20) {
+											medioTransporte.setBackground(Color.white);
 											int aforo = (int) spinnerAforo.getValue();
 											String DNIEmpleado = dniEmpleadoActividades.getText();
 											dniValido = val.comprobarDNI(DNIEmpleado);
@@ -1634,7 +2153,7 @@ public class Ventana {
 												Actividades actividad = new Actividades(descripcionString,
 														tipoActividad, medioTransporteString, localizacionString,
 														codActividad, horaActividad, fechaActividad, aforo,
-														duracionString, precioDouble);
+														duracionString);
 
 												insertar = gesBBDD.insertarActividades(actividad, DNIEmpleado,
 														empleados);
@@ -1647,48 +2166,50 @@ public class Ventana {
 													localizacion.setText(null);
 													calendario.setDateToToday();
 													descripcion.setText(null);
-													medioTransporte.setText(null);
+													medioTransporte.setText("----");
 													spinnerAforo.setValue(0);
 													dniEmpleadoActividades.setText(null);
-													precioActividad.setText(null);
 													contadorCaracteres.setText("0");
 												} else {
 													JOptionPane.showMessageDialog(empleados,
 															"La actividad no ha podido ser insertada");
 												}
 											} else {
+												dniEmpleadoActividades.setBackground(new Color(240, 128, 128));
 												JOptionPane.showMessageDialog(empleados,
 														"El DNI introducido no es válido");
 											}
 										} else {
+											medioTransporte.setBackground(new Color(240, 128, 128));
 											JOptionPane.showMessageDialog(empleados,
 													"El medio de transporte debe ser inferior o igual a 20 caractéres");
 										}
 									} else {
+										descripcion.setBackground(new Color(240, 128, 128));
 										JOptionPane.showMessageDialog(empleados,
 												"La descripción debe ser inferior o igual a 300 caratéres");
 									}
 								} else {
+									timePickerDuracion.setBackground(new Color(240, 128, 128));
 									JOptionPane.showMessageDialog(empleados, "La duración debe ser superior a 00:00");
 								}
 							} else {
+								localizacion.setBackground(new Color(240, 128, 128));
 								JOptionPane.showMessageDialog(empleados,
 										"La descripción debe ser superior a 0 caractéres e inferior o igual a 80");
 							}
 						}
 					} else {
+						codigoActividad.setBackground(new Color(240, 128, 128));
 						JOptionPane.showMessageDialog(empleados,
 								"La longitud del código debe ser superior a 0 caractéres e inferior o igual a 20");
 					}
 				} catch (NumberFormatException excepcion) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcion.printStackTrace();
 				} catch (NullPointerException exception) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					exception.printStackTrace();
 				} catch (Exception excepcionGenerica) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcionGenerica.printStackTrace();
 				}
 			}
 		});
@@ -1716,6 +2237,14 @@ public class Ventana {
 		eliminarHabitaciones.add(label_9);
 
 		numHabitacionEliminar = new JTextField();
+		numHabitacionEliminar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		numHabitacionEliminar.setBounds(131, 5, 86, 20);
 		numHabitacionEliminar.setToolTipText("");
 		numHabitacionEliminar.setColumns(10);
@@ -1732,8 +2261,10 @@ public class Ventana {
 					numero = true;
 				} catch (NumberFormatException excepcion) {
 					JOptionPane.showMessageDialog(empleados, "Debes introducir un número");
+					numHabitacionEliminar.setBackground(new Color(240, 128, 128));
 				}
 				if (numero) {
+					numHabitacionEliminar.setBackground(Color.white);
 					habitacionExiste = gesBBDD.habitacionExiste(numHabitacionInt, empleados);
 					if (habitacionExiste) {
 						gesBBDD.eliminarHabitaciones(numHabitacionInt, empleados);
@@ -1744,6 +2275,8 @@ public class Ventana {
 						} catch (NullPointerException excepcion) {
 							JOptionPane.showMessageDialog(empleados, "No hay habitaciones que mostrar");
 						}
+					} else {
+						numHabitacionEliminar.setBackground(new Color(240, 128, 128));
 					}
 				}
 			}
@@ -1772,6 +2305,14 @@ public class Ventana {
 		anadirHabitaciones.add(label_3);
 
 		numHabitacionEmpleados = new JTextField();
+		numHabitacionEmpleados.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		numHabitacionEmpleados.setToolTipText("");
 		numHabitacionEmpleados.setColumns(10);
 		numHabitacionEmpleados.setBounds(146, 14, 116, 22);
@@ -1782,6 +2323,18 @@ public class Ventana {
 		anadirHabitaciones.add(label_4);
 
 		JSpinner numBanosEmpleados = new JSpinner();
+		numBanosEmpleados.setValue(1);
+		numBanosEmpleados.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if ((int) numBanosEmpleados.getValue() > 2) {
+					JOptionPane.showMessageDialog(empleados, "El número de baños no puede ser superior a 2");
+					numBanosEmpleados.setValue(2);
+				} else if ((int) numBanosEmpleados.getValue() < 1) {
+					JOptionPane.showMessageDialog(empleados, "El número de baños no puede ser inferior a 1");
+					numBanosEmpleados.setValue(1);
+				}
+			}
+		});
 		numBanosEmpleados.setBounds(146, 43, 116, 22);
 		anadirHabitaciones.add(numBanosEmpleados);
 
@@ -1790,6 +2343,18 @@ public class Ventana {
 		anadirHabitaciones.add(label_5);
 
 		JSpinner numCamasEmpleados = new JSpinner();
+		numCamasEmpleados.setValue(1);
+		numCamasEmpleados.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if ((int) numCamasEmpleados.getValue() > 4) {
+					JOptionPane.showMessageDialog(empleados, "El número de camas no puede ser superior a 4");
+					numCamasEmpleados.setValue(4);
+				} else if ((int) numCamasEmpleados.getValue() < 1) {
+					JOptionPane.showMessageDialog(empleados, "El número de camas no puede ser inferior a 1");
+					numCamasEmpleados.setValue(1);
+				}
+			}
+		});
 		numCamasEmpleados.setBounds(146, 75, 116, 22);
 		anadirHabitaciones.add(numCamasEmpleados);
 
@@ -1830,6 +2395,20 @@ public class Ventana {
 		anadirHabitaciones.add(label_7);
 
 		superficieHabitacionEmpleados = new JTextField();
+		superficieHabitacionEmpleados.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (superficieHabitacionEmpleados.getText().length() == 2) {
+					JOptionPane.showMessageDialog(empleados, "La superficie no puede ser mayor a 99 m\u00B2");
+					e.consume();
+				}
+				if (e.getKeyChar() == '-') {
+					e.consume();
+				} else if (e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		superficieHabitacionEmpleados.setColumns(10);
 		superficieHabitacionEmpleados.setBounds(146, 133, 116, 22);
 		anadirHabitaciones.add(superficieHabitacionEmpleados);
@@ -1839,6 +2418,14 @@ public class Ventana {
 		anadirHabitaciones.add(label_8);
 
 		precioHabitacionesEmpleados = new JTextField();
+		precioHabitacionesEmpleados.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+			}
+		});
 		precioHabitacionesEmpleados.setColumns(10);
 		precioHabitacionesEmpleados.setBounds(472, 11, 116, 22);
 		anadirHabitaciones.add(precioHabitacionesEmpleados);
@@ -1996,7 +2583,7 @@ public class Ventana {
 		JButton btnEliminarHabitaciones = new JButton("Eliminar habitaciones");
 		btnEliminarHabitaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				anadirHabitaciones.setVisible(true);
+				anadirHabitaciones.setVisible(false);
 				eliminarHabitaciones.setVisible(true);
 				anadirActividades.setVisible(false);
 				borrarActividades.setVisible(false);
@@ -2158,7 +2745,6 @@ public class Ventana {
 		empleados.add(btnMostrarMovimientos);
 
 		JButton btnModificarDatosPersonales = new JButton("Modificar datos personales");
-		btnModificarDatosPersonales.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnModificarDatosPersonales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				anadirHabitaciones.setVisible(false);
@@ -2178,9 +2764,16 @@ public class Ventana {
 		JButton btnMostrarReservas = new JButton("Mostrar reservas");
 		btnMostrarReservas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listaReservas = gesBBDD.mostrarReservas();
-				modelo.rellenarTabla(listaReservas, true);
-				listaReservas.clear();
+				anadirHabitaciones.setVisible(false);
+				eliminarHabitaciones.setVisible(false);
+				anadirActividades.setVisible(false);
+				borrarActividades.setVisible(false);
+				anadirEmpleado.setVisible(false);
+				borrarEmpleado.setVisible(false);
+				modificarHabitaciones.setVisible(false);
+				modificarActividades.setVisible(false);
+				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(true);
 			}
 		});
 		btnMostrarReservas.setBounds(10, 444, 214, 23);
@@ -2223,6 +2816,43 @@ public class Ventana {
 						if (tipoEmpleado.trim().equalsIgnoreCase("gerente")) {
 							frmHotel.setTitle("Hotel: Gerente");
 							lblTipo.setText(lblTipo.getText() + " Gerente");
+						} else if (tipoEmpleado.equalsIgnoreCase("administrativo de recepción")) {
+							frmHotel.setTitle("Hotel: Admin. de recepción");
+							lblTipo.setText(lblTipo.getText() + " Admin. de recepción");
+							btnAnadirActividades.setEnabled(false);
+							btnBorrarActividades.setEnabled(false);
+							btnModificarActividades.setEnabled(false);
+							btnMostrarActividades.setEnabled(false);
+							btnAnadirEmpleado.setEnabled(false);
+							btnBorrarEmpleado.setEnabled(false);
+							btnMostrarEmpleados.setEnabled(false);
+							btnMostrarMovimientos.setEnabled(false);
+						} else if (tipoEmpleado.equalsIgnoreCase("conserje")) {
+							frmHotel.setTitle("Hotel: Conserje");
+							lblTipo.setText(lblTipo.getText() + " Conserje");
+							btnAnadirHabitaciones.setEnabled(false);
+							btnEliminarHabitaciones.setEnabled(false);
+							btnMostrarHabitaciones.setEnabled(false);
+							btnModificarHabitaciones.setEnabled(false);
+							btnAnadirEmpleado.setEnabled(false);
+							btnBorrarEmpleado.setEnabled(false);
+							btnMostrarEmpleados.setEnabled(false);
+							btnMostrarMovimientos.setEnabled(false);
+							btnMostrarReservas.setEnabled(false);
+							btnMostrarClientes.setEnabled(false);
+						} else if (tipoEmpleado.equalsIgnoreCase("recepcionista")) {
+							frmHotel.setTitle("Hotel: Recepcionista");
+							lblTipo.setText(lblTipo.getText() + " Recepcionista");
+							btnAnadirHabitaciones.setEnabled(false);
+							btnEliminarHabitaciones.setEnabled(false);
+							btnModificarHabitaciones.setEnabled(false);
+							btnAnadirEmpleado.setEnabled(false);
+							btnBorrarEmpleado.setEnabled(false);
+							btnMostrarEmpleados.setEnabled(false);
+							btnMostrarMovimientos.setEnabled(false);
+							btnAnadirActividades.setEnabled(false);
+							btnBorrarActividades.setEnabled(false);
+							btnModificarActividades.setEnabled(false);
 						}
 					} else {
 						idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena);
@@ -2241,6 +2871,20 @@ public class Ventana {
 		JButton btnCerrarSesionEmpleados = new JButton("Cerrar sesi\u00F3n");
 		btnCerrarSesionEmpleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				btnAnadirHabitaciones.setEnabled(true);
+				btnEliminarHabitaciones.setEnabled(true);
+				btnMostrarHabitaciones.setEnabled(true);
+				btnAnadirActividades.setEnabled(true);
+				btnBorrarActividades.setEnabled(true);
+				btnModificarActividades.setEnabled(true);
+				btnMostrarActividades.setEnabled(true);
+				btnModificarHabitaciones.setEnabled(true);
+				btnAnadirEmpleado.setEnabled(true);
+				btnBorrarEmpleado.setEnabled(true);
+				btnMostrarEmpleados.setEnabled(true);
+				btnMostrarMovimientos.setEnabled(true);
+				btnMostrarReservas.setEnabled(true);
+				btnMostrarClientes.setEnabled(true);
 				anadirHabitaciones.setVisible(false);
 				eliminarHabitaciones.setVisible(false);
 				modelo.vaciarTabla();

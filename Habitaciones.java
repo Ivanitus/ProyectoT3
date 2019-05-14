@@ -17,6 +17,15 @@ public class Habitaciones implements Tableable {
 	 */
 	protected Habitaciones() {
 	}
+	
+	/**
+	 * @param tipo
+	 * @param numero_habitacion
+	 */
+	protected Habitaciones(String tipo, int numero_habitacion) {
+		this.tipo = tipo;
+		this.numero_habitacion = numero_habitacion;
+	}
 
 	/**
 	 * @param superficie

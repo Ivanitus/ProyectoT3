@@ -21,6 +21,17 @@ public abstract class Personas implements Tableable {
 	 * @param nombre
 	 * @param apellidos
 	 * @param dni
+	 */
+	protected Personas(String nombre, String apellidos, String dni) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.dni = dni;
+	}
+
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
 	 * @param telefono
 	 * @param edad
 	 * @param email
