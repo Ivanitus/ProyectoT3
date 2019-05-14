@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 import javax.swing.JRadioButton;
 import java.awt.Font;
 import javax.swing.BoxLayout;
+import java.awt.Toolkit;
 
 public class Ventana {
 
@@ -129,8 +130,9 @@ public class Ventana {
 		TableableModel modelo = new TableableModel();
 
 		frmHotel = new JFrame();
+		frmHotel.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\icamp\\workspace_jee\\ProyectoT3\\src\\logos\\logoJava.png"));
 		frmHotel.setResizable(false);
-		frmHotel.setTitle("Hotel");
+		frmHotel.setTitle("Hotel River Camps");
 		frmHotel.setBounds(100, 100, 848, 619);
 		frmHotel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmHotel.getContentPane().setLayout(null);
@@ -2862,10 +2864,10 @@ public class Ventana {
 						nombreEmpleado = empleado.getNombre() + " " + empleado.getApellidos();
 						lblBienvenido.setText(lblBienvenido.getText() + " " + nombreEmpleado);
 						if (tipoEmpleado.trim().equalsIgnoreCase("gerente")) {
-							frmHotel.setTitle("Hotel: Gerente");
+							frmHotel.setTitle("Hotel River Camps: Gerente");
 							lblTipo.setText(lblTipo.getText() + " Gerente");
 						} else if (tipoEmpleado.equalsIgnoreCase("administrativo de recepción")) {
-							frmHotel.setTitle("Hotel: Admin. de recepción");
+							frmHotel.setTitle("Hotel River Camps: Admin. de recepción");
 							lblTipo.setText(lblTipo.getText() + " Admin. de recepción");
 							btnAnadirActividades.setEnabled(false);
 							btnBorrarActividades.setEnabled(false);
@@ -2876,7 +2878,7 @@ public class Ventana {
 							btnMostrarEmpleados.setEnabled(false);
 							btnMostrarMovimientos.setEnabled(false);
 						} else if (tipoEmpleado.equalsIgnoreCase("conserje")) {
-							frmHotel.setTitle("Hotel: Conserje");
+							frmHotel.setTitle("Hotel River Camps: Conserje");
 							lblTipo.setText(lblTipo.getText() + " Conserje");
 							btnAnadirHabitaciones.setEnabled(false);
 							btnEliminarHabitaciones.setEnabled(false);
@@ -2889,7 +2891,7 @@ public class Ventana {
 							btnMostrarReservas.setEnabled(false);
 							btnMostrarClientes.setEnabled(false);
 						} else if (tipoEmpleado.equalsIgnoreCase("recepcionista")) {
-							frmHotel.setTitle("Hotel: Recepcionista");
+							frmHotel.setTitle("Hotel River Camps: Recepcionista");
 							lblTipo.setText(lblTipo.getText() + " Recepcionista");
 							btnAnadirHabitaciones.setEnabled(false);
 							btnEliminarHabitaciones.setEnabled(false);
@@ -2939,7 +2941,7 @@ public class Ventana {
 				empleados.setVisible(false);
 				lblBienvenido.setText("Bienvenido");
 				lblTipo.setText("Tipo:");
-				frmHotel.setTitle("Hotel");
+				frmHotel.setTitle("Hotel River Camps");
 				email.setText(null);
 				passwd.setText(null);
 				JOptionPane.showMessageDialog(frmHotel, "Has cerrado sesión correctamente");
