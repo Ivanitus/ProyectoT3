@@ -174,7 +174,7 @@ public class Ventana {
 		email.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (email.getText().length()==50) {
+				if (email.getText().length() == 50) {
 					e.consume();
 				}
 			}
@@ -191,7 +191,7 @@ public class Ventana {
 		passwd.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (passwd.getText().length()==20) {
+				if (passwd.getText().length() == 20) {
 					e.consume();
 				}
 			}
@@ -266,7 +266,7 @@ public class Ventana {
 		nombreEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (nombreEmpleadoModificar.getText().length()==20) {
+				if (nombreEmpleadoModificar.getText().length() == 20) {
 					e.consume();
 				}
 			}
@@ -280,7 +280,7 @@ public class Ventana {
 		apellidosEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (apellidosEmpleadoModificar.getText().length()==40) {
+				if (apellidosEmpleadoModificar.getText().length() == 40) {
 					e.consume();
 				}
 			}
@@ -294,10 +294,14 @@ public class Ventana {
 		telefonoEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (telefonoEmpleadoModificar.getText().length()==9) {
+				if (telefonoEmpleadoModificar.getText().length() == 9) {
 					e.consume();
 				}
-				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -311,7 +315,7 @@ public class Ventana {
 		passwordFieldEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (passwordFieldEmpleadoModificar.getText().length()==20) {
+				if (passwordFieldEmpleadoModificar.getText().length() == 20) {
 					e.consume();
 				}
 			}
@@ -341,7 +345,7 @@ public class Ventana {
 		textFieldEmailModificarEmpleado.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (textFieldEmailModificarEmpleado.getText().length()==50) {
+				if (textFieldEmailModificarEmpleado.getText().length() == 50) {
 					e.consume();
 				}
 			}
@@ -355,9 +359,11 @@ public class Ventana {
 		textFieldSalarioEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar() == '_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -371,9 +377,11 @@ public class Ventana {
 		textFieldAntiguedadEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar() == '_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -537,6 +545,7 @@ public class Ventana {
 				String datoNuevo = "";
 				boolean modificarValido = false;
 				boolean modificar = false;
+				boolean emailValido = false;
 				if (rdbtnNombre.isSelected()) {
 					tipoPersona = "persona";
 				} else if (rdbtnApellidos.isSelected()) {
@@ -598,10 +607,8 @@ public class Ventana {
 								} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
 									opcion = "email";
 									datoNuevo = textFieldEmailModificarEmpleado.getText();
-									Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-											+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-									Matcher matcher = pattern.matcher(datoNuevo);
-									if (matcher.find()) {
+									emailValido = val.comprobarEmail(datoNuevo);
+									if (emailValido) {
 										if (datoNuevo.length() > 0 && datoNuevo.length() <= 50) {
 											modificarValido = true;
 										} else {
@@ -745,7 +752,7 @@ public class Ventana {
 		descripcionModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (descripcionModificar.getText().length()==300) {
+				if (descripcionModificar.getText().length() == 300) {
 					e.consume();
 				}
 			}
@@ -765,7 +772,7 @@ public class Ventana {
 		medioTransporteActividadModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (medioTransporteActividadModificar.getText().length()==20) {
+				if (medioTransporteActividadModificar.getText().length() == 20) {
 					e.consume();
 				}
 			}
@@ -779,7 +786,7 @@ public class Ventana {
 		localizacionActividadModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (localizacionActividadModificar.getText().length()==80) {
+				if (localizacionActividadModificar.getText().length() == 80) {
 					e.consume();
 				}
 			}
@@ -793,10 +800,10 @@ public class Ventana {
 		codigoActividadModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (codigoActividadModificar.getText().length()==20) {
+				if (codigoActividadModificar.getText().length() == 20) {
 					e.consume();
 				}
-				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -822,7 +829,7 @@ public class Ventana {
 				if ((int) aforoModificarActividades.getValue() < 0) {
 					aforoModificarActividades.setValue(0);
 					JOptionPane.showMessageDialog(empleados, "El aforo no puede ser inferior a 0");
-				} else if ((int) aforoModificarActividades.getValue()>30) {
+				} else if ((int) aforoModificarActividades.getValue() > 30) {
 					aforoModificarActividades.setValue(30);
 					JOptionPane.showMessageDialog(empleados, "El aforo no puede ser superior a 30 personas");
 				}
@@ -841,10 +848,10 @@ public class Ventana {
 		codigoActividadAModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (codigoActividadAModificar.getText().length()==20) {
+				if (codigoActividadAModificar.getText().length() == 20) {
 					e.consume();
 				}
-				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1150,9 +1157,11 @@ public class Ventana {
 					JOptionPane.showMessageDialog(empleados, "La superficie no puede ser mayor a 99 m\u00B2");
 					e.consume();
 				}
-				if (e.getKeyChar() == '-') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar() == '_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1200,7 +1209,11 @@ public class Ventana {
 		numHabitacionModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1214,7 +1227,11 @@ public class Ventana {
 		precioHabitacionesModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1374,7 +1391,11 @@ public class Ventana {
 		numHabitacionAModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1639,10 +1660,11 @@ public class Ventana {
 		telefono.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (telefono.getText().length() == 9) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				}
-				if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1708,9 +1730,11 @@ public class Ventana {
 		salarioEmpleadoNuevo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar() == '_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1727,9 +1751,11 @@ public class Ventana {
 		antiguedadEmpleadoNuevo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar() == '_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -1752,8 +1778,7 @@ public class Ventana {
 		JButton btnInsertar_1 = new JButton("Insertar");
 		btnInsertar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+				boolean emailValido = false;
 				boolean insertar = false;
 				boolean dniValido = false;
 				try {
@@ -1777,8 +1802,8 @@ public class Ventana {
 										calendarioAnadirEmpleado.setBackground(Color.white);
 										String emailString = emailEmpleadoNuevo.getText();
 										if (emailString.length() > 0 && emailString.length() <= 50) {
-											Matcher matcher = pattern.matcher(emailString);
-											if (matcher.find()) {
+											emailValido = val.comprobarEmail(emailString);
+											if (emailValido) {
 												emailEmpleadoNuevo.setBackground(Color.white);
 												String contrasena = passwdEmpleado.getText();
 												if (contrasena.length() >= 6 && contrasena.length() <= 20) {
@@ -2240,7 +2265,11 @@ public class Ventana {
 		numHabitacionEliminar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -2308,7 +2337,11 @@ public class Ventana {
 		numHabitacionEmpleados.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -2402,9 +2435,11 @@ public class Ventana {
 					JOptionPane.showMessageDialog(empleados, "La superficie no puede ser mayor a 99 m\u00B2");
 					e.consume();
 				}
-				if (e.getKeyChar() == '-') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar() == '_') {
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -2421,7 +2456,11 @@ public class Ventana {
 		precioHabitacionesEmpleados.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+					e.consume();
+				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
 					e.consume();
 				}
 			}
@@ -2575,6 +2614,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnAnadirHabitaciones.setBounds(10, 36, 214, 23);
@@ -2592,6 +2632,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnEliminarHabitaciones.setBounds(10, 70, 214, 23);
@@ -2620,6 +2661,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnAnadirActividades.setBounds(10, 172, 214, 23);
@@ -2637,6 +2679,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnBorrarActividades.setBounds(10, 206, 214, 23);
@@ -2654,6 +2697,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(true);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnModificarActividades.setBounds(10, 240, 214, 23);
@@ -2682,6 +2726,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(true);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnModificarHabitaciones.setBounds(10, 104, 214, 23);
@@ -2699,6 +2744,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnAnadirEmpleado.setBounds(10, 308, 214, 23);
@@ -2716,6 +2762,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnBorrarEmpleado.setBounds(10, 342, 214, 23);
@@ -2756,6 +2803,7 @@ public class Ventana {
 				modificarHabitaciones.setVisible(false);
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(true);
+				mostrarReservas.setVisible(false);
 			}
 		});
 		btnModificarDatosPersonales.setBounds(10, 512, 214, 23);
