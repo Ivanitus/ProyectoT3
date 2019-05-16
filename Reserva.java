@@ -17,6 +17,16 @@ public class Reserva implements Tableable {
 	/**
 	 * @param fecha_entrada
 	 * @param fecha_salida
+	 */
+	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida) {
+		super();
+		this.fecha_entrada = fecha_entrada;
+		this.fecha_salida = fecha_salida;
+	}
+
+	/**
+	 * @param fecha_entrada
+	 * @param fecha_salida
 	 * @param numPersonas
 	 */
 	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida, int numPersonas) {

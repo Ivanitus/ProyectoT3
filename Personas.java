@@ -171,9 +171,8 @@ public abstract class Personas implements Tableable {
 	@Override
 	public String[] getHeader() {
 		return null;
-		
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 

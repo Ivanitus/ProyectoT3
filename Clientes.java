@@ -2,8 +2,7 @@ import d_tablas.Tableable;
 
 public class Clientes extends Personas implements Tableable {
 	private String interes;
-	
-	
+
 	/**
 	 * @param nombre
 	 * @param apellidos
@@ -69,7 +68,7 @@ public class Clientes extends Personas implements Tableable {
 		String[] header = { "NOMBRE", "APELLIDOS", "DNI", "TELEFONO", "EDAD", "E-MAIL", "INTERES" };
 		return header;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 

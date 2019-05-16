@@ -14,13 +14,13 @@ public class Actividades implements Tableable {
 	private int aforo;
 	private String duracion;
 	private int aforoRestante;
-	
+
 	/**
 	 * 
 	 */
 	protected Actividades() {
 	}
-	
+
 	/**
 	 * @param tipo
 	 * @param localizacion
@@ -58,6 +58,19 @@ public class Actividades implements Tableable {
 		this.fecha = fecha;
 		this.aforo = aforo;
 		this.duracion = duracion;
+	}
+
+	/**
+	 * @param tipo
+	 * @param localizacion
+	 * @param codigo
+	 */
+	protected Actividades(String descripcion, String tipo, String localizacion, String codigo) {
+		super();
+		this.descripcion = descripcion;
+		this.tipo = tipo;
+		this.localizacion = localizacion;
+		this.codigo = codigo;
 	}
 
 	/**
@@ -185,7 +198,7 @@ public class Actividades implements Tableable {
 	protected void setDuracion(String duracion) {
 		this.duracion = duracion;
 	}
-	
+
 	/**
 	 * @return the aforoRestante
 	 */
