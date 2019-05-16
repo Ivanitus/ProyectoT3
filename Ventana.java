@@ -212,11 +212,11 @@ public class Ventana {
 
 		JLabel label = new JLabel("Iniciar Sesi\u00F3n");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setBounds(410, 171, 100, 16);
+		label.setBounds(371, 171, 100, 16);
 		inicio.add(label);
 
 		JLabel label_1 = new JLabel("E-mail:");
-		label_1.setBounds(314, 210, 56, 16);
+		label_1.setBounds(290, 210, 56, 16);
 		inicio.add(label_1);
 
 		email = new JTextField();
@@ -229,11 +229,11 @@ public class Ventana {
 			}
 		});
 		email.setColumns(10);
-		email.setBounds(391, 207, 196, 22);
+		email.setBounds(370, 207, 196, 22);
 		inicio.add(email);
 
 		JLabel label_2 = new JLabel("Contrase\u00F1a:");
-		label_2.setBounds(314, 248, 75, 16);
+		label_2.setBounds(290, 248, 75, 16);
 		inicio.add(label_2);
 
 		passwd = new JPasswordField();
@@ -245,11 +245,11 @@ public class Ventana {
 				}
 			}
 		});
-		passwd.setBounds(391, 245, 196, 22);
+		passwd.setBounds(370, 245, 196, 22);
 		inicio.add(passwd);
 
 		JButton iniciarSesion = new JButton("Iniciar Sesi\u00F3n");
-		iniciarSesion.setBounds(314, 288, 116, 25);
+		iniciarSesion.setBounds(290, 288, 116, 25);
 		inicio.add(iniciarSesion);
 
 		JLabel lblBienvenidoEmpleados = new JLabel("Bienvenido");
@@ -2726,6 +2726,9 @@ public class Ventana {
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
 				mostrarReservas.setVisible(false);
+				listaHabitaciones = gesBBDD.mostrarHabitaciones();
+				modelo.rellenarTabla(listaHabitaciones, true);
+				listaHabitaciones.clear();
 			}
 		});
 		btnEliminarHabitaciones.setBounds(10, 70, 214, 23);
@@ -2773,6 +2776,9 @@ public class Ventana {
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
 				mostrarReservas.setVisible(false);
+				listaActividades = gesBBDD.mostrarActividades(empleados);
+				modelo.rellenarTabla(listaActividades, true);
+				listaActividades.clear();
 			}
 		});
 		btnBorrarActividades.setBounds(10, 206, 214, 23);
@@ -2791,6 +2797,9 @@ public class Ventana {
 				modificarActividades.setVisible(true);
 				modificarDatosPersonalesEmpleados.setVisible(false);
 				mostrarReservas.setVisible(false);
+				listaActividades = gesBBDD.mostrarActividades(empleados);
+				modelo.rellenarTabla(listaActividades, true);
+				listaActividades.clear();
 			}
 		});
 		btnModificarActividades.setBounds(10, 240, 214, 23);
@@ -2820,6 +2829,9 @@ public class Ventana {
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
 				mostrarReservas.setVisible(false);
+				listaHabitaciones = gesBBDD.mostrarHabitaciones();
+				modelo.rellenarTabla(listaHabitaciones, true);
+				listaHabitaciones.clear();
 			}
 		});
 		btnModificarHabitaciones.setBounds(10, 104, 214, 23);
@@ -3925,6 +3937,7 @@ public class Ventana {
 				String datoNuevo = "";
 				boolean modificarValidado = true;
 				boolean modificar = false;
+				boolean emailValido=false;
 				String dni = "";
 
 				if (rdbtnMoNombre.isSelected()) {
@@ -3969,7 +3982,13 @@ public class Ventana {
 							datoNuevo = modificarClave.getText();
 						} else if (rdbtnMoEmail.isSelected()) {
 							opcion = "email";
-							datoNuevo = modificarEmail.getText();
+							emailValido = val.comprobarEmail(modificarEmail.getText());
+							if (emailValido) {
+								datoNuevo=modificarEmail.getText();
+								email.setText(datoNuevo);
+							} else {
+								JOptionPane.showMessageDialog(clientes, "El e-mail introducido no es válido");
+							}
 						} else if (rdbtnMoInteres.isSelected()) {
 							opcion = "interes";
 							datoNuevo = modificarInteres.getText();
@@ -4656,7 +4675,7 @@ public class Ventana {
 
 			}
 		});
-		Registrarse.setBounds(471, 288, 116, 25);
+		Registrarse.setBounds(449, 288, 116, 25);
 		inicio.add(Registrarse);
 
 		JButton entrarComoInvitado = new JButton("Entrar Como Invitado");
@@ -4668,7 +4687,7 @@ public class Ventana {
 				clientes.setVisible(false);
 			}
 		});
-		entrarComoInvitado.setBounds(314, 324, 275, 23);
+		entrarComoInvitado.setBounds(290, 324, 275, 23);
 		inicio.add(entrarComoInvitado);
 
 		iniciarSesion.addActionListener(new ActionListener() {
@@ -4760,6 +4779,14 @@ public class Ventana {
 				btnMostrarClientes.setEnabled(true);
 				anadirHabitaciones.setVisible(false);
 				eliminarHabitaciones.setVisible(false);
+				anadirActividades.setVisible(false);
+				borrarActividades.setVisible(false);
+				anadirEmpleado.setVisible(false);
+				borrarEmpleado.setVisible(false);
+				modificarHabitaciones.setVisible(false);
+				modificarActividades.setVisible(false);
+				modificarDatosPersonalesEmpleados.setVisible(false);
+				mostrarReservas.setVisible(false);
 				modelo.vaciarTabla();
 				empleados.setVisible(false);
 				lblBienvenidoEmpleados.setText("Bienvenido");
