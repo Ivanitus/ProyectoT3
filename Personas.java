@@ -1,4 +1,6 @@
-public abstract class Personas {
+import d_tablas.Tableable;
+
+public abstract class Personas implements Tableable {
 
 	protected String nombre;
 	protected String apellidos;
@@ -13,6 +15,35 @@ public abstract class Personas {
 	 */
 	protected Personas() {
 
+	}
+
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
+	 * @param telefono
+	 * @param edad
+	 * @param email
+	 */
+	protected Personas(String nombre, String apellidos, String dni, int telefono, int edad, String email) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.dni = dni;
+		this.telefono = telefono;
+		this.edad = edad;
+		this.email = email;
+	}
+
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
+	 */
+	protected Personas(String nombre, String apellidos, String dni) {
+		super();
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.dni = dni;
 	}
 
 	/**
@@ -131,6 +162,17 @@ public abstract class Personas {
 	 */
 	protected void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Override
+	public Object[] getData() {
+		return null;
+	}
+
+	@Override
+	public String[] getHeader() {
+		return null;
+
 	}
 
 	/*

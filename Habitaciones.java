@@ -19,6 +19,16 @@ public class Habitaciones implements Tableable {
 	}
 
 	/**
+	 * @param tipo
+	 * @param numero_habitacion
+	 */
+	protected Habitaciones(String tipo, int numero_habitacion) {
+		super();
+		this.tipo = tipo;
+		this.numero_habitacion = numero_habitacion;
+	}
+
+	/**
 	 * @param superficie
 	 * @param numero_banos
 	 * @param camas
@@ -28,6 +38,7 @@ public class Habitaciones implements Tableable {
 	 * @param matrimonio
 	 * @param terraza
 	 */
+
 	protected Habitaciones(String superficie, String tipo, int numero_banos, int camas, int numero_habitacion,
 			double precio_habitaciones, boolean jacuzzi, boolean matrimonio, boolean terraza) {
 		this.superficie = superficie;
