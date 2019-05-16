@@ -45,9 +45,10 @@ public class EntradaSalida {
 		 * numero_habitacion = sc.nextInt(); sc.nextLine();
 		 * System.out.println("Introduce el precio de la habitacion: ");
 		 * precio_habitaciones = sc.nextDouble(); sc.nextLine();
-		 * System.out.println("¿Tiene jacuzzi? (si/no)"); jacuzziCadena = sc.nextLine();
-		 * System.out.println("¿Tiene cama de matrimonio? (si/no)"); matrimonioCadena =
-		 * sc.nextLine(); System.out.println("¿Tiene terraza? (si/no)"); terrazaCadena =
+		 * System.out.println("¿Tiene jacuzzi? (si/no)"); jacuzziCadena =
+		 * sc.nextLine(); System.out.println("¿Tiene cama de matrimonio? (si/no)");
+		 * matrimonioCadena = sc.nextLine();
+		 * System.out.println("¿Tiene terraza? (si/no)"); terrazaCadena =
 		 * sc.nextLine(); if (jacuzziCadena.trim().equalsIgnoreCase("si")) { jacuzzi =
 		 * true; } else if (jacuzziCadena.trim().equalsIgnoreCase("no")) { jacuzzi =
 		 * false; } if (matrimonioCadena.trim().equalsIgnoreCase("si")) { matrimonio =
@@ -74,15 +75,15 @@ public class EntradaSalida {
 		String fechaSalida = sc.nextLine();
 		LocalDate fechaEntradaLocalDate = LocalDate.parse(fechaEntrada, formatter);
 		LocalDate fechaSalidaLocalDate = LocalDate.parse(fechaSalida, formatter);
-		int diasRestantes=Period.between(fechaEntradaLocalDate, fechaSalidaLocalDate).getDays();
+		int diasRestantes = Period.between(fechaEntradaLocalDate, fechaSalidaLocalDate).getDays();
 		System.out.println(diasRestantes);
-		Reserva reservaNueva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate,2);
+		Reserva reservaNueva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate, 2);
 		System.out.println("Introduce el numero de la habitacion: ");
 		numero_habitacion = sc.nextInt();
 		sc.nextLine();
 		disponible = gesBBDD.comprobarDisponibilidadHabitaciones(numero_habitacion, reservaNueva);
 		if (disponible) {
-			gesBBDD.reservarHabitaciones(numero_habitacion, "97647185H", reservaNueva);
+			// gesBBDD.reservarHabitaciones(numero_habitacion, "97647185H", reservaNueva);
 		} else {
 			System.out.println("No es posible hacer la reserva");
 		}

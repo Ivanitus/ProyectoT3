@@ -1,6 +1,8 @@
 import java.time.*;
 
-public class Reserva {
+import d_tablas.Tableable;
+
+public class Reserva implements Tableable {
 	private LocalDate fecha_entrada;
 	private LocalDate fecha_salida;
 	private double precioReserva;
@@ -15,14 +17,24 @@ public class Reserva {
 	/**
 	 * @param fecha_entrada
 	 * @param fecha_salida
+	 */
+	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida) {
+		super();
+		this.fecha_entrada = fecha_entrada;
+		this.fecha_salida = fecha_salida;
+	}
+
+	/**
+	 * @param fecha_entrada
+	 * @param fecha_salida
 	 * @param numPersonas
 	 */
 	protected Reserva(LocalDate fecha_entrada, LocalDate fecha_salida, int numPersonas) {
-		this.fecha_entrada=fecha_entrada;
-		this.fecha_salida=fecha_salida;
-		this.numPersonas=numPersonas;
+		this.fecha_entrada = fecha_entrada;
+		this.fecha_salida = fecha_salida;
+		this.numPersonas = numPersonas;
 	}
-  
+
 	/**
 	 * @param fecha_entrada
 	 * @param fecha_salida
@@ -90,6 +102,18 @@ public class Reserva {
 	 */
 	protected void setNumPersonas(int numPersonas) {
 		this.numPersonas = numPersonas;
+	}
+
+	@Override
+	public Object[] getData() {
+		Object[] data = { fecha_entrada, fecha_salida, precioReserva, numPersonas };
+		return data;
+	}
+
+	@Override
+	public String[] getHeader() {
+		String[] header = { "F. ENTRADA", "F. SALIDA", "PRECIO", "NUM. PERSONAS" };
+		return header;
 	}
 
 	/*

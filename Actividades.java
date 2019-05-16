@@ -1,16 +1,18 @@
 import java.time.*;
 
-public class Actividades {
+import d_tablas.Tableable;
+
+public class Actividades implements Tableable {
 
 	private String descripcion;
 	private String tipo;
 	private String medio_transporte;
 	private String localizacion;
 	private String codigo;
-	private LocalDate hora;
+	private LocalTime hora;
 	private LocalDate fecha;
 	private int aforo;
-	private int duracion;
+	private String duracion;
 
 	/**
 	 * 
@@ -30,7 +32,7 @@ public class Actividades {
 	 * @param duracion
 	 */
 	protected Actividades(String descripcion, String tipo, String medio_transporte, String localizacion, String codigo,
-			LocalDate hora, LocalDate fecha, int aforo, int duracion) {
+			LocalTime hora, LocalDate fecha, int aforo, String duracion) {
 		this.descripcion = descripcion;
 		this.tipo = tipo;
 		this.medio_transporte = medio_transporte;
@@ -40,6 +42,19 @@ public class Actividades {
 		this.fecha = fecha;
 		this.aforo = aforo;
 		this.duracion = duracion;
+	}
+
+	/**
+	 * @param tipo
+	 * @param localizacion
+	 * @param codigo
+	 */
+	protected Actividades(String descripcion, String tipo, String localizacion, String codigo) {
+		super();
+		this.descripcion = descripcion;
+		this.tipo = tipo;
+		this.localizacion = localizacion;
+		this.codigo = codigo;
 	}
 
 	/**
@@ -115,14 +130,14 @@ public class Actividades {
 	/**
 	 * @return the hora
 	 */
-	protected LocalDate getHora() {
+	protected LocalTime getHora() {
 		return hora;
 	}
 
 	/**
 	 * @param hora the hora to set
 	 */
-	protected void setHora(LocalDate hora) {
+	protected void setHora(LocalTime hora) {
 		this.hora = hora;
 	}
 
@@ -157,15 +172,28 @@ public class Actividades {
 	/**
 	 * @return the duracion
 	 */
-	protected int getDuracion() {
+	protected String getDuracion() {
 		return duracion;
 	}
 
 	/**
 	 * @param duracion the duracion to set
 	 */
-	protected void setDuracion(int duracion) {
+	protected void setDuracion(String duracion) {
 		this.duracion = duracion;
+	}
+
+	@Override
+	public Object[] getData() {
+		Object[] data = { codigo, tipo, localizacion, hora, fecha, duracion, descripcion, medio_transporte, aforo };
+		return data;
+	}
+
+	@Override
+	public String[] getHeader() {
+		String[] header = { "CODIGO", "TIPO", "LOCALIZACION", "HORA", "FECHA", "DURACION", "DESCRIPCION",
+				"MEDIO TRANSPORTE", "AFORO" };
+		return header;
 	}
 
 	/*

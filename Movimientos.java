@@ -1,7 +1,9 @@
 import java.time.*;
 
-public class Movimientos {
-	private double cantidad; //dinero
+import d_tablas.Tableable;
+
+public class Movimientos implements Tableable {
+	private double cantidad; // dinero
 	private LocalDate fecha;
 
 	/**
@@ -47,6 +49,18 @@ public class Movimientos {
 		this.fecha = fecha;
 	}
 
+	@Override
+	public Object[] getData() {
+		Object[] data = { cantidad, fecha };
+		return data;
+	}
+
+	@Override
+	public String[] getHeader() {
+		String[] header = { "CANTIDAD", "FECHA" };
+		return header;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -56,8 +70,8 @@ public class Movimientos {
 	public String toString() {
 		String mensaje;
 		mensaje = "Datos del movimiento: ";
-		mensaje += "Cantidad: " + cantidad;
-		mensaje += "Fecha: " + fecha;
+		mensaje += "\n\tCantidad: " + cantidad;
+		mensaje += "\n\tFecha: " + fecha;
 		return mensaje;
 	}
 
