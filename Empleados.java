@@ -1,6 +1,6 @@
 import d_tablas.Tableable;
 
-public class Empleados extends Personas implements Trabajadores, Tableable {
+public class Empleados extends Personas implements Tableable {
 	private double salario;
 	private int antiguedad;
 	private String tipo;

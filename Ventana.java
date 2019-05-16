@@ -130,7 +130,7 @@ public class Ventana {
 		TableableModel modelo = new TableableModel();
 
 		frmHotel = new JFrame();
-		frmHotel.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\icamp\\workspace_jee\\ProyectoT3\\src\\logos\\logoJava.png"));
+		frmHotel.setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana.class.getResource("/logos/logoJava.png")));
 		frmHotel.setResizable(false);
 		frmHotel.setTitle("Hotel River Camps");
 		frmHotel.setBounds(100, 100, 848, 619);
@@ -271,6 +271,10 @@ public class Ventana {
 				if (nombreEmpleadoModificar.getText().length() == 20) {
 					e.consume();
 				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
 			}
 		});
 		nombreEmpleadoModificar.setBounds(125, 27, 86, 20);
@@ -283,6 +287,10 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (apellidosEmpleadoModificar.getText().length() == 40) {
+					e.consume();
+				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
 			}
@@ -299,11 +307,11 @@ public class Ventana {
 				if (telefonoEmpleadoModificar.getText().length() == 9) {
 					e.consume();
 				}
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -361,11 +369,11 @@ public class Ventana {
 		textFieldSalarioEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -379,11 +387,11 @@ public class Ventana {
 		textFieldAntiguedadEmpleadoModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -757,6 +765,10 @@ public class Ventana {
 				if (descripcionModificar.getText().length() == 300) {
 					e.consume();
 				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
 			}
 		});
 		scrollPaneDescripcionModificar.setViewportView(descripcionModificar);
@@ -777,6 +789,10 @@ public class Ventana {
 				if (medioTransporteActividadModificar.getText().length() == 20) {
 					e.consume();
 				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
 			}
 		});
 		medioTransporteActividadModificar.setBounds(142, 123, 86, 20);
@@ -789,6 +805,10 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (localizacionActividadModificar.getText().length() == 80) {
+					e.consume();
+				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
 			}
@@ -1159,11 +1179,11 @@ public class Ventana {
 					JOptionPane.showMessageDialog(empleados, "La superficie no puede ser mayor a 99 m\u00B2");
 					e.consume();
 				}
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1211,11 +1231,11 @@ public class Ventana {
 		numHabitacionModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1229,11 +1249,11 @@ public class Ventana {
 		precioHabitacionesModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1393,11 +1413,11 @@ public class Ventana {
 		numHabitacionAModificar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1614,6 +1634,10 @@ public class Ventana {
 				if (nombreEmpleadoNuevo.getText().length() == 20) {
 					e.consume();
 				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
 			}
 		});
 		nombreEmpleadoNuevo.setBounds(121, 8, 86, 20);
@@ -1629,6 +1653,10 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (apellidosEmpleadoNuevo.getText().length() == 40) {
+					e.consume();
+				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
 			}
@@ -1662,11 +1690,11 @@ public class Ventana {
 		telefono.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1732,11 +1760,11 @@ public class Ventana {
 		salarioEmpleadoNuevo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -1753,11 +1781,11 @@ public class Ventana {
 		antiguedadEmpleadoNuevo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -2022,6 +2050,10 @@ public class Ventana {
 				if (localizacion.getText().length() == 80) {
 					e.consume();
 				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
 			}
 		});
 		localizacion.setBounds(140, 58, 86, 20);
@@ -2086,6 +2118,10 @@ public class Ventana {
 					contadorCaracteres.setForeground(Color.black);
 				}
 				contadorCaracteres.setText(String.valueOf(numCaracteres));
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
 			}
 		});
 		scrollPane_1.setViewportView(descripcion);
@@ -2099,6 +2135,10 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (medioTransporte.getText().length() == 20) {
+					e.consume();
+				}
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
+						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
 			}
@@ -2267,11 +2307,11 @@ public class Ventana {
 		numHabitacionEliminar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -2339,11 +2379,11 @@ public class Ventana {
 		numHabitacionEmpleados.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -2437,11 +2477,11 @@ public class Ventana {
 					JOptionPane.showMessageDialog(empleados, "La superficie no puede ser mayor a 99 m\u00B2");
 					e.consume();
 				}
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -2458,11 +2498,11 @@ public class Ventana {
 		precioHabitacionesEmpleados.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar()==e.VK_BACK_SPACE)) {
+				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
-				} else if (e.getKeyChar()=='-' || e.getKeyChar()=='_') {
+				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
 			}
@@ -2907,7 +2947,8 @@ public class Ventana {
 					} else {
 						idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena);
 						if (idClientePersona > 0) {
-							JOptionPane.showMessageDialog(frmHotel, "Cliente");
+							inicio.setVisible(false);
+							// clientes.setVisible(true);
 						} else {
 							JOptionPane.showMessageDialog(frmHotel, "Usuario y/o contraseña incorrectos");
 						}
