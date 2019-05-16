@@ -68,7 +68,8 @@ public class ReservaActividadesClientes implements Tableable {
 
 	@Override
 	public String[] getHeader() {
-		String[] header = { "COD. ACTIVIDAD", "TIPO", "LOCALIZACION", "AFORO", "AFORO RESTANTE", "NOMBRE", "APELLIDOS", "DNI", "NUM. PERSONAS" };
+		String[] header = { "COD. ACTIVIDAD", "TIPO", "LOCALIZACION", "AFORO", "AFORO RESTANTE", "NOMBRE", "APELLIDOS",
+				"DNI", "NUM. PERSONAS" };
 		return header;
 	}
 }
