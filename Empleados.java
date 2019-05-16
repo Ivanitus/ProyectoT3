@@ -1,10 +1,11 @@
 import d_tablas.Tableable;
 
-public class Empleados extends Personas implements Trabajadores, Tableable {
+public class Empleados extends Personas implements Tableable {
+
 	private double salario;
 	private int antiguedad;
 	private String tipo;
-	
+
 	/**
 	 * @param nombre
 	 * @param apellidos
@@ -94,10 +95,11 @@ public class Empleados extends Personas implements Trabajadores, Tableable {
 
 	@Override
 	public String[] getHeader() {
-		String[] header = { "NOMBRE", "APELLIDOS", "DNI", "TELEFONO", "EDAD", "E-MAIL", "SALARIO", "ANTIGÜEDAD", "TIPO" };
+		String[] header = { "NOMBRE", "APELLIDOS", "DNI", "TELEFONO", "EDAD", "E-MAIL", "SALARIO", "ANTIGÜEDAD",
+				"TIPO" };
 		return header;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 

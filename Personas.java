@@ -21,6 +21,17 @@ public abstract class Personas implements Tableable {
 	 * @param nombre
 	 * @param apellidos
 	 * @param dni
+	 */
+	protected Personas(String nombre, String apellidos, String dni) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.dni = dni;
+	}
+
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
 	 * @param telefono
 	 * @param edad
 	 * @param email
@@ -32,18 +43,6 @@ public abstract class Personas implements Tableable {
 		this.telefono = telefono;
 		this.edad = edad;
 		this.email = email;
-	}
-
-	/**
-	 * @param nombre
-	 * @param apellidos
-	 * @param dni
-	 */
-	protected Personas(String nombre, String apellidos, String dni) {
-		super();
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.dni = dni;
 	}
 
 	/**
@@ -172,7 +171,6 @@ public abstract class Personas implements Tableable {
 	@Override
 	public String[] getHeader() {
 		return null;
-
 	}
 
 	/*

@@ -7,6 +7,15 @@ public class Clientes extends Personas implements Tableable {
 	 * @param nombre
 	 * @param apellidos
 	 * @param dni
+	 */
+	protected Clientes(String nombre, String apellidos, String dni) {
+		super(nombre, apellidos, dni);
+	}
+
+	/**
+	 * @param nombre
+	 * @param apellidos
+	 * @param dni
 	 * @param telefono
 	 * @param edad
 	 * @param email
@@ -32,10 +41,6 @@ public class Clientes extends Personas implements Tableable {
 			String interes) {
 		super(nombre, apellidos, dni, telefono, clave, edad, email);
 		this.interes = interes;
-	}
-
-	protected Clientes(String nombre, String apellidos, String dni) {
-		super(nombre, apellidos, dni);
 	}
 
 	/**
