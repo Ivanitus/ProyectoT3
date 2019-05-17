@@ -276,7 +276,7 @@ public class Ventana {
 		JButton btnMostrarReservasHabitaciones = new JButton("Mostrar reservas habitaciones");
 		btnMostrarReservasHabitaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				listaReservas = gesBBDD.mostrarReservasHabitacionesEmpleados();
+				listaReservas = gesBBDD.mostrarReservasHabitacionesEmpleados(empleados);
 				modelo.rellenarTabla(listaReservas, true);
 				listaReservas.clear();
 			}
@@ -455,7 +455,7 @@ public class Ventana {
 		JComboBox comboBoxTipoEmpleadoModificar = new JComboBox();
 		comboBoxTipoEmpleadoModificar.setBounds(250, 130, 166, 20);
 		modificarDatosPersonalesEmpleados.add(comboBoxTipoEmpleadoModificar);
-		comboBoxTipoEmpleadoModificar.addItem("Administrativo de recepción");
+		comboBoxTipoEmpleadoModificar.addItem("Administrativo de recepcion");
 		comboBoxTipoEmpleadoModificar.addItem("Conserje");
 		comboBoxTipoEmpleadoModificar.addItem("Recepcionista");
 		comboBoxTipoEmpleadoModificar.setEnabled(false);
@@ -630,7 +630,7 @@ public class Ventana {
 				String passwdEmpleado = passwd.getText();
 				boolean empleado = gesBBDD.inicioSesion(emailEmpleado, passwdEmpleado, empleados);
 				if (empleado) {
-					Empleados empleadoModificar = gesBBDD.buscarUnEmpleado(emailEmpleado, passwdEmpleado);
+					Empleados empleadoModificar = gesBBDD.buscarUnEmpleado(emailEmpleado, passwdEmpleado, empleados);
 					String dniEmpleado = empleadoModificar.getDni();
 					String dniModificar = textFielddniEmpleadoModificar.getText();
 					dniValido = val.comprobarDNI(dniModificar);
@@ -675,11 +675,11 @@ public class Ventana {
 										} else {
 											modificarValido = false;
 											JOptionPane.showMessageDialog(empleados,
-													"El e-mail no puede tener más de 50 caractéres");
+													"El e-mail no puede tener más de 50 caracteres");
 										}
 									} else {
 										modificarValido = false;
-										JOptionPane.showMessageDialog(empleados, "El e-mail introducido no es válido");
+										JOptionPane.showMessageDialog(empleados, "El e-mail introducido no es valido");
 									}
 								} else if (rdbtnSalario.isSelected()) {
 									opcion = "salario";
@@ -1135,7 +1135,8 @@ public class Ventana {
 					if (codigo.length() > 0 && datoValido) {
 						existe = gesBBDD.actividadExiste(codigo, empleados);
 						if (existe) {
-							modificar = gesBBDD.modificarActividadesIndividual(codigo, datoModificar, datoNuevo);
+							modificar = gesBBDD.modificarActividadesIndividual(codigo, datoModificar, datoNuevo,
+									empleados);
 							if (modificar) {
 								descripcionModificar.setBackground(Color.white);
 								comboBoxTipoActividadesModificar.setBackground(Color.white);
@@ -1554,7 +1555,8 @@ public class Ventana {
 					if (numHabitacion > 0 && datoValido) {
 						existe = gesBBDD.habitacionExiste(numHabitacion, empleados);
 						if (existe) {
-							modificar = gesBBDD.modificarHabitaciones(numHabitacion, datoNuevo, datoModificar);
+							modificar = gesBBDD.modificarHabitaciones(numHabitacion, datoNuevo, datoModificar,
+									empleados);
 							if (modificar) {
 								superficieModificar.setBackground(Color.white);
 								comboBoxTipoHabitacionesModificar.setBackground(Color.white);
@@ -1566,7 +1568,7 @@ public class Ventana {
 								checkBoxMatrimonioModificar.setBackground(Color.white);
 								checkBoxTerraza.setBackground(Color.white);
 								JOptionPane.showMessageDialog(empleados, "Habitación modificada correctamente");
-								listaHabitaciones = gesBBDD.mostrarHabitaciones();
+								listaHabitaciones = gesBBDD.mostrarHabitaciones(empleados);
 								modelo.rellenarTabla(listaHabitaciones, true);
 								listaHabitaciones.clear();
 								numHabitacionAModificar.setText(null);
@@ -1901,7 +1903,7 @@ public class Ventana {
 															Empleados empleado = new Empleados(nombre, apellidos, dni,
 																	telefonoInt, contrasena, edad, emailString, salario,
 																	antiguedadInt, tipo);
-															insertar = gesBBDD.insertarPersonas(empleado);
+															insertar = gesBBDD.insertarPersonas(empleado, empleados);
 															if (insertar) {
 																JOptionPane.showMessageDialog(empleados,
 																		"Empleado insertado con éxito");
@@ -2392,7 +2394,7 @@ public class Ventana {
 						gesBBDD.eliminarHabitaciones(numHabitacionInt, empleados);
 						numHabitacionEliminar.setText(null);
 						try {
-							listaHabitaciones = gesBBDD.mostrarHabitaciones();
+							listaHabitaciones = gesBBDD.mostrarHabitaciones(empleados);
 							modelo.rellenarTabla(listaHabitaciones, true);
 						} catch (NullPointerException excepcion) {
 							JOptionPane.showMessageDialog(empleados, "No hay habitaciones que mostrar");
@@ -2726,7 +2728,7 @@ public class Ventana {
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
 				mostrarReservas.setVisible(false);
-				listaHabitaciones = gesBBDD.mostrarHabitaciones();
+				listaHabitaciones = gesBBDD.mostrarHabitaciones(empleados);
 				modelo.rellenarTabla(listaHabitaciones, true);
 				listaHabitaciones.clear();
 			}
@@ -2737,7 +2739,7 @@ public class Ventana {
 		JButton btnMostrarHabitacionesEmpleados = new JButton("Mostrar habitaciones");
 		btnMostrarHabitacionesEmpleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listaHabitaciones = gesBBDD.mostrarHabitaciones();
+				listaHabitaciones = gesBBDD.mostrarHabitaciones(empleados);
 				modelo.rellenarTabla(listaHabitaciones, true);
 				listaHabitaciones.clear();
 			}
@@ -2829,7 +2831,7 @@ public class Ventana {
 				modificarActividades.setVisible(false);
 				modificarDatosPersonalesEmpleados.setVisible(false);
 				mostrarReservas.setVisible(false);
-				listaHabitaciones = gesBBDD.mostrarHabitaciones();
+				listaHabitaciones = gesBBDD.mostrarHabitaciones(empleados);
 				modelo.rellenarTabla(listaHabitaciones, true);
 				listaHabitaciones.clear();
 			}
@@ -2888,7 +2890,7 @@ public class Ventana {
 		JButton btnMostrarMovimientos = new JButton("Mostrar movimientos");
 		btnMostrarMovimientos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listaMovimientos = gesBBDD.consultarMovimientos();
+				listaMovimientos = gesBBDD.consultarMovimientos(empleados);
 				modelo.rellenarTabla(listaMovimientos, true);
 				listaMovimientos.clear();
 			}
@@ -3012,7 +3014,7 @@ public class Ventana {
 		btnMostrarActividades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				listaActividadesClientes = gesBBDD.mostrarActividades(clientes);
+				listaActividadesClientes = gesBBDD.mostrarActividades(invitado);
 				modelo.rellenarTabla(listaActividadesClientes, true);
 				listaActividadesClientes.clear();
 
@@ -3025,7 +3027,7 @@ public class Ventana {
 		btnMostrarHabitaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				listaHabitacionesClientes = gesBBDD.mostrarHabitaciones();
+				listaHabitacionesClientes = gesBBDD.mostrarHabitaciones(invitado);
 				modelo.rellenarTabla(listaHabitacionesClientes, true);
 				listaHabitacionesClientes.clear();
 			}
@@ -3284,7 +3286,8 @@ public class Ventana {
 															Clientes cliente = new Clientes(nombre, apellidos, dni,
 																	telefonoInt, edad, email, interes);
 
-															boolean insertar = gesBBDD.insertarPersonas(cliente);
+															boolean insertar = gesBBDD.insertarPersonas(cliente,
+																	clientes);
 
 															if (insertar) {
 																JOptionPane.showMessageDialog(registrarse,
@@ -3520,11 +3523,11 @@ public class Ventana {
 				String emailCliente = email.getText();
 				String passwdCliente = passwd.getText();
 
-				int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente);
+				int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente, clientes);
 
 				if (cliente > 0) {
 
-					Clientes clienteMostrar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente);
+					Clientes clienteMostrar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente, clientes);
 					String dni = clienteMostrar.getDni();
 
 					tablaClientes.setVisible(true);
@@ -3544,11 +3547,11 @@ public class Ventana {
 				String emailCliente = email.getText();
 				String passwdCliente = passwd.getText();
 
-				int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente);
+				int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente, clientes);
 
 				if (cliente > 0) {
 
-					Clientes clienteMostrar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente);
+					Clientes clienteMostrar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente, clientes);
 					String dni = clienteMostrar.getDni();
 
 					tablaClientes.setVisible(true);
@@ -3651,7 +3654,8 @@ public class Ventana {
 
 				try {
 
-					Clientes clienteCancelacionActividad = gesBBDD.buscarUnCliente(emailCliente, passwdCliente);
+					Clientes clienteCancelacionActividad = gesBBDD.buscarUnCliente(emailCliente, passwdCliente,
+							clientes);
 
 					String dni = clienteCancelacionActividad.getDni();
 					String dniIntroducido = textFieldDniCancelarActividad.getText();
@@ -3937,7 +3941,7 @@ public class Ventana {
 				String datoNuevo = "";
 				boolean modificarValidado = true;
 				boolean modificar = false;
-				boolean emailValido=false;
+				boolean emailValido = false;
 				String dni = "";
 
 				if (rdbtnMoNombre.isSelected()) {
@@ -3961,11 +3965,11 @@ public class Ventana {
 					String emailCliente = email.getText();
 					String passwdCliente = passwd.getText();
 
-					int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente);
+					int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente, clientes);
 
 					if (cliente > 0) {
 
-						Clientes clienteModificar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente);
+						Clientes clienteModificar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente, clientes);
 						dni = clienteModificar.getDni();
 
 						if (rdbtnMoNombre.isSelected()) {
@@ -3984,7 +3988,7 @@ public class Ventana {
 							opcion = "email";
 							emailValido = val.comprobarEmail(modificarEmail.getText());
 							if (emailValido) {
-								datoNuevo=modificarEmail.getText();
+								datoNuevo = modificarEmail.getText();
 								email.setText(datoNuevo);
 							} else {
 								JOptionPane.showMessageDialog(clientes, "El e-mail introducido no es válido");
@@ -4321,7 +4325,7 @@ public class Ventana {
 
 									Reserva reservaHabitacion = new Reserva(fechaentrada, fechasalida, numPersonas);
 									disponibilidad = gesBBDD.comprobarDisponibilidadHabitaciones(numeroHabitacion,
-											reservaHabitacion);
+											reservaHabitacion, clientes);
 									if (disponibilidad) {
 
 										/*
@@ -4623,7 +4627,7 @@ public class Ventana {
 			public void actionPerformed(ActionEvent e) {
 
 				tablaClientes.setVisible(true);
-				listaHabitacionesClientes = gesBBDD.mostrarHabitaciones();
+				listaHabitacionesClientes = gesBBDD.mostrarHabitaciones(clientes);
 				modelo.rellenarTabla(listaHabitacionesClientes, true);
 				listaHabitacionesClientes.clear();
 			}
@@ -4647,11 +4651,11 @@ public class Ventana {
 				String emailCliente = email.getText();
 				String passwdCliente = passwd.getText();
 
-				int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente);
+				int cliente = gesBBDD.inicioSesionCliente(emailCliente, passwdCliente, clientes);
 
 				if (cliente > 0) {
 
-					Clientes clienteMostrar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente);
+					Clientes clienteMostrar = gesBBDD.buscarUnCliente(emailCliente, passwdCliente, clientes);
 					String dni = clienteMostrar.getDni();
 
 					tablaClientes.setVisible(true);
@@ -4700,7 +4704,7 @@ public class Ventana {
 				boolean empleadoBoolean;
 				empleadoBoolean = gesBBDD.inicioSesion(emailString, contrasena, inicio);
 				if (empleadoBoolean) {
-					Empleados empleado = gesBBDD.buscarUnEmpleado(emailString, contrasena);
+					Empleados empleado = gesBBDD.buscarUnEmpleado(emailString, contrasena, inicio);
 					empleados.setVisible(true);
 					inicio.setVisible(false);
 					tipoEmpleado = empleado.getTipo();
@@ -4749,7 +4753,7 @@ public class Ventana {
 					}
 
 				} else {
-					idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena);
+					idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena, inicio);
 					if (idClientePersona > 0) {
 						inicio.setVisible(false);
 						clientes.setVisible(true);

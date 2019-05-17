@@ -35,7 +35,7 @@ public class GestionBBDD {
 		boolean matrimonio = habitacionAnadir.isMatrimonio();
 		boolean terraza = habitacionAnadir.isTerraza();
 		boolean insertar = false;
-		int idEmpleado = buscarEmpleado(dni);
+		int idEmpleado = buscarEmpleado(dni, panel);
 		// Sentencia SQL
 		String sql = "insert into habitaciones (numero_baños,jacuzzi,matrimonio,tipo,terraza,camas,precio_habitaciones,superficie,numero_habitacion,id_empleados_aux) values ("
 				+ numero_banos + "," + jacuzzi + "," + matrimonio + ",'" + tipo + "'," + terraza + "," + camas + ","
@@ -85,7 +85,7 @@ public class GestionBBDD {
 		return habitacionEncontrada;
 	}
 
-	protected int buscarHabitacion(int numHabitacion) {
+	protected int buscarHabitacion(int numHabitacion, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -98,13 +98,13 @@ public class GestionBBDD {
 			if (rs.next()) {
 				idHabitacion = rs.getInt("id_habitaciones");
 			} else {
-				System.out.println("Habitacion no encontrada");
+				JOptionPane.showMessageDialog(panel, "Habitacion no encontrada");
 			}
 			// Cierro el statement y la conexion
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return idHabitacion;
 	}
@@ -135,7 +135,7 @@ public class GestionBBDD {
 	/*
 	 * Metodo para modificar los atributos de las habitaciones
 	 */
-	protected boolean modificarHabitaciones(int numHabitacion, String datoNuevo, String datoModificar) {
+	protected boolean modificarHabitaciones(int numHabitacion, String datoNuevo, String datoModificar, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -144,7 +144,7 @@ public class GestionBBDD {
 		double datoNuevoDouble = 0;
 		boolean datoNuevoBoolean = false;
 		boolean ejecutarSentenciaSQL = true;
-		int idHabitacion = buscarHabitacion(numHabitacion);
+		int idHabitacion = buscarHabitacion(numHabitacion, panel);
 		// Variables habitaciones
 		String superficie, tipo;
 		int numero_banos;
@@ -235,7 +235,7 @@ public class GestionBBDD {
 						sql += "terraza=" + habitacion.isTerraza();
 					}
 				} else {
-					System.out.println("El atributo que has introducido para modificar no es válido");
+					JOptionPane.showMessageDialog(panel, "El atributo que has introducido para modificar no es valido");
 					ejecutarSentenciaSQL = false;
 				}
 				sql += " where id_habitaciones=" + idHabitacion;
@@ -250,27 +250,27 @@ public class GestionBBDD {
 					con.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
-					System.out.println("Fallo en la sentencia SQL");
+					JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Error en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Error en la sentencia SQL");
 		}
 		return modificar;
 	}
 
 	/*
 	 * Metodo que comprueba la disponibilidad de una habitacion entre fechas
-	 * Devuelve un booleano, y se usarï¿½ a la hora de realizar una reserva
+	 * Devuelve un booleano, y se usara a la hora de realizar una reserva
 	 */
-	protected boolean comprobarDisponibilidadHabitaciones(int numHabitacion, Reserva reservaNueva) {
+	protected boolean comprobarDisponibilidadHabitaciones(int numHabitacion, Reserva reservaNueva, JPanel panel) {
 
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
 		boolean disponible = true;
-		int idHabitacion = buscarHabitacion(numHabitacion);
+		int idHabitacion = buscarHabitacion(numHabitacion, panel);
 		LocalDate fechaEntradaReservaNueva = reservaNueva.getFecha_entrada();
 		LocalDate fechaSalidaReservaNueva = reservaNueva.getFecha_salida();
 		Date fechaEntradaSQL;
@@ -305,7 +305,7 @@ public class GestionBBDD {
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 			e.printStackTrace();
 		}
 		return disponible;
@@ -326,7 +326,7 @@ public class GestionBBDD {
 		LocalDate fecha = act.getFecha();
 		int aforo = act.getAforo();
 		String duracion = act.getDuracion();
-		int idEmpleado = buscarEmpleado(dni);
+		int idEmpleado = buscarEmpleado(dni, panel);
 		boolean insertar = false;
 		// Sentencia SQL
 		String sql = "insert into actividades (descripcion, tipo_actividad, medio_transporte, localizacion, codigo, hora, fecha,"
@@ -392,7 +392,7 @@ public class GestionBBDD {
 		}
 	}
 
-	protected boolean modificarActividadesIndividual(String codigo, String opcion, String datonuevo) {
+	protected boolean modificarActividadesIndividual(String codigo, String opcion, String datonuevo, JPanel panel) {
 
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
@@ -449,7 +449,7 @@ public class GestionBBDD {
 
 		} else {
 
-			System.out.println("El dato a modificar no es valido");
+			JOptionPane.showMessageDialog(panel, "El dato a modificar no es valido");
 			ejecutarSentenciaSql = false;
 		}
 
@@ -470,7 +470,7 @@ public class GestionBBDD {
 
 		} catch (SQLException e) {
 
-			System.out.println("Fallo en la conexion");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 
 		}
 		return modificar;
@@ -482,8 +482,8 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 
-		int id_clientes_aux = buscarCliente(DNI);
-		int id_actividades_aux = buscarActividad(codigo);
+		int id_clientes_aux = buscarCliente(DNI, panel);
+		int id_actividades_aux = buscarActividad(codigo, panel);
 		int numeroPersonas = apun.getNumPersonas();
 		boolean insertar = false;
 
@@ -553,7 +553,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-		int id_actividad = buscarActividad(codigo);
+		int id_actividad = buscarActividad(codigo, panel);
 		int numper = 0;
 		int aforo = 0;
 		int disponibilidad = 0;
@@ -606,12 +606,12 @@ public class GestionBBDD {
 	/*
 	 * Metodo para calcular el precio total de la reserva
 	 */
-	private Reserva calcularPrecioReserva(int numHabitacion, Reserva reservaNueva) {
+	private Reserva calcularPrecioReserva(int numHabitacion, Reserva reservaNueva, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-		int idHabitacion = buscarHabitacion(numHabitacion);
+		int idHabitacion = buscarHabitacion(numHabitacion, panel);
 		double precioHabitacion = 0;
 		LocalDate fechaEntrada = reservaNueva.getFecha_entrada();
 		LocalDate fechaSalida = reservaNueva.getFecha_salida();
@@ -624,14 +624,14 @@ public class GestionBBDD {
 			if (rs.next()) {
 				precioHabitacion = rs.getDouble("precio_habitaciones");
 			} else {
-				System.out.println("Habitación no disponible");
+				JOptionPane.showMessageDialog(panel, "Habitación no disponible");
 			}
 			// Cierro el resultset, el statement y la conexion
 			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		resultadoPrecioReserva = precioHabitacion * diasReserva;
 		reservaNueva.setPrecioReserva(resultadoPrecioReserva);
@@ -646,7 +646,7 @@ public class GestionBBDD {
 		Conexion conexion = new Conexion();// paso numero,dni,fecha entrada,salida
 		Connection con = conexion.getConnection();
 		Statement st;
-		reservaNueva = calcularPrecioReserva(numHabitacion, reservaNueva);
+		reservaNueva = calcularPrecioReserva(numHabitacion, reservaNueva, panel);
 		LocalDate fecha_entrada = reservaNueva.getFecha_entrada();
 		LocalDate fecha_salida = reservaNueva.getFecha_salida();
 		double precioReserva = reservaNueva.getPrecioReserva();
@@ -659,8 +659,8 @@ public class GestionBBDD {
 		LocalDate fechaMovimientoSQL = mov.getFecha();
 		String fechaMovimientoSQLString = fechaMovimientoSQL.toString();
 		final int idEmpleadoResponsableMovimientos = 1;
-		int idCliente = buscarCliente(dniCliente);
-		int idHabitacion = buscarHabitacion(numHabitacion);
+		int idCliente = buscarCliente(dniCliente, panel);
+		int idHabitacion = buscarHabitacion(numHabitacion, panel);
 		// Sentencia SQL 1
 		String sql1 = "insert into movimientos (cantidad,fecha,id_empleados_aux) values (" + precioMovimiento
 				+ ",STR_TO_DATE('" + fechaMovimientoSQLString + "','%Y-%m-%d')," + idEmpleadoResponsableMovimientos
@@ -671,7 +671,7 @@ public class GestionBBDD {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
-		int idMovimientos = buscarMovimiento(mov);
+		int idMovimientos = buscarMovimiento(mov, panel);
 		// Sentencia SQL 2
 		String sql2 = "insert into reserva (id_clientes_aux,id_habitaciones_aux,id_movimientos_aux,fecha_entrada,fecha_salida,numPersonas,precioReserva) values ("
 				+ idCliente + "," + idHabitacion + "," + idMovimientos + ",STR_TO_DATE('" + fechaEntradaSQL
@@ -690,7 +690,7 @@ public class GestionBBDD {
 		}
 	}
 
-	protected int buscarMovimiento(Movimientos mov) {
+	protected int buscarMovimiento(Movimientos mov, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -706,20 +706,21 @@ public class GestionBBDD {
 			if (rs.next()) {
 				idMovimientos = rs.getInt("id_movimientos");
 			} else {
-				System.out.println("Movimiento no encontrado");
+				JOptionPane.showMessageDialog(panel, "Movimiento no encontrado");
 			}
 			// Cierro el resultset, el statement y la conexion
 			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return idMovimientos;
 	}
 
-	protected ArrayList<Habitaciones> mostrarHabitaciones() { // Metodo para mostrar todos los datos de todas las
-																// habitaciones
+	protected ArrayList<Habitaciones> mostrarHabitaciones(JPanel panel) { // Metodo para mostrar todos los datos de
+																			// todas las
+		// habitaciones
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -757,12 +758,12 @@ public class GestionBBDD {
 				listaHabitaciones.add(h);
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return listaHabitaciones;
 	}
 
-	protected int buscarActividad(String codigo) {
+	protected int buscarActividad(String codigo, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -780,13 +781,10 @@ public class GestionBBDD {
 
 				id = rs.getInt("id_actividades");
 			} else {
-				System.out.println("La actividad que busca no existe");
+				JOptionPane.showMessageDialog(panel, "La actividad que busca no existe");
 			}
 		} catch (SQLException e) {
-
-			e.printStackTrace();
-
-			System.out.println("Ha fallado la consulta");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return id;
 	}
@@ -795,7 +793,7 @@ public class GestionBBDD {
 	 * Metodo para buscar una persona a traves de su DNI y que devuele el id de esa
 	 * persona en la base de datos
 	 */
-	protected int buscarPersonas(String DNI) {
+	protected int buscarPersonas(String DNI, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -809,10 +807,10 @@ public class GestionBBDD {
 			if (rs.next()) {
 				id = rs.getInt("id_personas");
 			} else {
-				System.out.println("Persona no encontrada");
+				JOptionPane.showMessageDialog(panel, "Persona no encontrada");
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return id;
 	}
@@ -821,7 +819,7 @@ public class GestionBBDD {
 	 * metodo para insertar una persona en la base de datos, independientemente de
 	 * si es cliente o empleado
 	 */
-	protected boolean insertarPersonas(Personas personaNueva) {
+	protected boolean insertarPersonas(Personas personaNueva, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -844,9 +842,9 @@ public class GestionBBDD {
 			st.executeUpdate(sql1);
 			insertar = true;
 		} catch (SQLException e) {
-			System.out.println("Fallo en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
-		id_personas_aux = buscarPersonas(dni);
+		id_personas_aux = buscarPersonas(dni, panel);
 		/*
 		 * Sentencia SQL para completar la informacion de la persona dependiendo si es
 		 * cliente o empleado en la base de datos
@@ -872,7 +870,7 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return insertar;
 	}
@@ -882,7 +880,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		int id = 0;
-		id = buscarPersonas(dni);
+		id = buscarPersonas(dni, panel);
 		// Sentencia SQL
 		String sql = "delete from empleados where id_personas_aux=" + id;
 		try {
@@ -897,12 +895,12 @@ public class GestionBBDD {
 		}
 	}
 
-	protected void eliminarClientes(String dni) { // Metodo para eliminar clientes de la base de datos
+	protected void eliminarClientes(String dni, JPanel panel) { // Metodo para eliminar clientes de la base de datos
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 		int id = 0;
-		id = buscarPersonas(dni);
+		id = buscarPersonas(dni, panel);
 		// Sentencia SQL
 		String sql = "delete from clientes where id_personas_aux=" + id;
 		try {
@@ -912,14 +910,14 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 	}
 
 	/*
 	 * Metodo para mostrar los registros de la tabla movimientos de la BBDD
 	 */
-	protected ArrayList<MovimientosHabitacionesClientes> consultarMovimientos() {
+	protected ArrayList<MovimientosHabitacionesClientes> consultarMovimientos(JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -963,7 +961,7 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return listaMovimientos;
 	}
@@ -993,7 +991,7 @@ public class GestionBBDD {
 	 * Metodo que mediante el dni del empleado busca en la base de datos el id de la
 	 * persona, y mosteriormente el id del empleado, devolviendo como int
 	 */
-	protected int buscarEmpleado(String DNI) {
+	protected int buscarEmpleado(String DNI, JPanel panel) {
 
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
@@ -1001,7 +999,7 @@ public class GestionBBDD {
 		ResultSet rs;
 
 		int idEmpleado = 0;
-		int idPersona = buscarPersonas(DNI);
+		int idPersona = buscarPersonas(DNI, panel);
 
 		String sql = "select id_empleados from empleados where id_personas_aux=" + idPersona;
 
@@ -1016,25 +1014,25 @@ public class GestionBBDD {
 
 			} else {
 
-				System.out.println("El empleado que busca no existe");
+				JOptionPane.showMessageDialog(panel, "El empleado que busca no existe");
 			}
 
 		} catch (SQLException e) {
 
-			System.out.println("Fallo en la conexion");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 
 		return idEmpleado;
 
 	}
 
-	protected int buscarCliente(String DNI) {
+	protected int buscarCliente(String DNI, JPanel panel) {
 
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-		int idPersonaAux = buscarPersonas(DNI);
+		int idPersonaAux = buscarPersonas(DNI, panel);
 		int idCliente = 0;
 		// Sentencia SQL
 		String sql = "select id_clientes from clientes where id_personas_aux=" + idPersonaAux;
@@ -1048,7 +1046,7 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return idCliente;
 	}
@@ -1063,7 +1061,7 @@ public class GestionBBDD {
 		int datoNuevoInt = 0;
 		double datoNuevoDouble = 0;
 		boolean ejecutarSentenciaSql = true;
-		int id_personas_aux = buscarPersonas(DNI);
+		int id_personas_aux = buscarPersonas(DNI, panel);
 		boolean modificar = false;
 		String sqlPersonas = "update personas set ";
 		String sqlClientes = "update clientes set ";
@@ -1171,21 +1169,19 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
-		idEmpleados = esEmpleadoInicioSesion(idPersonas);
-		idClientes = esClienteInicioSesion(idPersonas);
+		idEmpleados = esEmpleadoInicioSesion(idPersonas, panel);
+		idClientes = esClienteInicioSesion(idPersonas, panel);
 		if (idEmpleados > 0) {
 			empleado = true;
 		} else if (idClientes > 0) {
 			empleado = false;
-		} else if (idEmpleados == 0 && idClientes == 0) {
-			JOptionPane.showMessageDialog(panel, "Usuario no registrado");
 		}
 		return empleado;
 	}
 
-	private int esEmpleadoInicioSesion(int idPersonas) {
+	private int esEmpleadoInicioSesion(int idPersonas, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1199,12 +1195,12 @@ public class GestionBBDD {
 				idEmpleado = rs.getInt("id_empleados");
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return idEmpleado;
 	}
 
-	private int esClienteInicioSesion(int idPersonas) {
+	private int esClienteInicioSesion(int idPersonas, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1218,12 +1214,12 @@ public class GestionBBDD {
 				idCliente = rs.getInt("id_clientes");
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return idCliente;
 	}
 
-	private String buscarDni(String correo, String clave) {
+	private String buscarDni(String correo, String clave, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1240,24 +1236,20 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return dni;
 	}
 
-	protected int inicioSesionCliente(String correo, String clave) {
-		Conexion conexion = new Conexion();
-		Connection con = conexion.getConnection();
-		Statement st;
-		ResultSet rs;
+	protected int inicioSesionCliente(String correo, String clave, JPanel panel) {
 		String dni = "";
-		dni = buscarDni(correo, clave);
+		dni = buscarDni(correo, clave, panel);
 		int idPersona = 0;
-		idPersona = buscarCliente(dni);
+		idPersona = buscarCliente(dni, panel);
 		return idPersona;
 	}
 
-	protected Empleados buscarUnEmpleado(String correo, String clave) {
+	protected Empleados buscarUnEmpleado(String correo, String clave, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1288,7 +1280,7 @@ public class GestionBBDD {
 				emailSQL = rs.getString(8);
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		String sql2 = "select * from empleados where id_personas_aux=" + id_personas;
 		try {
@@ -1304,14 +1296,14 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		Empleados empleado = new Empleados(nombre, apellidos, dni, telefono, claveSQL, edad, emailSQL, salario,
 				antiguedad, tipo);
 		return empleado;
 	}
 
-	protected ArrayList<ReservaHabitacionesClientes> mostrarReservasHabitacionesEmpleados() {
+	protected ArrayList<ReservaHabitacionesClientes> mostrarReservasHabitacionesEmpleados(JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1353,7 +1345,7 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la sentencia SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return listaReservasHabitaciones;
 	}
@@ -1507,7 +1499,7 @@ public class GestionBBDD {
 		Conexion conexion = new Conexion();// paso numero,dni,fecha entrada,salida
 		Connection con = conexion.getConnection();
 		Statement st;
-		reservaNueva = calcularPrecioReserva(numHabitacion, reservaNueva);
+		reservaNueva = calcularPrecioReserva(numHabitacion, reservaNueva, panel);
 		LocalDate fecha_entrada = reservaNueva.getFecha_entrada();
 		LocalDate fecha_salida = reservaNueva.getFecha_salida();
 		double precioReserva = reservaNueva.getPrecioReserva();
@@ -1520,8 +1512,8 @@ public class GestionBBDD {
 		LocalDate fechaMovimientoSQL = mov.getFecha();
 		String fechaMovimientoSQLString = fechaMovimientoSQL.toString();
 		final int idEmpleadoResponsableMovimientos = 1;
-		int idCliente = buscarCliente(dniCliente);
-		int idHabitacion = buscarHabitacion(numHabitacion);
+		int idCliente = buscarCliente(dniCliente, panel);
+		int idHabitacion = buscarHabitacion(numHabitacion, panel);
 		boolean insertar = false;
 		// Sentencia SQL 1
 		String sql1 = "insert into movimientos (cantidad,fecha,id_empleados_aux) values (" + precioMovimiento
@@ -1534,7 +1526,7 @@ public class GestionBBDD {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
-		int idMovimientos = buscarMovimiento(mov);
+		int idMovimientos = buscarMovimiento(mov, panel);
 		// Sentencia SQL 2
 		String sql2 = "insert into reserva (id_clientes_aux,id_habitaciones_aux,id_movimientos_aux,fecha_entrada,fecha_salida,numPersonas,precioReserva) values ("
 				+ idCliente + "," + idHabitacion + "," + idMovimientos + ",STR_TO_DATE('" + fechaEntradaSQL
@@ -1556,7 +1548,7 @@ public class GestionBBDD {
 		return insertar;
 	}
 
-	protected Clientes buscarUnCliente(String correo, String clave) {
+	protected Clientes buscarUnCliente(String correo, String clave, JPanel panel) {
 		Conexion conexion = new Conexion();
 		Connection con = conexion.getConnection();
 		Statement st;
@@ -1585,7 +1577,7 @@ public class GestionBBDD {
 				emailEn = rs.getString(8);
 			}
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		String sql2 = "select * from clientes where id_personas_aux=" + id_personas;
 		try {
@@ -1599,7 +1591,7 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Fallo en la consulta SQL");
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		Clientes cliente = new Clientes(nombre, apellidos, dni, telefono, claveEn, edad, emailEn, interes);
 		return cliente;
@@ -1610,7 +1602,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		boolean cancelar = false;
-		int id_habitacion = buscarHabitacion(numHabitacion);
+		int id_habitacion = buscarHabitacion(numHabitacion, panel);
 
 		// Sentencia SQL //fecha entrada
 		String sql = "delete from reserva where id_habitaciones_aux=" + id_habitacion
@@ -1622,7 +1614,7 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL,majo");
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return cancelar;
 
@@ -1633,8 +1625,8 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		boolean cancelar = false;
-		int id_actividad = buscarActividad(codigo);
-		int id_cliente = buscarCliente(DNI);
+		int id_actividad = buscarActividad(codigo, panel);
+		int id_cliente = buscarCliente(DNI, panel);
 		// Sentencia SQL
 		String sql = "delete from apunta where id_clientes_aux=" + id_cliente + " and id_actividades_aux="
 				+ id_actividad;
@@ -1658,7 +1650,7 @@ public class GestionBBDD {
 		Statement st;
 		ResultSet rs;
 		boolean buscar = false;
-		int id_habitacion = buscarHabitacion(numeroHabitacion);
+		int id_habitacion = buscarHabitacion(numeroHabitacion, panel);
 
 		String sql = "select * from reserva where id_habitaciones_aux=" + id_habitacion + " and"
 				+ " fecha_entrada=STR_TO_DATE('" + entrada + "','%Y-%m-%d')";
@@ -1684,8 +1676,8 @@ public class GestionBBDD {
 		Statement st;
 		ResultSet rs;
 		boolean buscar = false;
-		int id_cliente_aux = buscarCliente(DNI);
-		int id_actividades_aux = buscarActividad(codigo);
+		int id_cliente_aux = buscarCliente(DNI, panel);
+		int id_actividades_aux = buscarActividad(codigo, panel);
 
 		String sql = "select * from apunta where id_clientes_aux=" + id_cliente_aux + " and id_actividades_aux="
 				+ id_actividades_aux;
