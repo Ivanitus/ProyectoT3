@@ -1177,13 +1177,10 @@ public class Ventana {
 					}
 				} catch (NumberFormatException excepcion) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcion.printStackTrace();
 				} catch (NullPointerException exception) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					exception.printStackTrace();
 				} catch (Exception excepcionGenerica) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcionGenerica.printStackTrace();
 				}
 			}
 		});
@@ -1972,13 +1969,10 @@ public class Ventana {
 					}
 				} catch (NumberFormatException excepcion) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcion.printStackTrace();
 				} catch (NullPointerException exception) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					exception.printStackTrace();
 				} catch (Exception excepcionGenerica) {
 					JOptionPane.showMessageDialog(empleados, "El dato introducido no es valido");
-					excepcionGenerica.printStackTrace();
 				}
 			}
 		});
@@ -4702,65 +4696,71 @@ public class Ventana {
 				String tipoEmpleado = "";
 				String nombreEmpleado = "";
 				boolean empleadoBoolean;
-				empleadoBoolean = gesBBDD.inicioSesion(emailString, contrasena, inicio);
-				if (empleadoBoolean) {
-					Empleados empleado = gesBBDD.buscarUnEmpleado(emailString, contrasena, inicio);
-					empleados.setVisible(true);
-					inicio.setVisible(false);
-					tipoEmpleado = empleado.getTipo();
-					nombreEmpleado = empleado.getNombre() + " " + empleado.getApellidos();
-					lblBienvenidoEmpleados.setText(lblBienvenidoEmpleados.getText() + " " + nombreEmpleado);
-					if (tipoEmpleado.trim().equalsIgnoreCase("gerente")) {
-						frmHotel.setTitle("Hotel River Camps: Gerente");
-						lblTipo.setText(lblTipo.getText() + " Gerente");
-					} else if (tipoEmpleado.equalsIgnoreCase("administrativo de recepción")) {
-						frmHotel.setTitle("Hotel River Camps: Admin. de recepción");
-						lblTipo.setText(lblTipo.getText() + " Admin. de recepción");
-						btnAnadirActividades.setEnabled(false);
-						btnBorrarActividades.setEnabled(false);
-						btnModificarActividades.setEnabled(false);
-						btnMostrarActividadesEmpleados.setEnabled(false);
-						btnAnadirEmpleado.setEnabled(false);
-						btnBorrarEmpleado.setEnabled(false);
-						btnMostrarEmpleados.setEnabled(false);
-						btnMostrarMovimientos.setEnabled(false);
-					} else if (tipoEmpleado.equalsIgnoreCase("conserje")) {
-						frmHotel.setTitle("Hotel River Camps: Conserje");
-						lblTipo.setText(lblTipo.getText() + " Conserje");
-						btnAnadirHabitaciones.setEnabled(false);
-						btnEliminarHabitaciones.setEnabled(false);
-						btnMostrarHabitacionesEmpleados.setEnabled(false);
-						btnModificarHabitaciones.setEnabled(false);
-						btnAnadirEmpleado.setEnabled(false);
-						btnBorrarEmpleado.setEnabled(false);
-						btnMostrarEmpleados.setEnabled(false);
-						btnMostrarMovimientos.setEnabled(false);
-						btnMostrarReservas.setEnabled(false);
-						btnMostrarClientes.setEnabled(false);
-					} else if (tipoEmpleado.equalsIgnoreCase("recepcionista")) {
-						frmHotel.setTitle("Hotel River Camps: Recepcionista");
-						lblTipo.setText(lblTipo.getText() + " Recepcionista");
-						btnAnadirHabitaciones.setEnabled(false);
-						btnEliminarHabitaciones.setEnabled(false);
-						btnModificarHabitaciones.setEnabled(false);
-						btnAnadirEmpleado.setEnabled(false);
-						btnBorrarEmpleado.setEnabled(false);
-						btnMostrarEmpleados.setEnabled(false);
-						btnMostrarMovimientos.setEnabled(false);
-						btnAnadirActividades.setEnabled(false);
-						btnBorrarActividades.setEnabled(false);
-						btnModificarActividades.setEnabled(false);
-					}
-
-				} else {
-					idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena, inicio);
-					if (idClientePersona > 0) {
+				try {
+					empleadoBoolean = gesBBDD.inicioSesion(emailString, contrasena, inicio);
+					if (empleadoBoolean) {
+						Empleados empleado = gesBBDD.buscarUnEmpleado(emailString, contrasena, inicio);
+						empleados.setVisible(true);
 						inicio.setVisible(false);
-						clientes.setVisible(true);
+						tipoEmpleado = empleado.getTipo();
+						nombreEmpleado = empleado.getNombre() + " " + empleado.getApellidos();
+						lblBienvenidoEmpleados.setText(lblBienvenidoEmpleados.getText() + " " + nombreEmpleado);
+						if (tipoEmpleado.trim().equalsIgnoreCase("gerente")) {
+							frmHotel.setTitle("Hotel River Camps: Gerente");
+							lblTipo.setText(lblTipo.getText() + " Gerente");
+						} else if (tipoEmpleado.equalsIgnoreCase("administrativo de recepción")) {
+							frmHotel.setTitle("Hotel River Camps: Admin. de recepción");
+							lblTipo.setText(lblTipo.getText() + " Admin. de recepción");
+							btnAnadirActividades.setEnabled(false);
+							btnBorrarActividades.setEnabled(false);
+							btnModificarActividades.setEnabled(false);
+							btnMostrarActividadesEmpleados.setEnabled(false);
+							btnAnadirEmpleado.setEnabled(false);
+							btnBorrarEmpleado.setEnabled(false);
+							btnMostrarEmpleados.setEnabled(false);
+							btnMostrarMovimientos.setEnabled(false);
+						} else if (tipoEmpleado.equalsIgnoreCase("conserje")) {
+							frmHotel.setTitle("Hotel River Camps: Conserje");
+							lblTipo.setText(lblTipo.getText() + " Conserje");
+							btnAnadirHabitaciones.setEnabled(false);
+							btnEliminarHabitaciones.setEnabled(false);
+							btnMostrarHabitacionesEmpleados.setEnabled(false);
+							btnModificarHabitaciones.setEnabled(false);
+							btnAnadirEmpleado.setEnabled(false);
+							btnBorrarEmpleado.setEnabled(false);
+							btnMostrarEmpleados.setEnabled(false);
+							btnMostrarMovimientos.setEnabled(false);
+							btnMostrarReservasHabitaciones.setEnabled(false);
+							btnMostrarClientes.setEnabled(false);
+						} else if (tipoEmpleado.equalsIgnoreCase("recepcionista")) {
+							frmHotel.setTitle("Hotel River Camps: Recepcionista");
+							lblTipo.setText(lblTipo.getText() + " Recepcionista");
+							btnAnadirHabitaciones.setEnabled(false);
+							btnEliminarHabitaciones.setEnabled(false);
+							btnModificarHabitaciones.setEnabled(false);
+							btnAnadirEmpleado.setEnabled(false);
+							btnBorrarEmpleado.setEnabled(false);
+							btnMostrarEmpleados.setEnabled(false);
+							btnMostrarMovimientos.setEnabled(false);
+							btnAnadirActividades.setEnabled(false);
+							btnBorrarActividades.setEnabled(false);
+							btnModificarActividades.setEnabled(false);
+						}
+
 					} else {
-						JOptionPane.showMessageDialog(frmHotel, "Usuario y/o contraseña incorrectos");
+						idClientePersona = gesBBDD.inicioSesionCliente(emailString, contrasena, inicio);
+						if (idClientePersona > 0) {
+							inicio.setVisible(false);
+							clientes.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(frmHotel, "Usuario y/o contraseña incorrectos");
+						}
 					}
+				} catch (NullPointerException e) {
+					JOptionPane.showMessageDialog(inicio,
+							"Fallo en la conexión con la base de datos.\nComprueba que el servidor está encendido");
 				}
+
 			}
 		});
 
@@ -4780,6 +4780,7 @@ public class Ventana {
 				btnMostrarEmpleados.setEnabled(true);
 				btnMostrarMovimientos.setEnabled(true);
 				btnMostrarReservas.setEnabled(true);
+				btnMostrarReservasHabitaciones.setEnabled(true);
 				btnMostrarClientes.setEnabled(true);
 				anadirHabitaciones.setVisible(false);
 				eliminarHabitaciones.setVisible(false);

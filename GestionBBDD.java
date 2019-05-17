@@ -249,7 +249,6 @@ public class GestionBBDD {
 					st.close();
 					con.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
 					JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 				}
 			}
@@ -306,7 +305,6 @@ public class GestionBBDD {
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 		return disponible;
 	}
@@ -573,8 +571,7 @@ public class GestionBBDD {
 			}
 
 		} catch (SQLException e) {
-
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 
 		String sql2 = "select aforo from actividades where id_actividades=" + id_actividad;
@@ -686,7 +683,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 	}
 
@@ -1542,7 +1538,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 
 		return insertar;
@@ -1665,7 +1660,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 		return buscar;
 	}
@@ -1692,7 +1686,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 		return buscar;
 	}
@@ -1737,7 +1730,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 		return listaMostrarReservaActividadCliente;
 	}
@@ -1779,7 +1771,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 		return listaMostrarReservaHabitacionCliente;
 	}
@@ -1822,7 +1813,6 @@ public class GestionBBDD {
 			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
-			e.printStackTrace();
 		}
 		return listaMostrarDatosCliente;
 	}
