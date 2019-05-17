@@ -126,6 +126,7 @@ public class Ventana {
 	private ArrayList<MostrarReservaActividadCliente> listaMostrarReservaActividadCliente = new ArrayList<>();
 	private ArrayList<MostrarReservaHabitacionCliente> listaMostrarReservaHabitacionCliente = new ArrayList<>();
 	private ArrayList<Clientes> listaMostrarDatosCliente = new ArrayList<>();
+	private JTextField dniEmpleadoEliminarPropio;
 
 	/**
 	 * Launch the application.
@@ -1623,7 +1624,7 @@ public class Ventana {
 		borrarEmpleado.setVisible(false);
 
 		JLabel lblDniDelEmpleado = new JLabel("DNI del empleado:");
-		lblDniDelEmpleado.setBounds(10, 11, 100, 14);
+		lblDniDelEmpleado.setBounds(10, 11, 117, 14);
 		borrarEmpleado.add(lblDniDelEmpleado);
 
 		dniEmpleadoEliminar = new JTextField();
@@ -1635,10 +1636,27 @@ public class Ventana {
 				}
 			}
 		});
-		dniEmpleadoEliminar.setBounds(120, 8, 86, 20);
+		dniEmpleadoEliminar.setBounds(130, 8, 86, 20);
 		borrarEmpleado.add(dniEmpleadoEliminar);
 		dniEmpleadoEliminar.setColumns(10);
 
+		dniEmpleadoEliminarPropio = new JTextField();
+		dniEmpleadoEliminarPropio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (dniEmpleadoEliminarPropio.getText().length() == 9) {
+					e.consume();
+				}
+			}
+		});
+		
+		JLabel lblDniEmpleadoQueElimina = new JLabel("Introduce tu DNI:");
+		lblDniEmpleadoQueElimina.setBounds(10, 35, 117, 14);
+		borrarEmpleado.add(lblDniEmpleadoQueElimina);
+		dniEmpleadoEliminarPropio.setBounds(130, 32, 86, 20);
+		borrarEmpleado.add(dniEmpleadoEliminarPropio);
+		dniEmpleadoEliminarPropio.setColumns(10);
+		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1646,15 +1664,32 @@ public class Ventana {
 				String dni = dniEmpleadoEliminar.getText();
 				dniValido = val.comprobarDNI(dni);
 				if (dniValido) {
-					dniEmpleadoEliminar.setBackground(Color.white);
-					gesBBDD.eliminarEmpleados(dni, empleados);
-					gesBBDD.eliminarPersonas(dni, empleados);
+					String dniEmpleadoGerente=dniEmpleadoEliminarPropio.getText();
+					dniValido = val.comprobarDNI(dniEmpleadoGerente);
+					if (dniValido) {
+						if (!dni.equalsIgnoreCase(dniEmpleadoGerente)) {
+							dniEmpleadoEliminar.setBackground(Color.white);
+							dniEmpleadoEliminarPropio.setBackground(Color.white);
+							gesBBDD.eliminarEmpleados(dni, empleados);
+							gesBBDD.eliminarPersonas(dni, empleados);
+							dniEmpleadoEliminar.setText("");
+							dniEmpleadoEliminarPropio.setText("");
+						} else {
+							dniEmpleadoEliminarPropio.setBackground(new Color(240, 128, 128));
+							dniEmpleadoEliminar.setBackground(new Color(240, 128, 128));
+							JOptionPane.showMessageDialog(empleados, "No puedes eliminarte a ti mismo");
+						}
+					} else {
+						dniEmpleadoEliminarPropio.setBackground(new Color(240, 128, 128));
+						JOptionPane.showMessageDialog(empleados, "El DNI introducido no es válido");
+					}
 				} else {
 					dniEmpleadoEliminar.setBackground(new Color(240, 128, 128));
 					JOptionPane.showMessageDialog(empleados, "El DNI introducido no es válido");
 				}
 			}
 		});
+		
 		btnEliminar.setBounds(499, 256, 89, 23);
 		borrarEmpleado.add(btnEliminar);
 
@@ -3236,6 +3271,8 @@ public class Ventana {
 
 				boolean validarDni = false;
 				boolean validarEmail = false;
+				int idPersonas = 0;
+				int idPersonasEmail=0;
 
 				try {
 
@@ -3249,97 +3286,107 @@ public class Ventana {
 							String dni = dniRegisro.getText();
 							validarDni = val.comprobarDNI(dni);
 							if (validarDni) {
+								idPersonas = gesBBDD.buscarPersonas(dni, registrarse);
+								if (idPersonas == 0) {
+									LocalDate fechaNacimiento = RegistroClientes.getDate();
+									int edad = (int) Period.between(fechaNacimiento, LocalDate.now()).getYears();
 
-								LocalDate fechaNacimiento = RegistroClientes.getDate();
-								int edad = (int) Period.between(fechaNacimiento, LocalDate.now()).getYears();
+									if (edad >= 18 && edad < 99) {
 
-								if (edad >= 18 && edad < 99) {
+										String telefono = telefonoRegistro.getText();
+										if (telefono.length() == 9) {
+											int telefonoInt = Integer.parseInt(telefono);
+											String email = emailRegistro.getText();
 
-									String telefono = telefonoRegistro.getText();
-									if (telefono.length() == 9) {
-										int telefonoInt = Integer.parseInt(telefono);
-										String email = emailRegistro.getText();
+											if (email.length() > 0 && email.length() <= 50) {
 
-										if (email.length() > 0 && email.length() <= 50) {
+												validarEmail = val.comprobarEmail(email);
+												if (validarEmail) {
+													idPersonasEmail=gesBBDD.buscarEmailRepetido(email, registrarse);
+													if (idPersonasEmail==0) {
+														String clave = claveRegistro.getText();
 
-											validarEmail = val.comprobarEmail(email);
-											if (validarEmail) {
+														if (clave.length() > 0 && clave.length() <= 20) {
 
-												String clave = claveRegistro.getText();
+															String confirClave = confirmarClave.getText();
 
-												if (clave.length() > 0 && clave.length() <= 20) {
+															if (clave.equalsIgnoreCase(confirClave)) {
 
-													String confirClave = confirmarClave.getText();
+																String interes = interesRegistro.getText();
 
-													if (clave.equalsIgnoreCase(confirClave)) {
+																if (interes.length() > 0 && interes.length() <= 40) {
 
-														String interes = interesRegistro.getText();
+																	Clientes cliente = new Clientes(nombre, apellidos, dni,
+																			telefonoInt, clave, edad, email, interes);
 
-														if (interes.length() > 0 && interes.length() <= 40) {
+																	boolean insertar = gesBBDD.insertarPersonas(cliente,
+																			clientes);
 
-															Clientes cliente = new Clientes(nombre, apellidos, dni,
-																	telefonoInt, edad, email, interes);
+																	if (insertar) {
+																		JOptionPane.showMessageDialog(registrarse,
+																				"Registro realizado con exito");
+																		registrarse.setVisible(false);
+																		clientes.setVisible(true);
+																		confirmarClave.setText("");
+																		NombreRegistro.setText("");
+																		apellidosRegistro.setText("");
+																		dniRegisro.setText("");
+																		telefonoRegistro.setText("");
+																		claveRegistro.setText("");
+																		emailRegistro.setText("");
+																		interesRegistro.setText("");
 
-															boolean insertar = gesBBDD.insertarPersonas(cliente,
-																	clientes);
+																	} else {
+																		JOptionPane.showMessageDialog(registrarse,
+																				"No se ha podido realizar el registro.");
 
-															if (insertar) {
-																JOptionPane.showMessageDialog(registrarse,
-																		"Registro realizado con exito");
-																registrarse.setVisible(false);
-																clientes.setVisible(true);
-																confirmarClave.setText("");
-																NombreRegistro.setText("");
-																apellidosRegistro.setText("");
-																dniRegisro.setText("");
-																telefonoRegistro.setText("");
-																claveRegistro.setText("");
-																emailRegistro.setText("");
-																interesRegistro.setText("");
+																		confirmarClave.setText("");
+																		NombreRegistro.setText("");
+																		apellidosRegistro.setText("");
+																		dniRegisro.setText("");
+																		telefonoRegistro.setText("");
+																		claveRegistro.setText("");
+																		emailRegistro.setText("");
+																		interesRegistro.setText("");
+
+																	}
+
+																} else {
+																	JOptionPane.showMessageDialog(registrarse,
+																			"El registro de interes no puede ser mayor a 40 caracteres o estar vacio");
+																}
 
 															} else {
 																JOptionPane.showMessageDialog(registrarse,
-																		"No se ha podido realizar el registro.");
-
-																confirmarClave.setText("");
-																NombreRegistro.setText("");
-																apellidosRegistro.setText("");
-																dniRegisro.setText("");
-																telefonoRegistro.setText("");
-																claveRegistro.setText("");
-																emailRegistro.setText("");
-																interesRegistro.setText("");
-
+																		"Las claves no coinciden.");
 															}
 
 														} else {
 															JOptionPane.showMessageDialog(registrarse,
-																	"El registro de interes no puede ser mayor a 40 caracteres o estar vacio");
+																	"La clave no puede ser mayor a 20 caracteres.");
 														}
-
 													} else {
-														JOptionPane.showMessageDialog(registrarse,
-																"Las claves no coinciden.");
+														JOptionPane.showMessageDialog(registrarse, "El email introducido ya está registrado");
 													}
-
 												} else {
 													JOptionPane.showMessageDialog(registrarse,
-															"La clave no puede ser mayor a 20 caracteres.");
+															"El email no es valido.");
 												}
 											} else {
-												JOptionPane.showMessageDialog(registrarse, "El email no es valido.");
+												JOptionPane.showMessageDialog(registrarse,
+														"El email supera la longitud establecida.");
 											}
 										} else {
 											JOptionPane.showMessageDialog(registrarse,
-													"El email supera la longitud establecida.");
+													"El telefono tiene que tener 9 digitos y no estar vacio.");
 										}
 									} else {
 										JOptionPane.showMessageDialog(registrarse,
-												"El telefono tiene que tener 9 digitos y no estar vacio.");
+												"La edad no puede ser inferior a 18 años.");
 									}
 								} else {
 									JOptionPane.showMessageDialog(registrarse,
-											"La edad no puede ser inferior a 18 años.");
+											"El DNI introducido ya está registrado en la base de datos");
 								}
 							} else {
 								JOptionPane.showMessageDialog(registrarse, "El DNI introducido no es valido");
@@ -3978,6 +4025,7 @@ public class Ventana {
 						} else if (rdbtnMoClave.isSelected()) {
 							opcion = "clave";
 							datoNuevo = modificarClave.getText();
+							passwd.setText(datoNuevo);
 						} else if (rdbtnMoEmail.isSelected()) {
 							opcion = "email";
 							emailValido = val.comprobarEmail(modificarEmail.getText());
@@ -4107,7 +4155,7 @@ public class Ventana {
 		btnOcultar_2.setBounds(27, 233, 89, 23);
 		reservarActividades.add(btnOcultar_2);
 
-		JButton btnEnviarReservaActividades = new JButton("Enviar"); // ERROR AL RESERVAR ACTIVIDAD CODIGO 12
+		JButton btnEnviarReservaActividades = new JButton("Enviar"); 
 		btnEnviarReservaActividades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -4249,8 +4297,8 @@ public class Ventana {
 
 		DatePickerSettings dateSettingsReservarHabitacionesEntrada = new DatePickerSettings();
 		dateSettingsReservarHabitacionesEntrada.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		dateSettingsReservarHabitacionesEntrada.setFormatForDatesCommonEra("yyyy/MM/dd");
-		dateSettingsReservarHabitacionesEntrada.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
+		dateSettingsReservarHabitacionesEntrada.setFormatForDatesCommonEra("yyyy-MM-dd");
+		dateSettingsReservarHabitacionesEntrada.setFormatForDatesBeforeCommonEra("uuuu-MM-dd");
 		dateSettingsReservarHabitacionesEntrada.setGapBeforeButtonPixels(0);
 		DatePicker calendarioReservarHabitaciones = new DatePicker(dateSettingsReservarHabitacionesEntrada);
 		dateSettingsReservarHabitacionesEntrada.setDateRangeLimits(LocalDate.now(), null);
@@ -4260,14 +4308,24 @@ public class Ventana {
 
 		DatePickerSettings dateSettingsReservarHabitacionesSalida = new DatePickerSettings();
 		dateSettingsReservarHabitacionesSalida.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		dateSettingsReservarHabitacionesSalida.setFormatForDatesCommonEra("yyyy/MM/dd");
-		dateSettingsReservarHabitacionesSalida.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
+		dateSettingsReservarHabitacionesSalida.setFormatForDatesCommonEra("yyyy-MM-dd");
+		dateSettingsReservarHabitacionesSalida.setFormatForDatesBeforeCommonEra("uuuu-MM-dd");
 		dateSettingsReservarHabitacionesSalida.setGapBeforeButtonPixels(0);
 		DatePicker calendarioReservarHabitacionesSalida = new DatePicker(dateSettingsReservarHabitacionesSalida);
 		dateSettingsReservarHabitacionesSalida.setDateRangeLimits(LocalDate.now(), null);
 		calendarioReservarHabitacionesSalida.setDateToToday();
 		calendarioReservarHabitacionesSalida.setBounds(388, 134, 166, 26);
 		reservarHabitaciones.add(calendarioReservarHabitacionesSalida);
+		calendarioReservarHabitacionesSalida.addDateChangeListener(new DateChangeListener() {
+			public void dateChanged(DateChangeEvent arg0) {
+				modelo.vaciarTabla();
+				LocalDate fechaEntrada=calendarioReservarHabitaciones.getDate();
+				LocalDate fechaSalida=calendarioReservarHabitacionesSalida.getDate();
+				listaHabitacionesClientes=gesBBDD.mostrarHabitacionesDisponibles(fechaEntrada, fechaSalida, clientes);
+				modelo.rellenarTabla(listaHabitacionesClientes, true);
+				listaHabitacionesClientes.clear();
+			}
+		});
 
 		JButton btnOcultar_1 = new JButton("Ocultar");
 		btnOcultar_1.addActionListener(new ActionListener() {
@@ -4284,7 +4342,7 @@ public class Ventana {
 		btnOcultar_1.setBounds(35, 244, 89, 23);
 		reservarHabitaciones.add(btnOcultar_1);
 
-		JButton btnEnviar = new JButton("Enviar");// RESERVAR HABITACIONJES
+		JButton btnEnviar = new JButton("Enviar");// RESERVAR HABITACIONES
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -4322,10 +4380,6 @@ public class Ventana {
 											reservaHabitacion, clientes);
 									if (disponibilidad) {
 
-										/*
-										 * reservaHabitacion = gesBBDD.calcularPrecioReserva(numeroHabitacion,
-										 * reservaHabitacion);
-										 */
 										enviar = gesBBDD.reservaHabitaciones(numeroHabitacion, dni, reservaHabitacion,
 												clientes);
 
