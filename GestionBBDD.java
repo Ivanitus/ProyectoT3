@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -301,6 +302,8 @@ public class GestionBBDD {
 							|| fechaSalidaReservaNueva.isEqual(fechaEntradaConsulta)) {
 						disponible = true;
 					}
+				} else if (fechaSalidaReservaNueva.isEqual(fechaSalidaConsulta)) {
+					disponible = false;
 				}
 			}
 		} catch (SQLException e) {
@@ -351,7 +354,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 		ResultSet rs;
-		String sql = "select id_actividades from actividades where codigo=" + codigo;
+		String sql = "select id_actividades from actividades where codigo='" + codigo + "'";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
@@ -766,7 +769,7 @@ public class GestionBBDD {
 		ResultSet rs;
 		int id = 0;
 
-		String sql = "select id_actividades from actividades where codigo=" + codigo;
+		String sql = "select id_actividades from actividades where codigo='" + codigo + "'";
 
 		try {
 
@@ -797,6 +800,28 @@ public class GestionBBDD {
 		int id = 0;
 		// Sentencia SQL
 		String sql = "select id_personas from personas where dni='" + DNI + "'";
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				id = rs.getInt("id_personas");
+			} else {
+				JOptionPane.showMessageDialog(panel, "Persona no encontrada");
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
+		}
+		return id;
+	}
+
+	protected int buscarEmailRepetido(String email, JPanel panel) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		int id = 0;
+		// Sentencia SQL
+		String sql = "select id_personas from personas where email='" + email + "'";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
@@ -1815,5 +1840,108 @@ public class GestionBBDD {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
 		return listaMostrarDatosCliente;
+	}
+
+	protected int comprobarDisponibilidadHabitacionesInt(LocalDate fechaEntrada, LocalDate fechaSalida, JPanel panel,
+			int id_habitaciones) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st;
+		ResultSet rs;
+		Date fechaEntradaSQL;
+		Date fechaSalidaSQL;
+		LocalDate fechaEntradaLocalDate;
+		LocalDate fechaSalidaLocalDate;
+		String fechaEntradaConsulta = fechaEntrada.toString();
+		String fechaSalidaConsulta = fechaSalida.toString();
+		boolean disponible = false;
+		int id_habitaciones_aux = 0;
+		// Sentencia SQL 2
+		String sql = "select fecha_entrada,fecha_salida,id_habitaciones_aux from reserva where id_habitaciones_aux="
+				+ id_habitaciones + " and fecha_entrada=STR_TO_DATE('" + fechaEntradaConsulta
+				+ "','%Y-%m-%d') and fecha_salida=STR_TO_DATE('" + fechaSalidaConsulta + "','%Y-%m-%d')";
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				fechaEntradaSQL = rs.getDate("fecha_entrada");
+				fechaSalidaSQL = rs.getDate("fecha_salida");
+				fechaEntradaLocalDate = fechaEntradaSQL.toLocalDate();
+				fechaSalidaLocalDate = fechaSalidaSQL.toLocalDate();
+				if (fechaEntrada.isEqual(fechaEntradaLocalDate)) {
+					disponible = false;
+				} else if (fechaEntrada.isAfter(fechaEntradaLocalDate)) {
+					if (fechaEntrada.isBefore(fechaSalidaLocalDate)) {
+						disponible = false;
+					} else if (fechaEntrada.isAfter(fechaSalidaLocalDate)
+							|| fechaEntrada.isEqual(fechaSalidaLocalDate)) {
+						disponible = true;
+					}
+				} else if (fechaEntrada.isBefore(fechaEntradaLocalDate)) {
+					if (fechaSalida.isAfter(fechaEntradaLocalDate)) {
+						disponible = false;
+					} else if (fechaSalida.isBefore(fechaEntradaLocalDate)
+							|| fechaSalida.isEqual(fechaEntradaLocalDate)) {
+						disponible = true;
+					}
+				} else if (fechaSalida.isEqual(fechaSalidaLocalDate)) {
+					disponible = false;
+				}
+				if (!disponible) {
+					id_habitaciones_aux = rs.getInt("id_habitaciones_aux");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
+		}
+		return id_habitaciones_aux;
+	}
+
+	protected ArrayList<Habitaciones> mostrarHabitacionesDisponibles(LocalDate fechaEntrada, LocalDate fechaSalida,
+			JPanel panel) {
+		Conexion conexion = new Conexion();
+		Connection con = conexion.getConnection();
+		Statement st = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		ArrayList<Habitaciones> listaHabitacionesDisponibles = new ArrayList<>();
+		int numBanios, camas, numHabitacion;
+		double precioHabitaciones;
+		boolean jacuzzi, matrimonio, terraza;
+		String tipo, superficie;
+		int id_habitaciones = 0;
+		// Sentencia SQL 1
+		String sql = "select * from habitaciones";
+		boolean disponible = false;
+		int id_habitaciones_aux = 0;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				id_habitaciones = rs.getInt("id_habitaciones");
+				id_habitaciones_aux = comprobarDisponibilidadHabitacionesInt(fechaEntrada, fechaSalida, panel,
+						id_habitaciones);
+				if (id_habitaciones_aux == 0) {
+					numBanios = rs.getInt("numero_baños");
+					jacuzzi = rs.getBoolean("jacuzzi");
+					matrimonio = rs.getBoolean("matrimonio");
+					tipo = rs.getString("tipo");
+					terraza = rs.getBoolean("terraza");
+					camas = rs.getInt("camas");
+					precioHabitaciones = rs.getDouble("precio_habitaciones");
+					superficie = rs.getString("superficie");
+					numHabitacion = rs.getInt("numero_habitacion");
+					Habitaciones habitacion = new Habitaciones(superficie, tipo, numBanios, camas, numHabitacion,
+							precioHabitaciones, jacuzzi, matrimonio, terraza);
+					listaHabitacionesDisponibles.add(habitacion);
+				}
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
+		}
+		return listaHabitacionesDisponibles;
 	}
 }
