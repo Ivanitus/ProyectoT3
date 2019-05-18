@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -380,7 +378,7 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st;
 
-		String sql = "delete from actividades where codigo=" + codigo;
+		String sql = "delete from actividades where codigo='" + codigo + "'";
 
 		try {
 			st = con.createStatement();
@@ -408,67 +406,71 @@ public class GestionBBDD {
 		Date fechaSql = null;
 
 		String sql = "update actividades set ";
-		if (opcion.equalsIgnoreCase("descripcion")) {
+		try {
+			if (opcion.equalsIgnoreCase("descripcion")) {
 
-			sql += "descripcion='" + datonuevo + "'";
+				sql += "descripcion='" + datonuevo + "'";
 
-		} else if (opcion.equalsIgnoreCase("tipo")) {
+			} else if (opcion.equalsIgnoreCase("tipo")) {
 
-			sql += "tipo_actividad='" + datonuevo + "'";
+				sql += "tipo_actividad='" + datonuevo + "'";
 
-		} else if (opcion.equalsIgnoreCase("medio de transporte")) {
+			} else if (opcion.equalsIgnoreCase("medio de transporte")) {
 
-			sql += "medio_transporte='" + datonuevo + "'";
+				sql += "medio_transporte='" + datonuevo + "'";
 
-		} else if (opcion.equalsIgnoreCase("localizacion")) {
+			} else if (opcion.equalsIgnoreCase("localizacion")) {
 
-			sql += "localizacion='" + datonuevo + "'";
+				sql += "localizacion='" + datonuevo + "'";
 
-		} else if (opcion.equalsIgnoreCase("codigo")) {
+			} else if (opcion.equalsIgnoreCase("codigo")) {
 
-			sql += "codigo='" + datonuevo + "'";
+				sql += "codigo='" + datonuevo + "'";
 
-		} else if (opcion.equalsIgnoreCase("hora")) {
+			} else if (opcion.equalsIgnoreCase("hora")) {
 
-			fechaSql = Date.valueOf(datonuevo);// Comprobar que es asi la conversion de String a Date
+				sql += "hora='" + datonuevo + "'";
 
-			sql += "hora=" + fechaSql + "";// Transformacion LocalDate????
+			} else if (opcion.equalsIgnoreCase("fecha")) {
 
-		} else if (opcion.equalsIgnoreCase("fecha")) {
+				fechaSql = Date.valueOf(datonuevo);
 
-			fechaSql = Date.valueOf(datonuevo);
+				sql += "fecha='" + fechaSql + "'";
 
-			sql += "fecha=" + fechaSql + "";// Transformacion LocalDate????
+			} else if (opcion.equalsIgnoreCase("aforo")) {
 
-		} else if (opcion.equalsIgnoreCase("aforo")) {
+				datonuevoInt = Integer.parseInt(datonuevo);
 
-			datonuevoInt = Integer.parseInt(datonuevo);
+				sql += "aforo=" + datonuevoInt + "";
 
-			sql += "aforo=" + datonuevoInt + "";
+			} else if (opcion.equalsIgnoreCase("duracion")) {
 
-		} else if (opcion.equalsIgnoreCase("duracion")) {
+				sql += "duracion='" + datonuevo + "'";
 
-			sql += "duracion='" + datonuevo + "'";
+			} else {
 
-		} else {
-
-			JOptionPane.showMessageDialog(panel, "El dato a modificar no es valido");
-			ejecutarSentenciaSql = false;
+				JOptionPane.showMessageDialog(panel, "El dato a modificar no es valido");
+				ejecutarSentenciaSql = false;
+			}
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(panel, "El dato introducido no es válido");
+		} catch (Exception excepcionGenerica) {
+			JOptionPane.showMessageDialog(panel, "El dato introducido no es válido");
 		}
 
-		sql += " where codigo=" + codigo;
+		sql += " where codigo='" + codigo + "'";
 
 		try {
+			st = con.createStatement();
 
 			if (ejecutarSentenciaSql) {
 
-				st = con.createStatement();
 				st.executeUpdate(sql);
 				modificar = true;
-				st.close();
 
 			}
 
+			st.close();
 			con.close();
 
 		} catch (SQLException e) {
@@ -532,15 +534,15 @@ public class GestionBBDD {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
-				descripcion = rs.getString(2);
-				hora = rs.getTime(3).toLocalTime();
-				tipo = rs.getString(4);
-				medio_transporte = rs.getString(5);
-				localizacion = rs.getString(6);
-				fecha = rs.getDate(7).toLocalDate();
-				aforo = rs.getInt(8);
-				codigo = rs.getString(9);
-				duracion = rs.getString(10);
+				descripcion = rs.getString("descripcion");
+				hora = rs.getTime("hora").toLocalTime();
+				tipo = rs.getString("tipo_actividad");
+				medio_transporte = rs.getString("medio_transporte");
+				localizacion = rs.getString("localizacion");
+				fecha = rs.getDate("fecha").toLocalDate();
+				aforo = rs.getInt("aforo");
+				codigo = rs.getString("codigo");
+				duracion = rs.getString("duracion");
 				Actividades a = new Actividades(descripcion, tipo, medio_transporte, localizacion, codigo, hora, fecha,
 						aforo, duracion);
 				listaActividades.add(a);
@@ -741,15 +743,15 @@ public class GestionBBDD {
 				 * obtengo la informaciï¿½n de cada registro, y la almaceno en variables para
 				 * posteriormente crear un objeto
 				 */
-				numBanios = rs.getInt(2);
-				jacuzzi = rs.getBoolean(3);
-				matrimonio = rs.getBoolean(4);
-				tipo = rs.getString(5);
-				terraza = rs.getBoolean(6);
-				camas = rs.getInt(7);
-				precioHabitaciones = rs.getDouble(8);
-				superficie = rs.getString(9);
-				numHabitacion = rs.getInt(10);
+				numBanios = rs.getInt("numero_baños");
+				jacuzzi = rs.getBoolean("jacuzzi");
+				matrimonio = rs.getBoolean("matrimonio");
+				tipo = rs.getString("tipo");
+				terraza = rs.getBoolean("terraza");
+				camas = rs.getInt("camas");
+				precioHabitaciones = rs.getDouble("precio_habitaciones");
+				superficie = rs.getString("superficie");
+				numHabitacion = rs.getInt("numero_habitacion");
 				/*
 				 * construyo un nuevo objeto del tipo Habitaciones para posteriormente mostrar
 				 * su informaciï¿½n con el metodo toString
