@@ -831,8 +831,6 @@ public class GestionBBDD {
 			rs = st.executeQuery(sql);
 			if (rs.next()) {
 				id = rs.getInt("id_personas");
-			} else {
-				JOptionPane.showMessageDialog(panel, "Persona no encontrada");
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
