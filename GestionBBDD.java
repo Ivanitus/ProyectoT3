@@ -162,15 +162,15 @@ public class GestionBBDD {
 			st = con.createStatement();
 			rs = st.executeQuery(sql1);
 			if (rs.next()) {
-				superficie = rs.getString(9);
-				tipo = rs.getString(5);
-				numero_banos = rs.getInt(2);
-				camas = rs.getInt(7);
-				numero_habitacion = rs.getInt(10);
-				precio_habitaciones = rs.getDouble(8);
-				jacuzzi = rs.getBoolean(3);
-				matrimonio = rs.getBoolean(4);
-				terraza = rs.getBoolean(6);
+				superficie = rs.getString("superficie");
+				tipo = rs.getString("tipo");
+				numero_banos = rs.getInt("numero_baños");
+				camas = rs.getInt("camas");
+				numero_habitacion = rs.getInt("numero_habitacion");
+				precio_habitaciones = rs.getDouble("precio_habitaciones");
+				jacuzzi = rs.getBoolean("jacuzzi");
+				matrimonio = rs.getBoolean("matrimonio");
+				terraza = rs.getBoolean("terraza");
 				Habitaciones habitacion = new Habitaciones(superficie, tipo, numero_banos, camas, numero_habitacion,
 						precio_habitaciones, jacuzzi, matrimonio, terraza);
 				// Sentencia SQL 2
@@ -1891,6 +1891,9 @@ public class GestionBBDD {
 					id_habitaciones_aux = rs.getInt("id_habitaciones_aux");
 				}
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
@@ -1936,8 +1939,10 @@ public class GestionBBDD {
 							precioHabitaciones, jacuzzi, matrimonio, terraza);
 					listaHabitacionesDisponibles.add(habitacion);
 				}
-
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
