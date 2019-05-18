@@ -342,6 +342,8 @@ public class GestionBBDD {
 			insertar = true;
 			st.close();
 			con.close();
+		} catch (MySQLIntegrityConstraintViolationException excepcion) {
+			JOptionPane.showMessageDialog(panel, "Ya hay una actividad insertada con ese código");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
@@ -1796,7 +1798,8 @@ public class GestionBBDD {
 				Clientes cliente = new Clientes(nombre, apellidos, dni);
 				Habitaciones habitacion = new Habitaciones(tipo, numero_habitacion);
 
-				MostrarReservaHabitacionCliente mostrar = new MostrarReservaHabitacionCliente(habitacion, cliente, reserva);
+				MostrarReservaHabitacionCliente mostrar = new MostrarReservaHabitacionCliente(habitacion, cliente,
+						reserva);
 				listaMostrarReservaHabitacionCliente.add(mostrar);
 			}
 			rs.close();
