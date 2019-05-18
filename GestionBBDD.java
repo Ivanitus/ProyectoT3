@@ -1770,8 +1770,12 @@ public class GestionBBDD {
 		String dni = "";
 		String tipo = "";
 		int numero_habitacion = 0;
+		Date fechaEntradaConsulta;
+		Date fechaSalidaConsulta;
+		LocalDate fechaEntradaLocalDate;
+		LocalDate fechaSalidaLocalDate;
 
-		String sql = "select personas.nombre,personas.apellidos,personas.dni,habitaciones.tipo,habitaciones.numero_habitacion"
+		String sql = "select personas.nombre,personas.apellidos,personas.dni,habitaciones.tipo,habitaciones.numero_habitacion,reserva.fecha_entrada,reserva.fecha_salida"
 				+ " from (((habitaciones inner join reserva on(habitaciones.id_habitaciones=reserva.id_habitaciones_aux))"
 				+ " inner join clientes on(reserva.id_clientes_aux=clientes.id_clientes)) inner join personas"
 				+ " on(clientes.id_personas_aux=personas.id_personas)) where dni='" + DNI + "'";
@@ -1784,11 +1788,15 @@ public class GestionBBDD {
 				dni = rs.getString("dni");
 				tipo = rs.getString("tipo");
 				numero_habitacion = rs.getInt("numero_habitacion");
-
+				fechaEntradaConsulta = rs.getDate("fecha_entrada");
+				fechaSalidaConsulta = rs.getDate("fecha_salida");
+				fechaEntradaLocalDate = fechaEntradaConsulta.toLocalDate();
+				fechaSalidaLocalDate = fechaSalidaConsulta.toLocalDate();
+				Reserva reserva = new Reserva(fechaEntradaLocalDate, fechaSalidaLocalDate);
 				Clientes cliente = new Clientes(nombre, apellidos, dni);
 				Habitaciones habitacion = new Habitaciones(tipo, numero_habitacion);
 
-				MostrarReservaHabitacionCliente mostrar = new MostrarReservaHabitacionCliente(habitacion, cliente);
+				MostrarReservaHabitacionCliente mostrar = new MostrarReservaHabitacionCliente(habitacion, cliente, reserva);
 				listaMostrarReservaHabitacionCliente.add(mostrar);
 			}
 			rs.close();
