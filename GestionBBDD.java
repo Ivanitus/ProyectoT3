@@ -1248,7 +1248,7 @@ public class GestionBBDD {
 		Statement st;
 		ResultSet rs;
 		String dni = "";
-		String sql = "select dni from personas where email='" + correo + "' and clave='" + clave + "'";
+		String sql = "select dni from personas where email= BINARY '" + correo + "' and clave= BINARY '" + clave + "'";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
@@ -1288,7 +1288,7 @@ public class GestionBBDD {
 		int antiguedad = 0;
 		double salario = 0;
 		String tipo = "";
-		String sql1 = "select * from personas where email='" + correo + "' and clave='" + clave + "'";
+		String sql1 = "select * from personas where email= BINARY '" + correo + "' and clave= BINARY '" + clave + "'";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql1);
@@ -1344,7 +1344,7 @@ public class GestionBBDD {
 		// Sentencia SQL
 		String sql = "select habitaciones.numero_habitacion,habitaciones.tipo,reserva.fecha_entrada,reserva.fecha_salida,reserva.precioReserva,reserva.numPersonas,personas.nombre,personas.apellidos,personas.dni from "
 				+ "(((habitaciones inner join reserva on(habitaciones.id_habitaciones=reserva.id_habitaciones_aux)) inner join clientes "
-				+ "on(reserva.id_clientes_aux=clientes.id_clientes)) inner join personas on(clientes.id_personas_aux=personas.id_personas));";
+				+ "on(reserva.id_clientes_aux=clientes.id_clientes)) inner join personas on(clientes.id_personas_aux=personas.id_personas))";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql);
@@ -1584,19 +1584,19 @@ public class GestionBBDD {
 		int edad = 0;
 		String emailEn = "";
 		String interes = "";
-		String sql1 = "select * from personas where email='" + correo + "' and clave='" + clave + "'";
+		String sql1 = "select * from personas where email= BINARY '" + correo + "' and clave= BINARY '" + clave + "'";
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery(sql1);
 			if (rs.next()) {
-				id_personas = rs.getInt(1);
-				nombre = rs.getString(2);
-				apellidos = rs.getString(3);
-				dni = rs.getString(4);
-				telefono = rs.getInt(5);
-				clave = rs.getString(6);
-				edad = rs.getInt(7);
-				emailEn = rs.getString(8);
+				id_personas = rs.getInt("id_personas");
+				nombre = rs.getString("nombre");
+				apellidos = rs.getString("apellidos");
+				dni = rs.getString("dni");
+				telefono = rs.getInt("telefono");
+				clave = rs.getString("clave");
+				edad = rs.getInt("edad");
+				emailEn = rs.getString("email");
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
@@ -1606,7 +1606,7 @@ public class GestionBBDD {
 			st = con.createStatement();
 			rs = st.executeQuery(sql2);
 			if (rs.next()) {
-				interes = rs.getString(2);
+				interes = rs.getString("interes");
 			}
 			// Cierro el resultset, el statement y la conexion
 			rs.close();
