@@ -599,6 +599,19 @@ public class Ventana {
 										passwordFieldEmpleadoModificar.setBackground(Color.white);
 										spinnerEdad.setBackground(Color.white);
 										textFieldEmailModificarEmpleado.setBackground(Color.white);
+										rdbtnNombre.setSelected(false);
+										rdbtnApellidosEmpleados.setSelected(false);
+										rdbtnTelefono.setSelected(false);
+										rdbtnClave.setSelected(false);
+										rdbtnEdadEmpleadoModificar.setSelected(false);
+										rdbtnEmailEmpleadoModificar.setSelected(false);
+										textFielddniEmpleadoModificar.setText("");
+										nombreEmpleadoModificar.setText("");
+										apellidosEmpleadoModificar.setText("");
+										telefonoEmpleadoModificar.setText("");
+										passwordFieldEmpleadoModificar.setText("");
+										spinnerEdad.setValue(16);
+										textFieldEmailModificarEmpleado.setText("");
 										JOptionPane.showMessageDialog(empleados, "Dato modificado con exito");
 									}
 								} else {
