@@ -3416,7 +3416,7 @@ public class Ventana {
 		volverRegistroCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				registrarse.setVisible(false);
-				CancelarReservaHabitacion.setVisible(true);
+				CancelarReservaHabitacion.setVisible(false);
 				modificar.setVisible(false);
 				reservarActividades.setVisible(false);
 				reservarHabitaciones.setVisible(false);

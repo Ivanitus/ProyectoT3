@@ -25,7 +25,7 @@ public class TableableModel extends DefaultTableModel {
 		Iterator<? extends Tableable> it = lista.iterator();
 		while (it.hasNext()) {
 			Tableable t = it.next();
-			// Obetenemos la cabecera del modelo que implemento tableable y se lo
+			// Obtenemos la cabecera del modelo que implemento tableable y se lo
 			// establecemos como titulos de las columnas
 			setColumnIdentifiers(t.getHeader());
 			// Obtenemos los datos del modelo y añadimos una nueva fila a la tabla
