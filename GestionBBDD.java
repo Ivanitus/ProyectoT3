@@ -76,6 +76,7 @@ public class GestionBBDD {
 				JOptionPane.showMessageDialog(panel, "La habitación introducida no existe");
 			}
 			// Cierro el statement y la conexion
+			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
@@ -100,6 +101,7 @@ public class GestionBBDD {
 				JOptionPane.showMessageDialog(panel, "Habitacion no encontrada");
 			}
 			// Cierro el statement y la conexion
+			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
@@ -244,13 +246,14 @@ public class GestionBBDD {
 						st.executeUpdate(sql);
 						modificar = true;
 					}
-					// Cierro el statement y la conexion
-					st.close();
-					con.close();
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 				}
 			}
+
+			// Cierro el statement y la conexion
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Error en la sentencia SQL");
 		}
@@ -304,6 +307,9 @@ public class GestionBBDD {
 					disponible = false;
 				}
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
@@ -364,6 +370,7 @@ public class GestionBBDD {
 				JOptionPane.showMessageDialog(panel, "La actividad introducida no existe");
 			}
 			// Cierro el statement y la conexion
+			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
@@ -547,6 +554,9 @@ public class GestionBBDD {
 						aforo, duracion);
 				listaActividades.add(a);
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
@@ -592,6 +602,9 @@ public class GestionBBDD {
 
 				aforo = rs.getInt("aforo");
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la conexion");
 		}
@@ -760,6 +773,9 @@ public class GestionBBDD {
 						jacuzzi, matrimonio, terraza);
 				listaHabitaciones.add(h);
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la sentencia SQL");
 		}
@@ -786,6 +802,9 @@ public class GestionBBDD {
 			} else {
 				JOptionPane.showMessageDialog(panel, "La actividad que busca no existe");
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
@@ -812,6 +831,9 @@ public class GestionBBDD {
 			} else {
 				JOptionPane.showMessageDialog(panel, "Persona no encontrada");
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
@@ -832,6 +854,9 @@ public class GestionBBDD {
 			if (rs.next()) {
 				id = rs.getInt("id_personas");
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
@@ -1040,6 +1065,9 @@ public class GestionBBDD {
 				JOptionPane.showMessageDialog(panel, "El empleado que busca no existe");
 			}
 
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
@@ -1066,6 +1094,7 @@ public class GestionBBDD {
 				idCliente = rs.getInt("id_clientes");
 			}
 			// Cierro el statement y la conexion
+			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
@@ -1217,6 +1246,9 @@ public class GestionBBDD {
 			if (rs.next()) {
 				idEmpleado = rs.getInt("id_empleados");
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
@@ -1236,6 +1268,9 @@ public class GestionBBDD {
 			if (rs.next()) {
 				idCliente = rs.getInt("id_clientes");
 			}
+			rs.close();
+			st.close();
+			con.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
@@ -1683,6 +1718,7 @@ public class GestionBBDD {
 			if (rs.next()) {
 				buscar = true;
 			}
+			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
@@ -1709,6 +1745,7 @@ public class GestionBBDD {
 			if (rs.next()) {
 				buscar = true;
 			}
+			rs.close();
 			st.close();
 			con.close();
 		} catch (SQLException e) {
@@ -1906,7 +1943,6 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return id_habitaciones_aux;
@@ -1918,7 +1954,6 @@ public class GestionBBDD {
 		Connection con = conexion.getConnection();
 		Statement st = null;
 		ResultSet rs = null;
-		ResultSet rs2 = null;
 		ArrayList<Habitaciones> listaHabitacionesDisponibles = new ArrayList<>();
 		int numBanios, camas, numHabitacion;
 		double precioHabitaciones;
@@ -1955,7 +1990,6 @@ public class GestionBBDD {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(panel, "Fallo en la consulta SQL");
 		}
 		return listaHabitacionesDisponibles;
