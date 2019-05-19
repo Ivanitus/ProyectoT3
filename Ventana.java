@@ -90,8 +90,6 @@ public class Ventana {
 	private JTextField telefonoEmpleadoModificar;
 	private JPasswordField passwordFieldEmpleadoModificar;
 	private JTextField textFieldEmailModificarEmpleado;
-	private JTextField textFieldSalarioEmpleadoModificar;
-	private JTextField textFieldAntiguedadEmpleadoModificar;
 	private JTextField textFielddniEmpleadoModificar;
 	private ArrayList<Personas> listaPersonas = new ArrayList<>();
 	private ArrayList<ReservaActividadesClientes> listaReservaActividades = new ArrayList<>();
@@ -417,50 +415,6 @@ public class Ventana {
 		textFieldEmailModificarEmpleado.setColumns(10);
 		textFieldEmailModificarEmpleado.setEnabled(false);
 
-		textFieldSalarioEmpleadoModificar = new JTextField();
-		textFieldSalarioEmpleadoModificar.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
-					e.consume();
-				} else if ((e.getKeyChar() == e.VK_SPACE)) {
-					e.consume();
-				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
-					e.consume();
-				}
-			}
-		});
-		textFieldSalarioEmpleadoModificar.setBounds(422, 79, 166, 20);
-		modificarDatosPersonalesEmpleados.add(textFieldSalarioEmpleadoModificar);
-		textFieldSalarioEmpleadoModificar.setColumns(10);
-		textFieldSalarioEmpleadoModificar.setEnabled(false);
-
-		textFieldAntiguedadEmpleadoModificar = new JTextField();
-		textFieldAntiguedadEmpleadoModificar.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
-					e.consume();
-				} else if ((e.getKeyChar() == e.VK_SPACE)) {
-					e.consume();
-				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
-					e.consume();
-				}
-			}
-		});
-		textFieldAntiguedadEmpleadoModificar.setBounds(422, 105, 166, 20);
-		modificarDatosPersonalesEmpleados.add(textFieldAntiguedadEmpleadoModificar);
-		textFieldAntiguedadEmpleadoModificar.setColumns(10);
-		textFieldAntiguedadEmpleadoModificar.setEnabled(false);
-
-		JComboBox comboBoxTipoEmpleadoModificar = new JComboBox();
-		comboBoxTipoEmpleadoModificar.setBounds(250, 130, 166, 20);
-		modificarDatosPersonalesEmpleados.add(comboBoxTipoEmpleadoModificar);
-		comboBoxTipoEmpleadoModificar.addItem("Administrativo de recepcion");
-		comboBoxTipoEmpleadoModificar.addItem("Conserje");
-		comboBoxTipoEmpleadoModificar.addItem("Recepcionista");
-		comboBoxTipoEmpleadoModificar.setEnabled(false);
-
 		JRadioButton rdbtnNombre = new JRadioButton("Nombre:");
 		rdbtnNombre.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -645,9 +599,6 @@ public class Ventana {
 										passwordFieldEmpleadoModificar.setBackground(Color.white);
 										spinnerEdad.setBackground(Color.white);
 										textFieldEmailModificarEmpleado.setBackground(Color.white);
-										textFieldSalarioEmpleadoModificar.setBackground(Color.white);
-										textFieldAntiguedadEmpleadoModificar.setBackground(Color.white);
-										comboBoxTipoEmpleadoModificar.setBackground(Color.white);
 										JOptionPane.showMessageDialog(empleados, "Dato modificado con exito");
 									}
 								} else {
