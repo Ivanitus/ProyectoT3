@@ -544,47 +544,6 @@ public class Ventana {
 		});
 		rdbtnEmailEmpleadoModificar.setBounds(307, 52, 109, 23);
 		modificarDatosPersonalesEmpleados.add(rdbtnEmailEmpleadoModificar);
-
-		JRadioButton rdbtnSalario = new JRadioButton("Salario:");
-		rdbtnSalario.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if (rdbtnSalario.isSelected()) {
-					textFieldSalarioEmpleadoModificar.setEnabled(true);
-				} else {
-					textFieldSalarioEmpleadoModificar.setEnabled(false);
-					textFieldSalarioEmpleadoModificar.setText(null);
-				}
-			}
-		});
-		rdbtnSalario.setBounds(307, 78, 109, 23);
-		modificarDatosPersonalesEmpleados.add(rdbtnSalario);
-
-		JRadioButton rdbtnAntigedad = new JRadioButton("Antig\u00FCedad:");
-		rdbtnAntigedad.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (rdbtnAntigedad.isSelected()) {
-					textFieldAntiguedadEmpleadoModificar.setEnabled(true);
-				} else {
-					textFieldAntiguedadEmpleadoModificar.setEnabled(false);
-					textFieldAntiguedadEmpleadoModificar.setText(null);
-				}
-			}
-		});
-		rdbtnAntigedad.setBounds(307, 104, 109, 23);
-		modificarDatosPersonalesEmpleados.add(rdbtnAntigedad);
-
-		JRadioButton rdbtnTipoEmpleadoModificar = new JRadioButton("Tipo:");
-		rdbtnTipoEmpleadoModificar.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (rdbtnTipoEmpleadoModificar.isSelected()) {
-					comboBoxTipoEmpleadoModificar.setEnabled(true);
-				} else {
-					comboBoxTipoEmpleadoModificar.setEnabled(false);
-				}
-			}
-		});
-		rdbtnTipoEmpleadoModificar.setBounds(135, 130, 109, 23);
-		modificarDatosPersonalesEmpleados.add(rdbtnTipoEmpleadoModificar);
 		modificarDatosPersonalesEmpleados.setVisible(false);
 
 		ButtonGroup grupoRadioButtonsModificarEmpleado = new ButtonGroup();
@@ -594,9 +553,6 @@ public class Ventana {
 		grupoRadioButtonsModificarEmpleado.add(rdbtnClave);
 		grupoRadioButtonsModificarEmpleado.add(rdbtnEdadEmpleadoModificar);
 		grupoRadioButtonsModificarEmpleado.add(rdbtnEmailEmpleadoModificar);
-		grupoRadioButtonsModificarEmpleado.add(rdbtnSalario);
-		grupoRadioButtonsModificarEmpleado.add(rdbtnAntigedad);
-		grupoRadioButtonsModificarEmpleado.add(rdbtnTipoEmpleadoModificar);
 
 		JButton btnModificarEmpleado = new JButton("Modificar");
 		btnModificarEmpleado.addActionListener(new ActionListener() {
@@ -620,12 +576,6 @@ public class Ventana {
 					tipoPersona = "persona";
 				} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
 					tipoPersona = "persona";
-				} else if (rdbtnSalario.isSelected()) {
-					tipoPersona = "empleado";
-				} else if (rdbtnAntigedad.isSelected()) {
-					tipoPersona = "empleado";
-				} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
-					tipoPersona = "empleado";
 				}
 				String emailEmpleado = email.getText();
 				String passwdEmpleado = passwd.getText();
@@ -682,24 +632,6 @@ public class Ventana {
 										modificarValido = false;
 										JOptionPane.showMessageDialog(empleados, "El e-mail introducido no es valido");
 									}
-								} else if (rdbtnSalario.isSelected()) {
-									opcion = "salario";
-									datoNuevo = textFieldSalarioEmpleadoModificar.getText();
-									if (datoNuevo.length() > 0) {
-										modificarValido = true;
-									}
-								} else if (rdbtnAntigedad.isSelected()) {
-									opcion = "antiguedad";
-									datoNuevo = textFieldAntiguedadEmpleadoModificar.getText();
-									if (datoNuevo.length() > 0) {
-										modificarValido = true;
-									}
-								} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
-									opcion = "tipo";
-									datoNuevo = (String) comboBoxTipoEmpleadoModificar.getSelectedItem();
-									if (datoNuevo.length() > 0 && datoNuevo.length() <= 27) {
-										modificarValido = true;
-									}
 								} else {
 									modificarValido = false;
 								}
@@ -732,12 +664,6 @@ public class Ventana {
 										spinnerEdad.setBackground(new Color(240, 128, 128));
 									} else if (rdbtnEmailEmpleadoModificar.isSelected()) {
 										textFieldEmailModificarEmpleado.setBackground(new Color(240, 128, 128));
-									} else if (rdbtnSalario.isSelected()) {
-										textFieldSalarioEmpleadoModificar.setBackground(new Color(240, 128, 128));
-									} else if (rdbtnAntigedad.isSelected()) {
-										textFieldAntiguedadEmpleadoModificar.setBackground(new Color(240, 128, 128));
-									} else if (rdbtnTipoEmpleadoModificar.isSelected()) {
-										comboBoxTipoEmpleadoModificar.setBackground(new Color(240, 128, 128));
 									}
 								}
 							} else {
@@ -1649,14 +1575,14 @@ public class Ventana {
 				}
 			}
 		});
-		
+
 		JLabel lblDniEmpleadoQueElimina = new JLabel("Introduce tu DNI:");
 		lblDniEmpleadoQueElimina.setBounds(10, 35, 117, 14);
 		borrarEmpleado.add(lblDniEmpleadoQueElimina);
 		dniEmpleadoEliminarPropio.setBounds(130, 32, 86, 20);
 		borrarEmpleado.add(dniEmpleadoEliminarPropio);
 		dniEmpleadoEliminarPropio.setColumns(10);
-		
+
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1664,7 +1590,7 @@ public class Ventana {
 				String dni = dniEmpleadoEliminar.getText();
 				dniValido = val.comprobarDNI(dni);
 				if (dniValido) {
-					String dniEmpleadoGerente=dniEmpleadoEliminarPropio.getText();
+					String dniEmpleadoGerente = dniEmpleadoEliminarPropio.getText();
 					dniValido = val.comprobarDNI(dniEmpleadoGerente);
 					if (dniValido) {
 						if (!dni.equalsIgnoreCase(dniEmpleadoGerente)) {
@@ -1689,7 +1615,7 @@ public class Ventana {
 				}
 			}
 		});
-		
+
 		btnEliminar.setBounds(499, 256, 89, 23);
 		borrarEmpleado.add(btnEliminar);
 
@@ -3272,7 +3198,7 @@ public class Ventana {
 				boolean validarDni = false;
 				boolean validarEmail = false;
 				int idPersonas = 0;
-				int idPersonasEmail=0;
+				int idPersonasEmail = 0;
 
 				try {
 
@@ -3302,8 +3228,8 @@ public class Ventana {
 
 												validarEmail = val.comprobarEmail(email);
 												if (validarEmail) {
-													idPersonasEmail=gesBBDD.buscarEmailRepetido(email, registrarse);
-													if (idPersonasEmail==0) {
+													idPersonasEmail = gesBBDD.buscarEmailRepetido(email, registrarse);
+													if (idPersonasEmail == 0) {
 														String clave = claveRegistro.getText();
 
 														if (clave.length() > 0 && clave.length() <= 20) {
@@ -3316,8 +3242,9 @@ public class Ventana {
 
 																if (interes.length() > 0 && interes.length() <= 40) {
 
-																	Clientes cliente = new Clientes(nombre, apellidos, dni,
-																			telefonoInt, clave, edad, email, interes);
+																	Clientes cliente = new Clientes(nombre, apellidos,
+																			dni, telefonoInt, clave, edad, email,
+																			interes);
 
 																	boolean insertar = gesBBDD.insertarPersonas(cliente,
 																			clientes);
@@ -3366,7 +3293,8 @@ public class Ventana {
 																	"La clave no puede ser mayor a 20 caracteres.");
 														}
 													} else {
-														JOptionPane.showMessageDialog(registrarse, "El email introducido ya está registrado");
+														JOptionPane.showMessageDialog(registrarse,
+																"El email introducido ya está registrado");
 													}
 												} else {
 													JOptionPane.showMessageDialog(registrarse,
@@ -4155,7 +4083,7 @@ public class Ventana {
 		btnOcultar_2.setBounds(27, 233, 89, 23);
 		reservarActividades.add(btnOcultar_2);
 
-		JButton btnEnviarReservaActividades = new JButton("Enviar"); 
+		JButton btnEnviarReservaActividades = new JButton("Enviar");
 		btnEnviarReservaActividades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -4319,9 +4247,9 @@ public class Ventana {
 		calendarioReservarHabitacionesSalida.addDateChangeListener(new DateChangeListener() {
 			public void dateChanged(DateChangeEvent arg0) {
 				modelo.vaciarTabla();
-				LocalDate fechaEntrada=calendarioReservarHabitaciones.getDate();
-				LocalDate fechaSalida=calendarioReservarHabitacionesSalida.getDate();
-				listaHabitacionesClientes=gesBBDD.mostrarHabitacionesDisponibles(fechaEntrada, fechaSalida, clientes);
+				LocalDate fechaEntrada = calendarioReservarHabitaciones.getDate();
+				LocalDate fechaSalida = calendarioReservarHabitacionesSalida.getDate();
+				listaHabitacionesClientes = gesBBDD.mostrarHabitacionesDisponibles(fechaEntrada, fechaSalida, clientes);
 				modelo.rellenarTabla(listaHabitacionesClientes, true);
 				listaHabitacionesClientes.clear();
 			}
