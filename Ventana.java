@@ -46,6 +46,8 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class Ventana {
 
@@ -378,6 +380,9 @@ public class Ventana {
 				if (passwordFieldEmpleadoModificar.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
 			}
 		});
 		passwordFieldEmpleadoModificar.setBounds(125, 109, 86, 20);
@@ -385,6 +390,18 @@ public class Ventana {
 		passwordFieldEmpleadoModificar.setEnabled(false);
 
 		JSpinner spinnerEdad = new JSpinner();
+		spinnerEdad.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if ((int) spinnerEdad.getValue() < 16) {
+					JOptionPane.showMessageDialog(empleados, "El empleado no puede tener una edad inferior a 16 años");
+					spinnerEdad.setValue(16);
+				} else if ((int) spinnerEdad.getValue() > 67) {
+					JOptionPane.showMessageDialog(empleados, "El empleado no puede tener una edad superior a 67 años");
+					spinnerEdad.setValue(67);
+				}
+			}
+		});
 		spinnerEdad.setValue(16);
 		spinnerEdad.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -3552,6 +3569,17 @@ public class Ventana {
 		textFieldDniCancelarActividad.setColumns(10);
 
 		JSpinner spinnerModificarEdad = new JSpinner();
+		spinnerModificarEdad.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				if ((int) spinnerModificarEdad.getValue() < 18 || (int) spinnerModificarEdad.getValue() > 99) {
+					JOptionPane.showMessageDialog(clientes,
+							"La edad no puede ser inferior a 18 años ni superior a 99.");
+					spinnerModificarEdad.setValue(18);
+				}
+			}
+		});
+		spinnerModificarEdad.setValue(18);
 		spinnerModificarEdad.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if ((int) spinnerModificarEdad.getValue() < 18 || (int) spinnerModificarEdad.getValue() > 99) {
@@ -3828,6 +3856,9 @@ public class Ventana {
 				if (modificarClave.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar()=='\'') {
+					e.consume();
+				}
 			}
 		});
 		modificarClave.setBounds(266, 130, 86, 20);
@@ -3926,6 +3957,7 @@ public class Ventana {
 								email.setText(datoNuevo);
 							} else {
 								JOptionPane.showMessageDialog(clientes, "El e-mail introducido no es válido");
+								modificarValidado = false;
 							}
 						} else if (rdbtnMoInteres.isSelected()) {
 							opcion = "interes";
