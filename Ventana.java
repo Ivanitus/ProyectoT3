@@ -2552,8 +2552,8 @@ public class Ventana {
 												JOptionPane.showMessageDialog(empleados,
 														"Habitación insertada con éxito");
 												numHabitacionEmpleados.setText(null);
-												numBanosEmpleados.setValue(0);
-												numCamasEmpleados.setValue(0);
+												numBanosEmpleados.setValue(1);
+												numCamasEmpleados.setValue(1);
 												tiposHabitacionEmpleados.setSelectedIndex(0);
 												superficieHabitacionEmpleados.setText(null);
 												precioHabitacionesEmpleados.setText(null);
