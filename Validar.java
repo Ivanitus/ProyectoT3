@@ -51,4 +51,16 @@ public class Validar {
 		}
 		return valido;
 	} // fin comprobarEmail
+	
+	protected boolean comprobarClave(String clave) {
+		boolean valido = false;
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
+		Matcher matcher=pattern.matcher(clave);
+		if (matcher.find()) {
+			valido = true;
+		} else {
+			valido = false;
+		}
+		return valido;
+	} //fin comprobarClave
 }

@@ -383,6 +383,9 @@ public class Ventana {
 				if (e.getKeyChar() == '\'') {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		passwordFieldEmpleadoModificar.setBounds(125, 109, 86, 20);
@@ -535,6 +538,7 @@ public class Ventana {
 				boolean modificarValido = false;
 				boolean modificar = false;
 				boolean emailValido = false;
+				boolean contrasenaValida = false;
 				if (rdbtnNombre.isSelected()) {
 					tipoPersona = "persona";
 				} else if (rdbtnApellidosEmpleados.isSelected()) {
@@ -579,9 +583,20 @@ public class Ventana {
 									}
 								} else if (rdbtnClave.isSelected()) {
 									opcion = "clave";
-									datoNuevo = passwordFieldEmpleadoModificar.getText();
-									if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
-										modificarValido = true;
+									contrasenaValida = val.comprobarClave(passwordFieldEmpleadoModificar.getText());
+									if (contrasenaValida) {
+										datoNuevo = passwordFieldEmpleadoModificar.getText();
+										if (datoNuevo.length() > 0 && datoNuevo.length() <= 20) {
+											modificarValido = true;
+											passwd.setText(datoNuevo);
+										} else {
+											JOptionPane.showMessageDialog(empleados,
+													"La clave introducida es demasiado larga");
+											modificarValido = false;
+										}
+									} else {
+										JOptionPane.showMessageDialog(empleados, "La clave introducida no es válida");
+										modificarValido = false;
 									}
 								} else if (rdbtnEdadEmpleadoModificar.isSelected()) {
 									opcion = "edad";
@@ -594,6 +609,7 @@ public class Ventana {
 									if (emailValido) {
 										if (datoNuevo.length() > 0 && datoNuevo.length() <= 50) {
 											modificarValido = true;
+											email.setText(datoNuevo);
 										} else {
 											modificarValido = false;
 											JOptionPane.showMessageDialog(empleados,
@@ -3046,6 +3062,12 @@ public class Ventana {
 				if (confirmarClave.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		confirmarClave.setBounds(212, 233, 86, 20);
@@ -3125,6 +3147,12 @@ public class Ventana {
 				if (claveRegistro.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		claveRegistro.setBounds(212, 198, 86, 20);
@@ -3180,6 +3208,7 @@ public class Ventana {
 				boolean validarEmail = false;
 				int idPersonas = 0;
 				int idPersonasEmail = 0;
+				boolean contrasenaValida = false;
 
 				try {
 
@@ -3218,52 +3247,55 @@ public class Ventana {
 															String confirClave = confirmarClave.getText();
 
 															if (clave.equalsIgnoreCase(confirClave)) {
+																contrasenaValida=val.comprobarClave(clave);
+																if (contrasenaValida) {
+																	String interes = interesRegistro.getText();
 
-																String interes = interesRegistro.getText();
+																	if (interes.length() > 0 && interes.length() <= 40) {
 
-																if (interes.length() > 0 && interes.length() <= 40) {
+																		Clientes cliente = new Clientes(nombre, apellidos,
+																				dni, telefonoInt, clave, edad, email,
+																				interes);
 
-																	Clientes cliente = new Clientes(nombre, apellidos,
-																			dni, telefonoInt, clave, edad, email,
-																			interes);
+																		boolean insertar = gesBBDD.insertarPersonas(cliente,
+																				clientes);
 
-																	boolean insertar = gesBBDD.insertarPersonas(cliente,
-																			clientes);
+																		if (insertar) {
+																			JOptionPane.showMessageDialog(registrarse,
+																					"Registro realizado con exito");
+																			registrarse.setVisible(false);
+																			inicio.setVisible(true);
+																			confirmarClave.setText("");
+																			NombreRegistro.setText("");
+																			apellidosRegistro.setText("");
+																			dniRegisro.setText("");
+																			telefonoRegistro.setText("");
+																			claveRegistro.setText("");
+																			emailRegistro.setText("");
+																			interesRegistro.setText("");
 
-																	if (insertar) {
-																		JOptionPane.showMessageDialog(registrarse,
-																				"Registro realizado con exito");
-																		registrarse.setVisible(false);
-																		clientes.setVisible(true);
-																		confirmarClave.setText("");
-																		NombreRegistro.setText("");
-																		apellidosRegistro.setText("");
-																		dniRegisro.setText("");
-																		telefonoRegistro.setText("");
-																		claveRegistro.setText("");
-																		emailRegistro.setText("");
-																		interesRegistro.setText("");
+																		} else {
+																			JOptionPane.showMessageDialog(registrarse,
+																					"No se ha podido realizar el registro.");
+
+																			confirmarClave.setText("");
+																			NombreRegistro.setText("");
+																			apellidosRegistro.setText("");
+																			dniRegisro.setText("");
+																			telefonoRegistro.setText("");
+																			claveRegistro.setText("");
+																			emailRegistro.setText("");
+																			interesRegistro.setText("");
+
+																		}
 
 																	} else {
 																		JOptionPane.showMessageDialog(registrarse,
-																				"No se ha podido realizar el registro.");
-
-																		confirmarClave.setText("");
-																		NombreRegistro.setText("");
-																		apellidosRegistro.setText("");
-																		dniRegisro.setText("");
-																		telefonoRegistro.setText("");
-																		claveRegistro.setText("");
-																		emailRegistro.setText("");
-																		interesRegistro.setText("");
-
+																				"El registro de interes no puede ser mayor a 40 caracteres o estar vacio");
 																	}
-
 																} else {
-																	JOptionPane.showMessageDialog(registrarse,
-																			"El registro de interes no puede ser mayor a 40 caracteres o estar vacio");
+																	JOptionPane.showMessageDialog(registrarse, "La contraseña introducida no es válida");
 																}
-
 															} else {
 																JOptionPane.showMessageDialog(registrarse,
 																		"Las claves no coinciden.");
@@ -3856,7 +3888,10 @@ public class Ventana {
 				if (modificarClave.getText().length() == 20) {
 					e.consume();
 				}
-				if (e.getKeyChar()=='\'') {
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -3900,12 +3935,12 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {// ORDENES MODIFICAR DATOS EN BBDD
 
 				String tipoPersona = "";
-				boolean dniValidado = false;
 				String opcion = "";
 				String datoNuevo = "";
 				boolean modificarValidado = true;
 				boolean modificar = false;
 				boolean emailValido = false;
+				boolean contrasenaValida = false;
 				String dni = "";
 
 				if (rdbtnMoNombre.isSelected()) {
@@ -3947,8 +3982,15 @@ public class Ventana {
 							datoNuevo = modificarTelefono.getText();
 						} else if (rdbtnMoClave.isSelected()) {
 							opcion = "clave";
-							datoNuevo = modificarClave.getText();
-							passwd.setText(datoNuevo);
+							contrasenaValida = val.comprobarClave(modificarClave.getText());
+							if (contrasenaValida) {
+								datoNuevo = modificarClave.getText();
+								passwd.setText(datoNuevo);
+							} else {
+								JOptionPane.showMessageDialog(empleados, "La clave que has introducido no es válida");
+								modificarValidado = false;
+							}
+
 						} else if (rdbtnMoEmail.isSelected()) {
 							opcion = "email";
 							emailValido = val.comprobarEmail(modificarEmail.getText());
