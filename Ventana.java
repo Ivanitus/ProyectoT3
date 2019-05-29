@@ -227,6 +227,15 @@ public class Ventana {
 				if (email.getText().length() == 50) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		email.setColumns(10);
@@ -242,6 +251,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (passwd.getText().length() == 20) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -327,6 +345,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		nombreEmpleadoModificar.setBounds(125, 27, 86, 20);
@@ -343,6 +370,15 @@ public class Ventana {
 				}
 				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -366,6 +402,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		telefonoEmpleadoModificar.setBounds(125, 83, 86, 20);
@@ -384,6 +429,9 @@ public class Ventana {
 					e.consume();
 				}
 				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -426,6 +474,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (textFieldEmailModificarEmpleado.getText().length() == 50) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -691,6 +748,15 @@ public class Ventana {
 				if (textFielddniEmpleadoModificar.getText().length() == 9) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 
@@ -744,6 +810,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		scrollPaneDescripcionModificar.setViewportView(descripcionModificar);
@@ -768,6 +843,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		medioTransporteActividadModificar.setBounds(142, 123, 86, 20);
@@ -786,6 +870,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		localizacionActividadModificar.setBounds(142, 149, 86, 20);
@@ -801,6 +894,15 @@ public class Ventana {
 					e.consume();
 				}
 				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -849,6 +951,15 @@ public class Ventana {
 					e.consume();
 				}
 				if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -1159,6 +1270,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		superficieModificar.setBounds(159, 32, 86, 20);
@@ -1211,6 +1331,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		numHabitacionModificar.setBounds(306, 137, 86, 20);
@@ -1227,6 +1356,15 @@ public class Ventana {
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -1393,6 +1531,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		numHabitacionAModificar.setBounds(306, 163, 86, 20);
@@ -1557,6 +1704,15 @@ public class Ventana {
 				if (dniEmpleadoEliminar.getText().length() == 9) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		dniEmpleadoEliminar.setBounds(130, 8, 86, 20);
@@ -1568,6 +1724,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (dniEmpleadoEliminarPropio.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -1646,6 +1811,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		nombreEmpleadoNuevo.setBounds(121, 8, 86, 20);
@@ -1667,6 +1841,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		apellidosEmpleadoNuevo.setBounds(121, 33, 86, 20);
@@ -1682,6 +1865,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (dniEmpleadoNuevo.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -1705,6 +1897,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		telefono.setBounds(121, 83, 86, 20);
@@ -1720,6 +1921,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (passwdEmpleado.getText().length() == 20) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -1750,6 +1960,15 @@ public class Ventana {
 				if (emailEmpleadoNuevo.getText().length() == 50) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		emailEmpleadoNuevo.setBounds(502, 8, 86, 20);
@@ -1775,6 +1994,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		salarioEmpleadoNuevo.setBounds(502, 58, 86, 20);
@@ -1794,6 +2022,15 @@ public class Ventana {
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -1962,6 +2199,15 @@ public class Ventana {
 				if (codActividadEliminar.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		codActividadEliminar.setBounds(144, 8, 86, 20);
@@ -2017,6 +2263,15 @@ public class Ventana {
 				if (codigoActividad.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		codigoActividad.setBounds(140, 8, 86, 20);
@@ -2057,6 +2312,15 @@ public class Ventana {
 				}
 				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -2127,6 +2391,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		scrollPane_1.setViewportView(descripcion);
@@ -2144,6 +2417,15 @@ public class Ventana {
 				}
 				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE)
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -2182,6 +2464,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (dniEmpleadoActividades.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -2319,6 +2610,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		numHabitacionEliminar.setBounds(131, 5, 86, 20);
@@ -2389,6 +2689,15 @@ public class Ventana {
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -2489,6 +2798,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		superficieHabitacionEmpleados.setColumns(10);
@@ -2510,6 +2828,15 @@ public class Ventana {
 				} else if (e.getKeyChar() == '-' || e.getKeyChar() == '_') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		precioHabitacionesEmpleados.setColumns(10);
@@ -2525,6 +2852,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (dniHabitacionEmpleados.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -3068,6 +3404,9 @@ public class Ventana {
 				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		confirmarClave.setBounds(212, 233, 86, 20);
@@ -3084,6 +3423,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
 				}
 			}
 		});
@@ -3103,6 +3451,15 @@ public class Ventana {
 					e.consume();
 
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		apellidosRegistro.setBounds(538, 91, 86, 20);
@@ -3114,6 +3471,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (dniRegisro.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -3134,6 +3500,15 @@ public class Ventana {
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		telefonoRegistro.setBounds(212, 163, 86, 20);
@@ -3151,6 +3526,9 @@ public class Ventana {
 					e.consume();
 				}
 				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
@@ -3176,6 +3554,15 @@ public class Ventana {
 				if (emailRegistro.getText().length() == 50) {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		emailRegistro.setBounds(538, 163, 86, 20);
@@ -3193,6 +3580,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
 				}
 			}
 		});
@@ -3247,18 +3643,19 @@ public class Ventana {
 															String confirClave = confirmarClave.getText();
 
 															if (clave.equalsIgnoreCase(confirClave)) {
-																contrasenaValida=val.comprobarClave(clave);
+																contrasenaValida = val.comprobarClave(clave);
 																if (contrasenaValida) {
 																	String interes = interesRegistro.getText();
 
-																	if (interes.length() > 0 && interes.length() <= 40) {
+																	if (interes.length() > 0
+																			&& interes.length() <= 40) {
 
-																		Clientes cliente = new Clientes(nombre, apellidos,
-																				dni, telefonoInt, clave, edad, email,
-																				interes);
+																		Clientes cliente = new Clientes(nombre,
+																				apellidos, dni, telefonoInt, clave,
+																				edad, email, interes);
 
-																		boolean insertar = gesBBDD.insertarPersonas(cliente,
-																				clientes);
+																		boolean insertar = gesBBDD
+																				.insertarPersonas(cliente, clientes);
 
 																		if (insertar) {
 																			JOptionPane.showMessageDialog(registrarse,
@@ -3294,7 +3691,8 @@ public class Ventana {
 																				"El registro de interes no puede ser mayor a 40 caracteres o estar vacio");
 																	}
 																} else {
-																	JOptionPane.showMessageDialog(registrarse, "La contraseña introducida no es válida");
+																	JOptionPane.showMessageDialog(registrarse,
+																			"La contraseña introducida no es válida");
 																}
 															} else {
 																JOptionPane.showMessageDialog(registrarse,
@@ -3416,6 +3814,15 @@ public class Ventana {
 				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -3581,6 +3988,15 @@ public class Ventana {
 				if (textfieldCodigoCancelarActividad.getText().length() == 20) {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		textfieldCodigoCancelarActividad.setBounds(169, 113, 86, 20);
@@ -3592,6 +4008,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (textFieldDniCancelarActividad.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -3821,6 +4246,12 @@ public class Ventana {
 				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 
@@ -3841,6 +4272,15 @@ public class Ventana {
 					e.consume();
 
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		modificarApellidos.setBounds(266, 78, 86, 20);
@@ -3860,6 +4300,15 @@ public class Ventana {
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		modificarTelefono.setBounds(266, 104, 86, 20);
@@ -3872,6 +4321,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (modificarEmail.getText().length() == 50) {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -3894,6 +4352,9 @@ public class Ventana {
 				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
 			}
 		});
 		modificarClave.setBounds(266, 130, 86, 20);
@@ -3911,6 +4372,15 @@ public class Ventana {
 						&& !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
 				}
 			}
 		});
@@ -4072,6 +4542,15 @@ public class Ventana {
 				if (dniReservaActividades.getText().length() == 9) {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		dniReservaActividades.setBounds(156, 72, 86, 20);
@@ -4083,6 +4562,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (codigoReservaActividades.getText().length() == 20) {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -4229,6 +4717,15 @@ public class Ventana {
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
 					e.consume();
 				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
 			}
 		});
 		reservarHabitacionesNº.setBounds(169, 81, 86, 20);
@@ -4240,6 +4737,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (reservarHabitacionesDni.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
 					e.consume();
 				}
 			}
@@ -4407,6 +4913,15 @@ public class Ventana {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (bajaCliente.getText().length() == 9) {
+					e.consume();
+				}
+				if (e.getKeyChar() == '\'') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ' || e.getKeyChar() == 'ç' || e.getKeyChar() == 'Ç') {
+					e.consume();
+				}
+				if (e.getKeyChar() == 'º' || e.getKeyChar() == 'ª') {
 					e.consume();
 				}
 			}
