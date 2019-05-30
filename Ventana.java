@@ -596,6 +596,7 @@ public class Ventana {
 				boolean modificar = false;
 				boolean emailValido = false;
 				boolean contrasenaValida = false;
+				int idPersonas = 0;
 				if (rdbtnNombre.isSelected()) {
 					tipoPersona = "persona";
 				} else if (rdbtnApellidosEmpleados.isSelected()) {
@@ -664,13 +665,19 @@ public class Ventana {
 									datoNuevo = textFieldEmailModificarEmpleado.getText();
 									emailValido = val.comprobarEmail(datoNuevo);
 									if (emailValido) {
-										if (datoNuevo.length() > 0 && datoNuevo.length() <= 50) {
-											modificarValido = true;
-											email.setText(datoNuevo);
+										idPersonas = gesBBDD.buscarEmailRepetido(datoNuevo, empleados);
+										if (idPersonas == 0) {
+											if (datoNuevo.length() > 0 && datoNuevo.length() <= 50) {
+												modificarValido = true;
+												email.setText(datoNuevo);
+											} else {
+												modificarValido = false;
+												JOptionPane.showMessageDialog(empleados,
+														"El e-mail no puede tener más de 50 caracteres");
+											}
 										} else {
-											modificarValido = false;
 											JOptionPane.showMessageDialog(empleados,
-													"El e-mail no puede tener más de 50 caracteres");
+													"El email introducido ya está registrado en la base de datos");
 										}
 									} else {
 										modificarValido = false;
@@ -1890,6 +1897,9 @@ public class Ventana {
 		telefono.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				if (telefono.getText().length() == 9) {
+					e.consume();
+				}
 				if (Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == e.VK_BACK_SPACE)) {
 					e.consume();
 				} else if ((e.getKeyChar() == e.VK_SPACE)) {
@@ -2056,6 +2066,8 @@ public class Ventana {
 				boolean emailValido = false;
 				boolean insertar = false;
 				boolean dniValido = false;
+				int idPersonas = 0;
+				int idPersonasEmail = 0;
 				try {
 					String nombre = nombreEmpleadoNuevo.getText();
 					if (nombre.length() > 0 && nombre.length() <= 20) {
@@ -2067,86 +2079,106 @@ public class Ventana {
 							dniValido = val.comprobarDNI(dni);
 							if (dniValido) {
 								dniEmpleadoNuevo.setBackground(Color.white);
-								String telefonoCadena = telefono.getText();
-								if (telefonoCadena.trim().length() == 9) {
-									telefono.setBackground(Color.white);
-									int telefonoInt = Integer.parseInt(telefonoCadena.trim());
-									LocalDate fechaNacimiento = calendarioAnadirEmpleado.getDate();
-									int edad = (int) Period.between(fechaNacimiento, LocalDate.now()).getYears();
-									if (edad >= 16 && edad <= 67) {
-										calendarioAnadirEmpleado.setBackground(Color.white);
-										String emailString = emailEmpleadoNuevo.getText();
-										if (emailString.length() > 0 && emailString.length() <= 50) {
-											emailValido = val.comprobarEmail(emailString);
-											if (emailValido) {
-												emailEmpleadoNuevo.setBackground(Color.white);
-												String contrasena = passwdEmpleado.getText();
-												if (contrasena.length() >= 6 && contrasena.length() <= 20) {
-													passwdEmpleado.setBackground(Color.white);
-													double salario = Double.parseDouble(salarioEmpleadoNuevo.getText());
-													if (salario >= 900) {
-														salarioEmpleadoNuevo.setBackground(Color.white);
-														int antiguedadInt = Integer
-																.parseInt(antiguedadEmpleadoNuevo.getText());
-														if (antiguedadInt >= 0) {
-															antiguedadEmpleadoNuevo.setBackground(Color.white);
-															String tipo = (String) comboBoxTipoEmpleadoNuevo
-																	.getSelectedItem();
-															Empleados empleado = new Empleados(nombre, apellidos, dni,
-																	telefonoInt, contrasena, edad, emailString, salario,
-																	antiguedadInt, tipo);
-															insertar = gesBBDD.insertarPersonas(empleado, empleados);
-															if (insertar) {
-																JOptionPane.showMessageDialog(empleados,
-																		"Empleado insertado con éxito");
-																nombreEmpleadoNuevo.setText(null);
-																apellidosEmpleadoNuevo.setText(null);
-																dniEmpleadoNuevo.setText(null);
-																telefono.setText(null);
-																calendarioAnadirEmpleado.setDate(fechaMayorEdad);
-																emailEmpleadoNuevo.setText(null);
-																passwdEmpleado.setText(null);
-																salarioEmpleadoNuevo.setText(null);
-																antiguedadEmpleadoNuevo.setText(null);
-																comboBoxTipoEmpleadoNuevo
-																		.setSelectedItem("Administrativo de recepción");
+								idPersonas = gesBBDD.buscarPersonas(dni, empleados);
+								if (idPersonas == 0) {
+									String telefonoCadena = telefono.getText();
+									if (telefonoCadena.trim().length() == 9) {
+										telefono.setBackground(Color.white);
+										int telefonoInt = Integer.parseInt(telefonoCadena.trim());
+										LocalDate fechaNacimiento = calendarioAnadirEmpleado.getDate();
+										int edad = (int) Period.between(fechaNacimiento, LocalDate.now()).getYears();
+										if (edad >= 16 && edad <= 67) {
+											calendarioAnadirEmpleado.setBackground(Color.white);
+											String emailString = emailEmpleadoNuevo.getText();
+											if (emailString.length() > 0 && emailString.length() <= 50) {
+												emailValido = val.comprobarEmail(emailString);
+												if (emailValido) {
+													emailEmpleadoNuevo.setBackground(Color.white);
+													idPersonasEmail = gesBBDD.buscarEmailRepetido(emailString,
+															empleados);
+													if (idPersonasEmail == 0) {
+														String contrasena = passwdEmpleado.getText();
+														if (contrasena.length() >= 6 && contrasena.length() <= 20) {
+															passwdEmpleado.setBackground(Color.white);
+															double salario = Double
+																	.parseDouble(salarioEmpleadoNuevo.getText());
+															if (salario >= 900) {
+																salarioEmpleadoNuevo.setBackground(Color.white);
+																int antiguedadInt = Integer
+																		.parseInt(antiguedadEmpleadoNuevo.getText());
+																if (antiguedadInt >= 0) {
+																	antiguedadEmpleadoNuevo.setBackground(Color.white);
+																	String tipo = (String) comboBoxTipoEmpleadoNuevo
+																			.getSelectedItem();
+																	Empleados empleado = new Empleados(nombre,
+																			apellidos, dni, telefonoInt, contrasena,
+																			edad, emailString, salario, antiguedadInt,
+																			tipo);
+																	insertar = gesBBDD.insertarPersonas(empleado,
+																			empleados);
+																	if (insertar) {
+																		JOptionPane.showMessageDialog(empleados,
+																				"Empleado insertado con éxito");
+																		nombreEmpleadoNuevo.setText(null);
+																		apellidosEmpleadoNuevo.setText(null);
+																		dniEmpleadoNuevo.setText(null);
+																		telefono.setText(null);
+																		calendarioAnadirEmpleado
+																				.setDate(fechaMayorEdad);
+																		emailEmpleadoNuevo.setText(null);
+																		passwdEmpleado.setText(null);
+																		salarioEmpleadoNuevo.setText(null);
+																		antiguedadEmpleadoNuevo.setText(null);
+																		comboBoxTipoEmpleadoNuevo.setSelectedItem(
+																				"Administrativo de recepción");
+																	} else {
+																		JOptionPane.showMessageDialog(empleados,
+																				"No se ha podido insertar el empleado");
+																	}
+																} else {
+																	antiguedadEmpleadoNuevo
+																			.setBackground(new Color(240, 128, 128));
+																	JOptionPane.showMessageDialog(empleados,
+																			"La antiguedad no puede ser inferior a 0");
+																}
 															} else {
+																salarioEmpleadoNuevo
+																		.setBackground(new Color(240, 128, 128));
 																JOptionPane.showMessageDialog(empleados,
-																		"No se ha podido insertar el empleado");
+																		"El salario no puede ser inferior a 900€");
 															}
 														} else {
-															antiguedadEmpleadoNuevo
-																	.setBackground(new Color(240, 128, 128));
+															passwdEmpleado.setBackground(new Color(240, 128, 128));
 															JOptionPane.showMessageDialog(empleados,
-																	"La antiguedad no puede ser inferior a 0");
+																	"La contraseña debe tener mínimo 6 caractéres y máximo 20");
 														}
 													} else {
-														salarioEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+														emailEmpleadoNuevo.setBackground(new Color(240, 128, 128));
 														JOptionPane.showMessageDialog(empleados,
-																"El salario no puede ser inferior a 900€");
+																"El correo introducido ya está registrado en la base de datos");
 													}
 												} else {
-													passwdEmpleado.setBackground(new Color(240, 128, 128));
-													JOptionPane.showMessageDialog(empleados,
-															"La contraseña debe tener mínimo 6 caractéres y máximo 20");
+													emailEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+													JOptionPane.showMessageDialog(empleados, "El correo no es válido");
 												}
 											} else {
 												emailEmpleadoNuevo.setBackground(new Color(240, 128, 128));
-												JOptionPane.showMessageDialog(empleados, "El correo no es válido");
+												JOptionPane.showMessageDialog(empleados,
+														"El e-mail no puede estar vacío y tiene una longitud máxima de 50 caractéres");
 											}
 										} else {
-											emailEmpleadoNuevo.setBackground(new Color(240, 128, 128));
+											calendarioAnadirEmpleado.setBackground(new Color(240, 128, 128));
 											JOptionPane.showMessageDialog(empleados,
-													"El e-mail no puede estar vacío y tiene una longitud máxima de 50 caractéres");
+													"El empleado debe tener entre 16 y 67 años");
 										}
 									} else {
-										calendarioAnadirEmpleado.setBackground(new Color(240, 128, 128));
-										JOptionPane.showMessageDialog(empleados,
-												"El empleado debe tener entre 16 y 67 años");
+										telefono.setBackground(new Color(240, 128, 128));
+										JOptionPane.showMessageDialog(empleados, "El teléfono debe tener 9 números");
 									}
 								} else {
-									telefono.setBackground(new Color(240, 128, 128));
-									JOptionPane.showMessageDialog(empleados, "El teléfono debe tener 9 números");
+									JOptionPane.showMessageDialog(empleados,
+											"El DNI introducido ya está registrado en la base de datos");
+									dniEmpleadoNuevo.setBackground(new Color(240, 128, 128));
 								}
 							} else {
 								dniEmpleadoNuevo.setBackground(new Color(240, 128, 128));
@@ -4412,6 +4444,7 @@ public class Ventana {
 				boolean emailValido = false;
 				boolean contrasenaValida = false;
 				String dni = "";
+				int idPersonas = 0;
 
 				if (rdbtnMoNombre.isSelected()) {
 					tipoPersona = "persona";
@@ -4465,8 +4498,15 @@ public class Ventana {
 							opcion = "email";
 							emailValido = val.comprobarEmail(modificarEmail.getText());
 							if (emailValido) {
-								datoNuevo = modificarEmail.getText();
-								email.setText(datoNuevo);
+								idPersonas = gesBBDD.buscarEmailRepetido(modificarEmail.getText(), clientes);
+								if (idPersonas == 0) {
+									datoNuevo = modificarEmail.getText();
+									email.setText(datoNuevo);
+								} else {
+									JOptionPane.showMessageDialog(clientes,
+											"El email introducido ya está registrado en la base de datos");
+									modificarValidado = false;
+								}
 							} else {
 								JOptionPane.showMessageDialog(clientes, "El e-mail introducido no es válido");
 								modificarValidado = false;
